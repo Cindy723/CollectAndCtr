@@ -41,6 +41,11 @@ local g_screen
 local g_control
 local g_value
 
+-- ee cd cx 自定义指令对应功能
+local g_registerButton = 0xc1 -- 注册按钮按下指令
+local g_pswEnter = 0xc2		   -- 密码输入结束
+local g_nodePageChange = 0xc3   -- 页面切换 
+
 -- 创建一个数组 数组是从1开始
 -- 0xcd表示自己定义的数据，0x01表示返回设置界面点击注册时，下发的别名和地址数据
 -- 后面是长度位置 具体数据   
@@ -118,6 +123,8 @@ end
 -- 控件必须要有串口数据才会触发回调
 function on_control_notify_my(screen, control, value)
 	local sendArray = {0xee, 0xcd} -- 自定数据 帧头 用户数据 数据类型 数据长度 数据 
+	local datalen = 0
+
 	print(string.format("on_control_notify %d", control))
 	if (screen == 1 and control == 1) then  -- 进入设置
 		set_text(2, 7, "") -- 清除上次输入的密码
@@ -125,9 +132,8 @@ function on_control_notify_my(screen, control, value)
 
  	if (screen == 2 and control == 7) then  -- 输入密码
 		local pswStr = get_text(screen, control)
-		local sendArray = {0xee, 0xcd}
 		local pswLen = # (pswStr) +1
-		sendArray[3] = 0xc2 -- c2表示输入密码触发回车
+		sendArray[3] = g_pswEnter 
 		sendArray[4] = pswLen 
 
 		local pswByte = string_to_hex(pswStr)
@@ -145,6 +151,35 @@ function on_control_notify_my(screen, control, value)
 		 --change_child_screen (3)
 
 	end
+	if (screen == 2 and (control == 16)or(control == 17)) then  -- 节点列表切换上下页
+		 --页面 f1 / f2  切换页面 下发变化后分数 同时上报对应页的数据展示 
+		sendArray[3] = g_nodePageChange
+		datalen = 2
+		local f1int = tonumber(get_text(2, 21))  
+ 
+		if(control == 16)then
+			if(f1int > 2) then
+				f1int = f1int -1
+			end
+		end		 		
+		if(control == 17)then 
+			f1int = f1int +1  --需要限制总页
+		end	
+
+		set_text(2, 21, string.format("%d", f1int))
+		--set_text(2, 22, string.format("%d", f2int))
+
+  		local f1hex = string_to_hex(get_text(2, 21))
+  		local f2hex = string_to_hex(get_text(2, 22))
+
+		sendArray[4] = 2
+		sendArray[5]  =  f1hex[1]
+		sendArray[6]  =  f2hex[1]
+
+		add_end(datalen, sendArray)
+		local sendData = shift_left(sendArray)
+		uart_send_data(sendData)
+	end
 
 	if (screen == 2 and control == 32) then  -- 注册按钮按下 返回id+name  都是字符串表示的
 		print(string.format("method register"))
@@ -153,11 +188,9 @@ function on_control_notify_my(screen, control, value)
 		
 		local idLen = #searchId +1 
 		local nameLen = #SetIdName +1 
-		local datalen = idLen + nameLen
+	    datalen = idLen + nameLen
 		
-		sendArray[3] = 0xc1
-		sendArray[4] = datalen
-		
+		sendArray[3] = g_registerButton
 		local nameStr = string_to_hex(SetIdName)
 		local searchIdStr = string_to_hex(searchId)
 		
@@ -172,8 +205,9 @@ function on_control_notify_my(screen, control, value)
 		for i = 1, nameLen do
 		    sendArray[idLen + 4 + i] = nameStr[i]
 			-- print(string.format("len1 %d", idLen + 4 + i))
-		end  
+		end   
 
+		sendArray[4] = datalen 
 		add_end(datalen, sendArray)
 		local sendData = shift_left(sendArray)
 		uart_send_data(sendData)
