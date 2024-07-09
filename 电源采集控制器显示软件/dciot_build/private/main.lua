@@ -65,7 +65,8 @@ end
 
 function on_init()   
 	arrayIndex()
-	change_screen(2) -- 开机就切到画面2 
+	set_text(2, 7, "") 	
+	--change_screen(2) -- 开机就切到画面2 
 end
 
 -- 字符串转十六进制
@@ -116,8 +117,35 @@ end
 -- 点击按钮控件，修改文本控件、修改滑动条都会触发此事件 
 -- 控件必须要有串口数据才会触发回调
 function on_control_notify_my(screen, control, value)
-	local sendArray = {0xee, 0xcd, 0x01} -- 自定数据 帧头 用户数据 数据类型 数据长度 数据 
+	local sendArray = {0xee, 0xcd} -- 自定数据 帧头 用户数据 数据类型 数据长度 数据 
 	print(string.format("on_control_notify %d", control))
+	if (screen == 1 and control == 1) then  -- 进入设置
+		set_text(2, 7, "") -- 清除上次输入的密码
+	end
+
+ 	if (screen == 2 and control == 7) then  -- 输入密码
+		local pswStr = get_text(screen, control)
+		local sendArray = {0xee, 0xcd}
+		local pswLen = # (pswStr) +1
+		sendArray[3] = 0xc2 -- c2表示输入密码触发回车
+		sendArray[4] = pswLen 
+
+		local pswByte = string_to_hex(pswStr)
+		table.insert(pswByte, '\0') 
+		for i = 1, pswLen do
+		    sendArray[4 + i] = pswByte[i]
+		end
+
+ 		add_end(pswLen, sendArray)
+		local sendData = shift_left(sendArray)
+		uart_send_data(sendData) -- 随即之后如果操作节点 在单片机判定和预设密码是否一致 不一致时单片机变更提示文本 且不作处理
+	end	
+
+	if (screen == 2 and control == 31) then  -- 點擊配置
+		 --change_child_screen (3)
+
+	end
+
 	if (screen == 2 and control == 32) then  -- 注册按钮按下 返回id+name  都是字符串表示的
 		print(string.format("method register"))
 		local searchId = get_text(screen, 8)  -- 表示hex 的string
@@ -149,6 +177,7 @@ function on_control_notify_my(screen, control, value)
 		add_end(datalen, sendArray)
 		local sendData = shift_left(sendArray)
 		uart_send_data(sendData)
+		
 	 		--start_timer(timer_send_serchid_text, 100, 0, 1)
 	end
 end

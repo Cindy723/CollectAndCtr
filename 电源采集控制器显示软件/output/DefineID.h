@@ -135,10 +135,16 @@
 //画面Screen2中图片Image1使用的图片
 #define  _IMG_SCREEN2_IMAGE1                                                   2
 
+//画面Screen2中按钮Button1按下时的图片
+#define  _IMG_SCREEN2_BUTTON1_DOWN                                             9
+
 #define  _BTN_SCREEN2_BUTTON1                                                 30
 
+//画面Screen2中按钮Button2弹起时的图片
+#define  _IMG_SCREEN2_BUTTON2_UP                                               9
+
 //画面Screen2中按钮Button2按下时的图片
-#define  _IMG_SCREEN2_BUTTON2_DOWN                                            11
+#define  _IMG_SCREEN2_BUTTON2_DOWN                                             9
 
 #define  _BTN_SCREEN2_BUTTON2                                                 32
 
@@ -149,47 +155,47 @@
 #define  _BTN_SCREEN2_BUTTON6                                                 41
 
 //画面Screen2中按钮Button7弹起时的图片
-#define  _IMG_SCREEN2_BUTTON7_UP                                              14
+#define  _IMG_SCREEN2_BUTTON7_UP                                              12
 
 //画面Screen2中按钮Button7按下时的图片
-#define  _IMG_SCREEN2_BUTTON7_DOWN                                            15
+#define  _IMG_SCREEN2_BUTTON7_DOWN                                            13
 
 #define  _BTN_SCREEN2_BUTTON7                                                 42
 
 //画面Screen2中按钮Button8弹起时的图片
-#define  _IMG_SCREEN2_BUTTON8_UP                                              14
+#define  _IMG_SCREEN2_BUTTON8_UP                                              12
 
 //画面Screen2中按钮Button8按下时的图片
-#define  _IMG_SCREEN2_BUTTON8_DOWN                                            15
+#define  _IMG_SCREEN2_BUTTON8_DOWN                                            13
 
 #define  _BTN_SCREEN2_BUTTON8                                                 43
 
 //画面Screen2中按钮Button9弹起时的图片
-#define  _IMG_SCREEN2_BUTTON9_UP                                              14
+#define  _IMG_SCREEN2_BUTTON9_UP                                              12
 
 //画面Screen2中按钮Button9按下时的图片
-#define  _IMG_SCREEN2_BUTTON9_DOWN                                            15
+#define  _IMG_SCREEN2_BUTTON9_DOWN                                            13
 
 #define  _BTN_SCREEN2_BUTTON9                                                 44
 
 //画面Screen2中按钮Button10弹起时的图片
-#define  _IMG_SCREEN2_BUTTON10_UP                                             14
+#define  _IMG_SCREEN2_BUTTON10_UP                                             12
 
 //画面Screen2中按钮Button10按下时的图片
-#define  _IMG_SCREEN2_BUTTON10_DOWN                                           15
+#define  _IMG_SCREEN2_BUTTON10_DOWN                                           13
 
 #define  _BTN_SCREEN2_BUTTON10                                                45
 
 //画面Screen2中按钮Button11弹起时的图片
-#define  _IMG_SCREEN2_BUTTON11_UP                                             14
+#define  _IMG_SCREEN2_BUTTON11_UP                                             12
 
 //画面Screen2中按钮Button11按下时的图片
-#define  _IMG_SCREEN2_BUTTON11_DOWN                                           15
+#define  _IMG_SCREEN2_BUTTON11_DOWN                                           13
 
 #define  _BTN_SCREEN2_BUTTON11                                                46
 
 //画面Screen2中按钮Button12按下时的图片
-#define  _IMG_SCREEN2_BUTTON12_DOWN                                           16
+#define  _IMG_SCREEN2_BUTTON12_DOWN                                           14
 
 #define  _BTN_SCREEN2_BUTTON12                                                33
 
@@ -234,4 +240,16 @@
 #define  _TXT_DIS__SCREEN2_TEXT_DISPLAY16                                     38
 
 #define  _TXT_DIS__SCREEN2_TEXT_DISPLAY17                                     39
+
+#define  _TXT_DIS__SCREEN2_TEXT_DISPLAY18                                     47
+
+//画面Screen2中按钮Button3弹起时的图片
+#define  _IMG_SCREEN2_BUTTON3_UP                                               9
+
+//画面Screen2中按钮Button3按下时的图片
+#define  _IMG_SCREEN2_BUTTON3_DOWN                                             9
+
+#define  _BTN_SCREEN2_BUTTON3                                                 53
+
+#define  _TXT_DIS__SCREEN2_TEXT_DISPLAY19                                     54
 
