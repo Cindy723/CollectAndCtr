@@ -9,10 +9,8 @@
 #include "OLED.h"
 
  
-extern u16 g_kCount;
-extern u8 g_RequestNodeElecFlag;
+extern u16 g_kCount; 
 
-void HMIanalysis(void); 
 void NodeDataAnalysis(void);
 void updateBaseInfo(void);
 u8 setBoardBaseInfo(const u8 *pconten);

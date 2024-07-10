@@ -3,10 +3,8 @@
 #include "stm32f10x_usart.h"
 #include "stm32f10x_iwdg.h"
 #include "Init.h"
- 
-BoardAddr boardAddr; 
-NodeInfo nodeInfo[MAX_NODE]; //最多存储50个节点
-NodeElecInfo nodeElecInfo[MAX_NODE];
+  
+NodeInfo nodeInfo[MAX_NODE]; //最多存储50个节点 
 
  
 /*

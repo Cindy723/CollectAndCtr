@@ -99,15 +99,21 @@ void printHex(const unsigned char* data, size_t length)
  @ 出口： 
  @ 备注：
  *********************************************************************************************************/
-void displayHex2oled(const unsigned char* data, size_t length, u8 x, u8 y) 
+void displayHex2oled(const unsigned char* data, uint8_t length, uint8_t x, uint8_t y) 
 {
-		size_t i;
-		unsigned char disp[120];
-    for (i = 0; i < length; i++) { 
-      sprintf((char*)disp, "%02X ", data[i]);
+    size_t i;
+    unsigned char disp[121]; // 调整大小为121，以确保足够容纳全部数据和终止符
+
+    if (length > 60) {
+        length = 60; // 确保 length 不超过 60，避免数组越界
     }
-		disp[3*length+1] = '\0';
-		OLED_P6x8Str(x, y, disp, 0);  
+
+    for (i = 0; i < length; i++) { 
+        sprintf((char*)&disp[i * 2], "%02X", data[i]);
+    }
+    disp[2 * length] = '\0'; // 正确设置字符串终止符
+
+    OLED_P6x8Str(x, y, disp, 0);  
 }
 
 /***********************************************************************************************************

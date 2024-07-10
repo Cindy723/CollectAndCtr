@@ -43,3 +43,4 @@
 ..\..\output\application.o: ..\..\User\OLED\OLED.h
 ..\..\output\application.o: ..\..\User\OLED\codetab.h
 ..\..\output\application.o: ..\..\User\flash.h
+..\..\output\application.o: ..\..\User\TFTCommunic.h

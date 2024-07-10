@@ -42,3 +42,4 @@
 ..\..\output\main.o: ..\..\User\UART.h
 ..\..\output\main.o: ..\..\User\OLED\OLED.h
 ..\..\output\main.o: ..\..\User\OLED\codetab.h
+..\..\output\main.o: ..\..\User\TFTCommunic.h

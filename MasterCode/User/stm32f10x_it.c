@@ -254,60 +254,60 @@ void USART2_IRQHandler(void)
 		static int endmark = 0;
 	 if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)   
 	 {
-			uart2HMIPack.dataOrig[uart2HMIPack.Counter] = USART_ReceiveData(USART2);   
-			if(uart2HMIPack.Counter == 0 && (uart2HMIPack.dataOrig[0] !=0xEE))
+			uart2TFTPack.dataOrig[uart2TFTPack.Counter] = USART_ReceiveData(USART2);   
+			if(uart2TFTPack.Counter == 0 && (uart2TFTPack.dataOrig[0] !=0xEE))
 			{ 
 				return;  
-			}else uart2HMIPack.Counter++;
+			}else uart2TFTPack.Counter++;
  
 			// 捕获帧尾第一个字节
-			if((uart2HMIPack.dataOrig[uart2HMIPack.Counter-1] == 0xff) && uart2HMIPack.endflag == 0)
+			if((uart2TFTPack.dataOrig[uart2TFTPack.Counter-1] == 0xff) && uart2TFTPack.endflag == 0)
 			{
-			  endmark = uart2HMIPack.Counter;
-				uart2HMIPack.endflag = 1;
+			  endmark = uart2TFTPack.Counter;
+				uart2TFTPack.endflag = 1;
 			}
 			
 			// 到达帧尾长度
-			if((uart2HMIPack.endflag == 1) && (uart2HMIPack.Counter - endmark == 3)) 
+			if((uart2TFTPack.endflag == 1) && (uart2TFTPack.Counter - endmark == 3)) 
 			{ 
-				if((uart2HMIPack.dataOrig[endmark] == 0xfc) && 
-					 (uart2HMIPack.dataOrig[endmark + 1] == 0xff)&&
-					 (uart2HMIPack.dataOrig[endmark + 2] == 0xff))
+				if((uart2TFTPack.dataOrig[endmark] == 0xfc) && 
+					 (uart2TFTPack.dataOrig[endmark + 1] == 0xff)&&
+					 (uart2TFTPack.dataOrig[endmark + 2] == 0xff))
 				{ // 帧尾完全匹配 
-					printf("ReciveHMI: \r\n");
-					printHex(uart2HMIPack.dataOrig, uart2HMIPack.Counter);	
-					str_copy_usart_buf2(uart2HMIPack.dataBuf,uart2HMIPack.Counter, uart2HMIPack.dataOrig); 					
-					uart2HMIPack.packLen = uart2HMIPack.Counter; 
-					uart2HMIPack.receiveok = 1;  
+					printf("ReciveTFT: \r\n");
+					printHex(uart2TFTPack.dataOrig, uart2TFTPack.Counter);	
+					str_copy_usart_buf2(uart2TFTPack.dataBuf,uart2TFTPack.Counter, uart2TFTPack.dataOrig); 					
+					uart2TFTPack.packLen = uart2TFTPack.Counter; 
+					uart2TFTPack.receiveok = 1;  
 					USART_data_Reset(USART2);
 				}
 				else 
 				{
-					printf("ReciveHMI erro \r\n");
-					uart2HMIPack.receiveok = 0;  
+					printf("ReciveTFT erro \r\n");
+					uart2TFTPack.receiveok = 0;  
 					USART_data_Reset(USART2); 
 					endmark = 0;
 				}
 			}
 			
-//			if(uart2HMIPack.Counter >= 2)
+//			if(uart2TFTPack.Counter >= 2)
 //			{ 
-//				switch(uart2HMIPack.dataOrig[1])
+//				switch(uart2TFTPack.dataOrig[1])
 //				{
 //					case BUTTON_CMD: // 按钮数据
 //					{ 
-//						if(uart2HMIPack.Counter == HMI_BUTTON_LEN) 
+//						if(uart2TFTPack.Counter == TFT_BUTTON_LEN) 
 //						{
-//							if((uart2HMIPack.dataOrig[HMI_BUTTON_LEN - 4] == 0xff) &&
-//								 (uart2HMIPack.dataOrig[HMI_BUTTON_LEN - 3] == 0xfc) &&
-//								 (uart2HMIPack.dataOrig[HMI_BUTTON_LEN - 2] == 0xff) &&
-//								 (uart2HMIPack.dataOrig[HMI_BUTTON_LEN - 1] == 0xff))
+//							if((uart2TFTPack.dataOrig[TFT_BUTTON_LEN - 4] == 0xff) &&
+//								 (uart2TFTPack.dataOrig[TFT_BUTTON_LEN - 3] == 0xfc) &&
+//								 (uart2TFTPack.dataOrig[TFT_BUTTON_LEN - 2] == 0xff) &&
+//								 (uart2TFTPack.dataOrig[TFT_BUTTON_LEN - 1] == 0xff))
 //								{ 
-//									printf("ReciveHMI: ");
-//									printHex(uart2HMIPack.dataOrig, uart2HMIPack.Counter);
-//									str_copy_usart_buf2(uart2HMIPack.dataBuf,uart2HMIPack.Counter, uart2HMIPack.dataOrig); 
-//									uart2HMIPack.packLen = uart2HMIPack.Counter; 
-//									uart2HMIPack.receiveok = 1; 
+//									printf("ReciveTFT: ");
+//									printHex(uart2TFTPack.dataOrig, uart2TFTPack.Counter);
+//									str_copy_usart_buf2(uart2TFTPack.dataBuf,uart2TFTPack.Counter, uart2TFTPack.dataOrig); 
+//									uart2TFTPack.packLen = uart2TFTPack.Counter; 
+//									uart2TFTPack.receiveok = 1; 
 //								}
 //									
 //								USART_data_Reset(USART2);
@@ -326,7 +326,7 @@ void USART2_IRQHandler(void)
 //				} 
 //			}
 			
-			if(uart2HMIPack.Counter >= 120)
+			if(uart2TFTPack.Counter >= 120)
 			{ 
 					printf("data overleng\r\n");
 					USART_data_Reset(USART2);
@@ -342,16 +342,15 @@ void USART2_IRQHandler(void)
  @ 备注: 接收节点回复的数据
  *********************************************************************************************************/
 void USART3_IRQHandler(void)
-{  
+{
+	 static u8 dispFlag = 0;
 	 if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)   
 	 { 
 			uart3_485Pack.busy = 1;
 			uart3_485Pack.dataOrig[uart3_485Pack.Counter] = USART_ReceiveData(USART3);     
 			if(uart3_485Pack.Counter == 0 && uart3_485Pack.dataOrig[0] != 0xA5) 
 			{
-				USART_data_Reset(USART3);
-		    OLED_P6x8Str(0,1,(unsigned char*)"throw     ",0);  
-				displayHex2oled(uart3_485Pack.dataOrig, 1, 0, 2);
+				USART_data_Reset(USART3); 
 				return;   
 			}
 			else  uart3_485Pack.Counter++;
@@ -372,8 +371,18 @@ void USART3_IRQHandler(void)
 				{
 					str_copy_usart_buf(uart3_485Pack.dataBuf, uart3_485Pack.Counter, uart3_485Pack.dataOrig);	
 					printf("Master Recive: ");
-					OLED_P6x8Str(0,1,(unsigned char*)"Recive:   ",0); 
-					displayHex2oled(uart3_485Pack.dataOrig, uart3_485Pack.Counter, 0, 2);
+					switch(dispFlag++ %3)
+					{
+						case 0: 
+							OLED_CLS();
+							OLED_P6x8Str(1,0,(unsigned char*)"Recive:   ",0); 
+						  displayHex2oled(uart3_485Pack.dataOrig, uart3_485Pack.Counter, 1, 1);
+						 break; 
+						case 1: displayHex2oled(uart3_485Pack.dataOrig, uart3_485Pack.Counter, 1, 3);
+						 break; 
+						case 2: displayHex2oled(uart3_485Pack.dataOrig, uart3_485Pack.Counter, 1, 5);
+						 break;
+					} 
 					printHex(uart3_485Pack.dataBuf, uart3_485Pack.Counter); 
 					uart3_485Pack.packLen = uart3_485Pack.Counter;
 					USART_data_Reset(USART3);

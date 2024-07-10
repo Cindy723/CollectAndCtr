@@ -13,7 +13,7 @@ void IO_TXD(u8 Data);
 void IO_USART_Send(u8 *buf, u8 len);
 uchar CheckSum(uchar* buf, uchar len);
 void printHex(const unsigned char* data, size_t length);
-void displayHex2oled(const unsigned char* data, size_t length, u8 x, u8 y);
+void displayHex2oled(const unsigned char* data, u8 length, u8 x, u8 y);
 u8 hexCompaer(u8* desp, u8* srcp, u8 len);
 int StrToHexByte(unsigned char *str, unsigned char *hex);
     

@@ -3,8 +3,8 @@
 
 #include "init.h" 
  
-// HMI 页面定义
-#define HMI_PAGE_SETNUM 2
+// TFT 页面定义
+#define TFT_PAGE_SETNUM 2
 
 /* 定义串口数据包 */
 typedef struct 
@@ -26,7 +26,7 @@ typedef struct
 }UartPack;
  
 
-/* 定义HMI接收数据包 */
+/* 定义TFT接收数据包 */
 typedef struct 
 {
 	u8 dataOrig[120];		  			// 完整原始数据 仅接收处使用
@@ -45,21 +45,21 @@ typedef struct
 	u8 Counter;					 				// 总接收计数 
 	u8 packLen;					 				// 数据包长度 
 	u8 endflag;
-}UartHMIRecivePack;
+}UartTFTRecivePack;
   
-/* 定义HMI用户自定义接收数据包指针 */
+/* 定义TFT用户自定义接收数据包指针 */
 typedef struct 
 { 
 	const u8 *cmd; 	  					// cmd 为 USER_CMD
 	const u8 *dataType; 	  		// 数据类型	
 	const u8 *dataLen; 					// 数据长度 
 	const u8 *data;							// 数据 
-}UartHMIRecivePackUser;
+}UartTFTRecivePackUser;
 
 extern u8 g_retBuf[120];
 extern UartPack uart3_485Pack; ;
-extern UartHMIRecivePack uart2HMIPack; 
-extern UartHMIRecivePackUser pHMIPackUser; 
+extern UartTFTRecivePack uart2TFTPack; 
+extern UartTFTRecivePackUser pTFTPackUser; 
 
 void USART_data_Reset(USART_TypeDef * pUSARTx);
 void Usart_SendByte(USART_TypeDef * pUSARTx, char* ch, u8 len);
@@ -67,10 +67,9 @@ void Usart_SendString(USART_TypeDef * pUSARTx, char *str);
 
 void str_copy_usart_buf(unsigned  char *des, unsigned char len ,unsigned  char *sourse);
 void str_copy_usart_buf2(unsigned  char *des, unsigned char len ,unsigned  char *sourse);
- 
-void buildAndSendDataTo485(u8 *pbuf, u8 cmd, u8 datalen, u8* data);
-void buildAndSendDataToHMI(u8 *pbuf, u8 pagid, u8 ctrlid, char* str);
-void getHMIText(u8 *pbuf, u8 pagid, u8 ctrlid);
+  
+void buildAndSendDataToTFT(u8 *pbuf, u8 pagid, u8 ctrlid, char* str);
+void getTFTText(u8 *pbuf, u8 pagid, u8 ctrlid);
 void buildAndSendDataToNode(u8 *pbuf, BoardAddr *addr, u8 cmd, u8 datalen, u8 *data);
 
 #endif

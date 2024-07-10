@@ -14,8 +14,8 @@
 
 //#define MINIBOARD 
 
-// 使用串口2代替主节点测试HMI
-//#define TESTHMI_DC 
+// 使用串口2代替主节点测试TFT
+//#define TESTTFT_DC 
 
 // LOG串口 
 #define DEBUGUSART USART1
@@ -76,7 +76,7 @@
 #define REQUESTADDR  0X0C  // 主机请求节点地址
 #define SETBOARDADDR 0X0D  // 主机修改节点地址,当节点没有存入地址时使用0地址下发，当已经有地址时需要使用原先地址发送. 或者使用广播地址
  
-// HMI的指令
+// TFT的指令
 #define BUTTON_CMD 0XB1
 #define USER_CMD 	 0XCD
 
@@ -99,6 +99,14 @@ typedef struct
 	u8 *type;
 }BoardAddr; 
  
+// 对应id的电力信息
+typedef struct 
+{ 
+	float vTotal;
+	float i1;		
+	float i2;		
+}NodeElecInfo;
+
 // 节点信息和所在页面
 typedef struct 
 {
@@ -107,20 +115,10 @@ typedef struct
 	u8 page;
 	u8 index;		 // 页面第几个
 	u8 totalPage;
+	NodeElecInfo eInfo;
 }NodeInfo;
-
-// 对应id的电力信息
-typedef struct 
-{
-	BoardAddr baddr;
-	float vTotal;
-	float i1;		
-	float i2;		
-}NodeElecInfo;
-
-extern BoardAddr boardAddr; 
+ 
 extern NodeInfo nodeInfo[MAX_NODE];
-extern NodeElecInfo nodeElecInfo[MAX_NODE];
  
  
 void HSE_SetSysClock(uint32_t pllmul);

@@ -1,9 +1,9 @@
 #include "Uart.h"  
 #include "Tools.h"  
   
-UartHMIRecivePack uart2HMIPack;
+UartTFTRecivePack uart2TFTPack;
 UartPack uart3_485Pack; 
-UartHMIRecivePackUser pHMIPackUser;
+UartTFTRecivePackUser pTFTPackUser;
 
 u8 g_retBuf[120]; 
 
@@ -76,11 +76,11 @@ void USART_data_Reset(USART_TypeDef * pUSARTx)
 //	}
 	if(pUSARTx == USART2)
 	{ 
-		uart2HMIPack.busy = 0; 
-		uart2HMIPack.Counter = 0;
-		memset(uart2HMIPack.dataOrig , 0, sizeof(uart2HMIPack.dataOrig));  
-		uart2HMIPack.endflag = 0;
-		printf("reset uart2HMIPack\r\n"); 
+		uart2TFTPack.busy = 0; 
+		uart2TFTPack.Counter = 0;
+		memset(uart2TFTPack.dataOrig , 0, sizeof(uart2TFTPack.dataOrig));  
+		uart2TFTPack.endflag = 0;
+		printf("reset uart2TFTPack\r\n"); 
 	}
 	if(pUSARTx == USART3)
 	{ 
@@ -91,49 +91,12 @@ void USART_data_Reset(USART_TypeDef * pUSARTx)
 		printf("reset uart3_485Pack\r\n"); 
 	}
 } 
-
-/***********************************************************************************************************
- @ 功能： 生成响应数据 
- @ 入口：指向帧头， 响应对应的指令码，数据长度，数据
- *********************************************************************************************************/
-void buildAndSendDataTo485(u8 *pbuf, u8 cmd, u8 datalen, u8* data)
-{
-	// 帧头
-	pbuf[0] = 0xA5;
-	pbuf[1] = 0x5A;
-	
-	// 板类型
-	pbuf[2] = *boardAddr.type;
-	
-	// 板地址
-	pbuf[3] = boardAddr.addr[1];
-	pbuf[4] = boardAddr.addr[2];
-	
-	// 命令
-	pbuf[5] = 0;
-	pbuf[6] = cmd;
-	
-	// 数据长度
-	pbuf[7] = datalen+1; // 数据类型占用1
-	// 数据类型
-	pbuf[8] = 0;
-	
-	// 数据 (有效载荷)
-	memcpy(&pbuf[9], data, datalen);
-	pbuf[datalen + 9] = CheckSum(pbuf, datalen + 9);  
-	
-	// 发送数据
-	printf("build : ");
-	printHex(g_retBuf, datalen + 10);
-	Usart_SendByte(USART2, (char*)g_retBuf, datalen + 10); 
-}
  
-
 /***********************************************************************************************************
- @ 功能：更新HMI文本数据 
+ @ 功能：更新TFT文本数据 
  @ 入口： 
  *********************************************************************************************************/
-void buildAndSendDataToHMI(u8 *pbuf, u8 pagid, u8 ctrlid, char* str)
+void buildAndSendDataToTFT(u8 *pbuf, u8 pagid, u8 ctrlid, char* str)
 {
 	int strLen = 0;
 	
@@ -171,10 +134,10 @@ void buildAndSendDataToHMI(u8 *pbuf, u8 pagid, u8 ctrlid, char* str)
 
 
 /***********************************************************************************************************
- @ 功能：获取HMI文本数据 ,EE B1 11 00 02 00 09 FF FC FF FF
+ @ 功能：获取TFT文本数据 ,EE B1 11 00 02 00 09 FF FC FF FF
  @ 备注：返回 EE B1 11 00 02 00 09 (11) [4E 61 6D 65 68 68 68 68] 00 FF FC FF FF
  *********************************************************************************************************/
-void getHMIText(u8 *pbuf, u8 pagid, u8 ctrlid)
+void getTFTText(u8 *pbuf, u8 pagid, u8 ctrlid)
 {
 	int strLen = 0;
 	
