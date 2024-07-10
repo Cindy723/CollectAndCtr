@@ -1,0 +1,9 @@
+diff a/Code/PowerCtrl 2.0/User/main.c b/Code/PowerCtrl 2.0/User/main.c	(rejected hunks)
+@@ -19,6 +19,7 @@
+ #include "esp8266.h"
+   
+ char client_id[128] = {"c10932ab769daff7"};
++char user_name[128] = {""}; // �����û����������������ֱ�Ӳ��� ��ҪҲ�� ���Է��ں�̨��Ϊ�û���¼����
+ char password[128] = {""}; 	 
+ mqtt_state_t mqtt_state = {0, 0}; 
+ char topic_subscribe[64] = {"APP/IPC/c10932ab769daff7/cmd"}; // ���ĵ�����

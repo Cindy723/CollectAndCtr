@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "application.h": "c",
+        "tools.h": "c",
+        "stm32f10x_it.h": "c"
+    }
+}
