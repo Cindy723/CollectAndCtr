@@ -291,7 +291,7 @@ void dispElec2TFT(u8 *pbuf, NodeInfo *info)
   
 	for(i = 0; i < g_nodeTotalCount; i++)
 	{ 
-		buildAndSendStr2TFT(g_retBuf, TFT_DISP_SETNUM, i, (char*)nodeInfo[i].name);
+		buildAndSendStr2TFT(g_retBuf, TFT_DISP_SETNUM, 5+i, (char*)nodeInfo[i].name);
 		if(nodeInfo[i].baddr.addr[0] == 0xdc)
 		{ 
 			sprintf(str, "DC: %.2f V,  CH1 %.2f A,  CH2 %.2f A", nodeInfo[i].eInfo.vTotal,  nodeInfo[i].eInfo.i1, nodeInfo[i].eInfo.i2);
