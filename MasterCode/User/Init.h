@@ -79,6 +79,9 @@
 // HMI的指令
 #define BUTTON_CMD 0XB1
 #define USER_CMD 	 0XCD
+
+#define REGISTERBUTTON 	 0XC1
+
  
 // AC电压校正值
 #define ACADJVP 0.989803567
@@ -102,11 +105,22 @@ typedef struct
 	BoardAddr baddr;
 	u8 name[64]; // 一个汉字占用两个字节  是GB2312或GBK
 	u8 page;
+	u8 index;		 // 页面第几个
 	u8 totalPage;
 }NodeInfo;
 
+// 对应id的电力信息
+typedef struct 
+{
+	BoardAddr baddr;
+	float vTotal;
+	float i1;		
+	float i2;		
+}NodeElecInfo;
+
 extern BoardAddr boardAddr; 
 extern NodeInfo nodeInfo[MAX_NODE];
+extern NodeElecInfo nodeElecInfo[MAX_NODE];
  
  
 void HSE_SetSysClock(uint32_t pllmul);

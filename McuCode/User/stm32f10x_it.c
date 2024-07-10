@@ -265,7 +265,7 @@ void USART1_IRQHandler(void)
 					}
 				}
 				
-				if(uart1Pack.Counter >= 120) // 没有这么长的数据 强行限制
+				if(uart1Pack.Counter >= 20) // 没有这么长的数据 强行限制
 				{
 					printf("Data overLenth\n");
 					USART_data_Reset(USART1);

@@ -158,7 +158,7 @@ function on_control_notify_my(screen, control, value)
 		local f1int = tonumber(get_text(2, 21))  
  
 		if(control == 16)then
-			if(f1int > 2) then
+			if(f1int > 1) then
 				f1int = f1int -1
 			end
 		end		 		

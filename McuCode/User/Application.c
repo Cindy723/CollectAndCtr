@@ -245,25 +245,43 @@ void updateElectInfoAC(u8 needSend)
  *********************************************************************************************************/
 void updateElectInfoDC(u8 needSend)
 {
-	u8 data[10];
+	u8 data[6];  // 调整数组大小为6，因为只需要6个字节
 	float ADC_ConvertedValueLocal[NOFCHANEL];   // ADC结果
+	float ADC_adj[NOFCHANEL];  
 	 
-	ADC_ConvertedValueLocal[0] =(float) ADC_ConvertedValue[0]/4096*3.3;
-	ADC_ConvertedValueLocal[1] =(float) ADC_ConvertedValue[1]/4096*3.3;
-	ADC_ConvertedValueLocal[2] =(float) ADC_ConvertedValue[2]/4096*3.3;
+	ADC_ConvertedValueLocal[0] = (float)ADC_ConvertedValue[0] / 4096 * 3.3;
+	ADC_ConvertedValueLocal[1] = (float)ADC_ConvertedValue[1] / 4096 * 3.3;
+	ADC_ConvertedValueLocal[2] = (float)ADC_ConvertedValue[2] / 4096 * 3.3;
 
-	printf("CH0 %f I2 value = %f A \r\n",ADC_ConvertedValueLocal[0], ADC_ConvertedValueLocal[0] * dcScale_I2);
-	printf("CH1 I1 value = %f V \r\n",ADC_ConvertedValueLocal[1]);
-	printf("CH2 %f V value = %f V \r\n",ADC_ConvertedValueLocal[0], ADC_ConvertedValueLocal[2] * dcScale_v);
+	ADC_adj[0] = ADC_ConvertedValueLocal[0] * dcScale_I2;
+	ADC_adj[1] = ADC_ConvertedValueLocal[1];
+	ADC_adj[2] = ADC_ConvertedValueLocal[2] * dcScale_v;
 	
-	// 故障信息
+	printf("CH0 %f I2 value = %f A \r\n", ADC_ConvertedValueLocal[0], ADC_adj[0]);
+	printf("CH1 I1 value = %f V \r\n", ADC_ConvertedValueLocal[1]);
+	printf("CH2 %f V value = %f V \r\n", ADC_ConvertedValueLocal[2], ADC_adj[2]);
 	
+	// 故障信息未加 
 	
-	
-	if(needSend){
-		buildAndSendDataTo485(g_retBuf, REQUESTELEC, 5, data);
+	if (needSend) { // v i1 i2 
+		// 将浮点数乘以100，并将结果转换为整数，确保大端模式存储
+		int v = (int)(ADC_adj[2] * 100);
+		int i1 = (int)(ADC_adj[1] * 100);
+		int i2 = (int)(ADC_adj[0] * 100);
+
+		data[0] = (v >> 8) & 0xff;
+		data[1] = v & 0xff;
+
+		data[2] = (i1 >> 8) & 0xff;
+		data[3] = i1 & 0xff;
+
+		data[4] = (i2 >> 8) & 0xff;
+		data[5] = i2 & 0xff;
+		
+		buildAndSendDataTo485(g_retBuf, REQUESTELEC, 6, data);
 	}
 }
+
 
 /**********************************************************************************************************
  @ 功能： 返回基本信息 板子类型 板子地址

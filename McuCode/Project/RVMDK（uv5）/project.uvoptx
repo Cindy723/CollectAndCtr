@@ -186,25 +186,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>29</LineNumber>
+          <LineNumber>257</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134230846</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>E:\Reynold\CollectAndCtr\McuCode\Project\User\Application.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\software\../../User/Application.c\29</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>407</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134228682</Address>
+          <Address>134228342</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -213,7 +197,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>E:\Reynold\CollectAndCtr\McuCode\Project\User\stm32f10x_it.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\software\../../User/stm32f10x_it.c\407</Expression>
+          <Expression>\\software\../../User/stm32f10x_it.c\257</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

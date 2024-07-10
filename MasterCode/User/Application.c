@@ -8,9 +8,9 @@ u8 sendNodeDatabuf[12]; 		 // 发给节点的有效载荷数据
 u8 g_nodeTotalCount; 				 // 当前存储的总节点个数
  
 u16 E_old_reg = 0; 
-u16 g_kCount = 0;  						 // 电量脉冲 监测是否有更新 
-u8 g_DisplayNodeFlag = 1;  			   // 是否需要请求节点数据并显示
- 
+u16 g_kCount = 0;  						// 电量脉冲 监测是否有更新 
+u8 g_RequestNodeElecFlag = 1; // 是否需要请求节点数据并显示
+u8 currentRquesNodeIndex = 0; // 当前请求节点索引
   
 /**********************************************************************************************************
  @ 功能: 注册节点
@@ -60,6 +60,7 @@ void HMIDisplayNodeList2SetPag()
 	u8 nameCtlAddrId[7] = {0, 1, 2, 3, 4, 5, 6};			// 界面节点地址ID索引
 	u8 nameCtlNameId[7] = {0, 34, 35, 36, 37, 38, 39};// 界面节点名字ID索引
 	u8 i;
+	char temp[4];
 	
 	for(i = 0; i < g_nodeTotalCount; i++){ 
 		// 假设每次停留在第一页
@@ -75,6 +76,8 @@ void HMIDisplayNodeList2SetPag()
 			buildAndSendDataToHMI(g_retBuf, HMI_PAGE_SETNUM, nameCtlNameId[i+1], (char*)nodeInfo[i].name);  
 		}
 	}
+	sprintf(temp, "%d", g_nodeTotalCount);
+	buildAndSendDataToHMI(g_retBuf, HMI_PAGE_SETNUM, 54, temp);  
 }
 
 /**********************************************************************************************************
@@ -91,13 +94,18 @@ void HMIButtonEvent()
 	if(*uart2HMIPack.Screen_id1 == 1)  
 	{
 			switch(*uart2HMIPack.Control_id1) // 第一行CH1开关
-			{
+			{			
+				case 1 : /*  屏幕-》设置按钮*/  
+				{		
+					printf("set button unDisplay\r\n"); 
+					g_RequestNodeElecFlag = 0;
+				}break;
 				case 111:
 				{
 					printf("contrl node ch1\r\n"); 
 					// 在这这里找出对应开关id对应的板子 再下达对应地址板子控制指令
 					sendNodeDatabuf[0] = (uart2HMIPack.Status[0] << 7) | POWERCH1;
-					//buildAndSendDataToNode(g_retBuf, nodeInfo[], POWERCONTRL, 1, sendNodeDatabuf); 
+					buildAndSendDataToNode(g_retBuf, &nodeInfo[0].baddr, POWERCONTRL, 1, sendNodeDatabuf); 
 				}break;  
 			 case 121: // 第一行CH2开关 
 			 { 
@@ -113,15 +121,18 @@ void HMIButtonEvent()
 	else if(*uart2HMIPack.Screen_id1 == HMI_PAGE_SETNUM) 
 	{ 
 	 		switch(*uart2HMIPack.Control_id1) 
-			{
-				case 1 : /*  屏幕-》设置按钮*/  
-				{		
-					printf("set button\r\n"); 
-					g_DisplayNodeFlag = 0;
-				}break;
+			{ 
 				case 9 : /*  屏幕 -》 请求的文本 */
 				{		
 			 
+				}break; 
+				case 16 : /*  屏幕 -》 节点上翻 */
+				{		
+					printf("node last page button\r\n");
+				}break; 
+				case 17 : /*  屏幕 -》 节点下翻 */
+				{		
+					printf("node nextpage button\r\n");
 				}break; 
 				case 30 : /* 屏幕-》搜索节点 */
 				{	
@@ -129,14 +140,14 @@ void HMIButtonEvent()
 					tempaddr.addr[0] = 0xdc; tempaddr.addr[1] = 0xff; tempaddr.addr[2] = 0xff;
 					buildAndSendDataToNode(g_retBuf, &tempaddr, REQUESTADDR, 0, sendNodeDatabuf); 
 				}break; 
-				case 32 : /* 屏幕-》注册节点 */
+				case 32 : /* 屏幕-》注册节点 转CD REGISTERBUTTON*/
 				{		
 					printf("register node \r\n");   
 				}break;
 				case 33 : /* 屏幕-》 从设置返回主页面 */
 				{		
-					printf("back button\r\n"); 
-					g_DisplayNodeFlag = 1;   
+					printf("back button Display\r\n"); 
+					g_RequestNodeElecFlag = 1;   
 				}break;
 				default: printf("Notfun page2 button %x\r\n", *uart2HMIPack.Control_id1); break;
 			}
@@ -169,7 +180,7 @@ void HMIanalysis()
 				case USER_CMD: // BUTTON_CMD 也会触发 主要使用这里的用户数据一次性存储
 				{
 					//HMIPackUser.
-					if(*pHMIPackUser.dataType == 0xc1) // 注册节点
+					if(*pHMIPackUser.dataType == REGISTERBUTTON) // 注册节点
 					{ 
 						RegisterNode(&pHMIPackUser);
 						HMIDisplayNodeList2SetPag();
@@ -193,7 +204,8 @@ void HMIanalysis()
 void NodeDataAnalysis()
 {
 		char tempstr[120];
-		static u8 nodeIDSimuOffset = 0; // 模拟每次搜索到的不同设备
+		//static u8 // 模拟每次搜索到的不同设备
+		u8 nodeIDSimuOffset = 0; 
 	
 		if(uart3_485Pack.receiveok)
 		{
@@ -223,7 +235,42 @@ void NodeDataAnalysis()
 					nodeIDSimuOffset ++;
 				}
 				break;
-				default: printf("uart3_485Pack.cmd unkown! \r\n"); break; 
+				case REQUESTELEC:
+				{
+					printf("NodeData Ret REQUESTELEC ");  printHex(uart3_485Pack.addr0, 3);
+					// 这里返回根据已注册的节点请求数据
+					memcpy(&nodeElecInfo[currentRquesNodeIndex].baddr, uart3_485Pack.addr0, 3);
+					if(*uart3_485Pack.addr0 == 0xac)
+					{
+						nodeElecInfo[currentRquesNodeIndex].vTotal = 
+								(float)(((uart3_485Pack.content[0] << 16) | (uart3_485Pack.content[1] << 8) | uart3_485Pack.content[2]) * 0.01);
+						printf("vTotal %f\r\n", nodeElecInfo[currentRquesNodeIndex].vTotal); 
+
+						nodeElecInfo[currentRquesNodeIndex].i1 = 
+								(float)(((uart3_485Pack.content[3] << 8) | uart3_485Pack.content[4]) * 0.01);
+						printf("i1 %f\r\n", nodeElecInfo[currentRquesNodeIndex].i1);
+
+					}
+					else if(*uart3_485Pack.addr0 == 0xdc)
+					{
+						nodeElecInfo[currentRquesNodeIndex].vTotal = 
+								(float)(((uart3_485Pack.content[0] << 8) | uart3_485Pack.content[1]) * 0.01);
+						printf("vTotal %f\r\n", nodeElecInfo[currentRquesNodeIndex].vTotal); 
+
+						nodeElecInfo[currentRquesNodeIndex].i1 = 
+								(float)(((uart3_485Pack.content[2] << 8) | uart3_485Pack.content[3]) * 0.01);
+						printf("i1 %f\r\n", nodeElecInfo[currentRquesNodeIndex].i1); 
+
+						nodeElecInfo[currentRquesNodeIndex].i2 = 
+								(float)(((uart3_485Pack.content[4] << 8) | uart3_485Pack.content[5]) * 0.01);
+						printf("i2 %f\r\n", nodeElecInfo[currentRquesNodeIndex].i2);
+ 
+						currentRquesNodeIndex ++; 
+						g_RequestNodeElecFlag = 1; // 允许请求下一个数据
+					}
+				}
+			  break;
+				default: printf("uart3_485Pack.cmd unkown! %x\r\n", *uart3_485Pack.cmd); break; 
 			}
 			memset(uart3_485Pack.dataBuf, 0, sizeof(uart3_485Pack.dataBuf));  
 		}
@@ -279,13 +326,11 @@ void relayOpreat(u8 sw, u8 ch)
  @ 入口：  
  *********************************************************************************************************/
 void IntervalProc()
-{
-		static u8 currentRquesNodeIndex = 0; // 当前请求到哪个节点的数据了
- 
+{ 
 		if(g_LEDBling_kCount > 1 && g_LEDBling_kCount < 800)
 		{
 			LEDContrl(LEDRUNPIN, LEDOFF);  
-			OLED_P6x8Str(120,6,(u8*)" ",0);  
+			OLED_P6x8Str(120,6,(u8*)" ",0);
 		}
 		else if(g_LEDBling_kCount > 830)
 		{
@@ -297,11 +342,10 @@ void IntervalProc()
 		// 1000ms 请求一个节点数据
 		if(g_RequestNodeCount >= 1000)
 		{ 
-			if(g_DisplayNodeFlag)
+			if(g_RequestNodeElecFlag && strcmp((char*)nodeInfo[currentRquesNodeIndex].name, "") )
 			{  
 				buildAndSendDataToNode(g_retBuf, &nodeInfo[currentRquesNodeIndex].baddr, REQUESTELEC, 0, sendNodeDatabuf); 
-				currentRquesNodeIndex ++; 
-				g_DisplayNodeFlag = 0;	 // 收到节点数据后才允许下次请求
+				//g_RequestNodeElecFlag = 0;	 // 收到节点数据后才允许下次请求
 			}
 			g_RequestNodeCount = 0; 
 		}

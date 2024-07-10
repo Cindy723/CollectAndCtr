@@ -133,24 +133,22 @@ void printHex(const unsigned char* data, size_t length)
  *********************************************************************************************************/
 u8 hexCompaer(u8* desp, u8* srcp, u8 len)
 {
-    u8 i = 0, j = 0;
-	for(i = 0; i < len; i++)
-	{
-		if(desp[i] == srcp[i])
-		{
-			j++;
-		}else 
-		{
-			if(j == 0) return 1;
-			else return j+1;
-		}
-	}
-	
-	if(j == len-1)
-	{
-		printf("hexCompaer ok\n");
-		return 0;
-	}
-	
-	return 255;
+	u8 i = 0;
+    if (len == 0)
+    {
+        printf("hexCompaer error: len is 0\n");
+        return 255;
+    }
+
+    for(; i < len; i++)
+    {
+        if(desp[i] != srcp[i])
+        {
+            return i + 1;
+        }
+    }
+
+   // printf("hexCompaer ok\n");
+    return 0;
 }
+

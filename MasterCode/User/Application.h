@@ -10,7 +10,7 @@
 
  
 extern u16 g_kCount;
-extern u8 g_DisplayNodeFlag;
+extern u8 g_RequestNodeElecFlag;
 
 void HMIanalysis(void); 
 void NodeDataAnalysis(void);

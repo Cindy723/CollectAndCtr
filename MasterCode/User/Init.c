@@ -6,6 +6,7 @@
  
 BoardAddr boardAddr; 
 NodeInfo nodeInfo[MAX_NODE]; //最多存储50个节点
+NodeElecInfo nodeElecInfo[MAX_NODE];
 
  
 /*
