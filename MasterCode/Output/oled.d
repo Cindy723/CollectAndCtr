@@ -1,10 +1,10 @@
 ..\..\output\oled.o: ..\..\User\OLED\oled.c
 ..\..\output\oled.o: ..\..\User\OLED\oled.h
 ..\..\output\oled.o: ..\..\User\init.h
-..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\include\stdio.h
 ..\..\output\oled.o: ..\..\Libraries\CMSIS\stm32f10x.h
 ..\..\output\oled.o: ..\..\Libraries\CMSIS\core_cm3.h
-..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\include\stdint.h
 ..\..\output\oled.o: ..\..\Libraries\CMSIS\system_stm32f10x.h
 ..\..\output\oled.o: ..\..\User\stm32f10x_conf.h
 ..\..\output\oled.o: ..\..\Libraries\FWlib\inc\stm32f10x_adc.h
@@ -32,9 +32,9 @@
 ..\..\output\oled.o: ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h
 ..\..\output\oled.o: ..\..\Libraries\FWlib\inc\misc.h
 ..\..\output\oled.o: ..\..\User\main.h
-..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\include\stdlib.h
 ..\..\output\oled.o: ..\..\User\Init.h
-..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\include\string.h
 ..\..\output\oled.o: ..\..\User\delay.h
-..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\..\output\oled.o: D:\Keil_v5\ARM\ARMCC\include\math.h
 ..\..\output\oled.o: ..\..\User\OLED\codetab.h

@@ -4,6 +4,8 @@
 #include "Uart.h" 
 #include "oled.h"
   
+char g_ChipIDi[12] = { 0 };
+char g_ChipIDS[25] = "";  // 3*8 +1
  
 /***********************************************************************************************************
  @ 功能： 32位16进制数转字符串
@@ -174,3 +176,31 @@ int StrToHexByte(unsigned char *str, unsigned char *hex)
 	return output_len;
 }
  
+
+/**********************************************************************************************************
+ @ 功能：获取F1O3 芯片id
+ @ 参数：[I] : 
+		 [O] : 
+ @ 返回：
+ @ 备注：
+ *********************************************************************************************************/
+void getChipIdStr(char *pbuf)
+{
+	uint32_t chipid[3] = { 0 }; // 96bit 芯片唯一id
+	uchar j = 0;
+	
+	chipid[0] = *(uint32_t*)(0x1FFFF7e8);
+	chipid[1] = *(uint32_t*)(0x1FFFF7e8+4);
+	chipid[2] = *(uint32_t*)(0x1FFFF7e8+8);
+	printf("ChipId =%#x %#x %#x\n",chipid[0], chipid[1], chipid[2]); 
+	uint32_Str(chipid, pbuf, 3);
+	printf("ChipIdStr: %s\n", pbuf); 
+	 
+	for(; j < 3; ++j)
+	{
+		g_ChipIDi[4*j] = (chipid[j] >> 24) & 0xFF;
+		g_ChipIDi[4*j+1] = (chipid[j] >> 16) & 0xFF;
+		g_ChipIDi[4*j+2] = (chipid[j] >> 8) & 0xFF;
+		g_ChipIDi[4*j+3] = chipid[j] & 0xFF; 
+	}
+}

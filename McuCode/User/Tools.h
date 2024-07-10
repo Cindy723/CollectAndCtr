@@ -15,8 +15,11 @@ void IO_USART_Send(u8 *buf, u8 len);
 uchar CheckSum(uchar* buf, uchar len);
 void printHex(const unsigned char* data, size_t length);
 u8 hexCompaer(u8* desp, u8* srcp, u8 len);
+int StrToHexByte(unsigned char *str, unsigned char *hex);
+void getChipIdStr(char *pbuf);    
  
 extern u16 kCount;   
- 
+extern char g_ChipIDi[12];
+extern char g_ChipIDS[25];
    
 #endif

@@ -39,12 +39,12 @@
 #define LEDRUNPINCFG   		GPIO_Pin_12
 #define LED2PINCFG 				GPIO_Pin_13
 #define LED3PINCFG 				GPIO_Pin_14
-#define LED4PINCFG 				GPIO_Pin_15
+#define TYPEPINCFG 				GPIO_Pin_15  // 高电平表示AC板子 低电平表示DC板
 
 #define LEDRUNPIN     12
 #define LED2PIN 			13
 #define LED3PIN 		  14
-#define LED4PIN 			15
+#define TYPEPIN 			15
  
 // PA
 #define RS485DIRPIN   8
@@ -88,7 +88,8 @@
 // 节点基本信息  
 typedef struct
 {
-	u8 addr[3];
+	u8 addr[3];	
+	u8 addrStr[6]; // dc 11 33 -->> "dc1133"
 	u8 *type;
 }BroadAddr;
 
