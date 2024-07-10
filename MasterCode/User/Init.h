@@ -76,12 +76,6 @@
 #define REQUESTADDR  0X0C  // 主机请求节点地址
 #define SETBOARDADDR 0X0D  // 主机修改节点地址,当节点没有存入地址时使用0地址下发，当已经有地址时需要使用原先地址发送. 或者使用广播地址
  
-// TFT的指令
-#define BUTTON_CMD 0XB1
-#define USER_CMD 	 0XCD
-
-#define REGISTERBUTTON 	 0XC1
-
  
 // AC电压校正值
 #define ACADJVP 0.989803567

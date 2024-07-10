@@ -7,6 +7,11 @@ u8 g_nodeTotalCount; 				  // 当前存储的总节点个数
 u8 g_RequestNodeElecFlag = 1; // 是否需要请求节点数据并显示
 u8 sendNodeDatabuf[12]; 		  // 发给节点的有效载荷数据
 
+u8 g_currentPage;   			// 当前页面
+u8 g_currentNodeListPage; // 设置界面下的当前节点列表
+
+u8 g_currentRquesNodeIndex = 0; // 当前请求节点索引
+
 int RegisterNode(UartTFTRecivePackUser *pack);
 
 /**********************************************************************************************************
@@ -24,20 +29,20 @@ void TFTDisplayNodeList2SetPag()
 	
 	for(i = 0; i < g_nodeTotalCount; i++){ 
 		// 假设每次停留在第一页
-		if(i < 6) // 小于一页时用户查看才更新
+		if(i < 6) // 小于一页时才更新注册列表
 		{
-			buildAndSendDataToTFT(g_retBuf, TFT_PAGE_SETNUM, nameCtlAddrId[i+1], (char*)nodeInfo[i].baddr.addrStr);   
+			buildAndSendStr2TFT(g_retBuf, TFT_PAGE_SETNUM, nameCtlAddrId[i+1], (char*)nodeInfo[i].baddr.addrStr);   
 		}
 	}
 	 
 	for(i = 0; i < g_nodeTotalCount; i++){  
 		if(i < 6) 
 		{
-			buildAndSendDataToTFT(g_retBuf, TFT_PAGE_SETNUM, nameCtlNameId[i+1], (char*)nodeInfo[i].name);  
+			buildAndSendStr2TFT(g_retBuf, TFT_PAGE_SETNUM, nameCtlNameId[i+1], (char*)nodeInfo[i].name);  
 		}
 	}
 	sprintf(temp, "%d", g_nodeTotalCount);
-	buildAndSendDataToTFT(g_retBuf, TFT_PAGE_SETNUM, 54, temp);  
+	buildAndSendStr2TFT(g_retBuf, TFT_PAGE_SETNUM, 54, temp);  
 }
 
 /**********************************************************************************************************
@@ -59,6 +64,7 @@ void TFTButtonEvent()
 				{		
 					printf("set button unDisplay\r\n"); 
 					g_RequestNodeElecFlag = 0;
+					g_currentPage = TFT_PAGE_SETNUM;
 				}break;
 				case 111:
 				{
@@ -83,31 +89,32 @@ void TFTButtonEvent()
 	 		switch(*uart2TFTPack.Control_id1) 
 			{ 
 				case 9 : /*  屏幕 -》 请求的文本 */
-				{		
-			 
+				{		 
 				}break; 
 				case 16 : /*  屏幕 -》 节点上翻 */
-				{		
-					printf("node last page button\r\n");
+				{		 
+
 				}break; 
 				case 17 : /*  屏幕 -》 节点下翻 */
-				{		
-					printf("node nextpage button\r\n");
-				}break; 
+				{			
+				}break;
 				case 30 : /* 屏幕-》搜索节点 */
 				{	
 					printf("search node button\r\n");
 					tempaddr.addr[0] = 0xdc; tempaddr.addr[1] = 0xff; tempaddr.addr[2] = 0xff;
 					buildAndSendDataToNode(g_retBuf, &tempaddr, REQUESTADDR, 0, sendNodeDatabuf); 
 				}break; 
-				case 32 : /* 屏幕-》注册节点 转CD REGISTERBUTTON*/
+				case 32 : /* 屏幕-》注册节点 转CD USER_CMD_REGISTER*/
 				{		
 					printf("register node \r\n");   
 				}break;
 				case 33 : /* 屏幕-》 从设置返回主页面 */
 				{		
 					printf("back button Display\r\n"); 
+					
+					g_currentPage = TFT_DISP_SETNUM;
 					g_RequestNodeElecFlag = 1;   
+					g_currentRquesNodeIndex = 0;
 				}break;
 				default: printf("Notfun page2 button %x\r\n", *uart2TFTPack.Control_id1); break;
 			}
@@ -140,22 +147,28 @@ void TFTanalysis()
 				case USER_CMD: // BUTTON_CMD 也会触发 主要使用这里的用户数据一次性存储
 				{
 					//TFTPackUser.
-					if(*pTFTPackUser.dataType == REGISTERBUTTON) // 注册节点
+					if(*pTFTPackUser.dataType == USER_CMD_REGISTER) // 注册节点
 					{ 
 						RegisterNode(&pTFTPackUser);
 						TFTDisplayNodeList2SetPag();
 					}
+					else if(*pTFTPackUser.dataType == USER_CMD_NODE_PAGECHANGE) // 设置界面节点列表切换
+					{ 
+							g_currentNodeListPage = pTFTPackUser.data[0] - '0';
+							printf("USER_CMD -》 nodePageChange %d \r\n", g_currentNodeListPage); 
+					}
+					
 				}
 				break;
 				default: printf("uart2TFTPack.cmd unkown! %x\r\n", *uart2TFTPack.cmd0); break; 
 			}
 			memset(uart2TFTPack.dataBuf, 0, sizeof(uart2TFTPack.dataBuf));  
-		} 
+		}
  
 }
  
 /**********************************************************************************************************
- @ 功能: 注册节点
+ @ 功能: TFT->> 注册节点
  @ 参数: 
  @ 返回: 
  @ 备注: 节点id默认使用芯片id
@@ -191,3 +204,104 @@ int RegisterNode(UartTFTRecivePackUser *pack)
 }
 
 
+/***********************************************************************************************************
+ @ 功能：更新TFT文本数据 
+ @ 入口： 
+ *********************************************************************************************************/
+void buildAndSendStr2TFT(u8 *pbuf, u8 pagid, u8 ctrlid, char* str)
+{
+	int strLen = 0;
+	
+	// 帧头
+	pbuf[0] = 0xee;
+	
+	// 指令
+	pbuf[1] = 0xB1;
+	pbuf[2] = 0x10;
+	
+	// 页面id  
+	pbuf[3] = 0;
+	pbuf[4] = pagid;
+	
+	// 控件id
+	pbuf[5] = 0;
+	pbuf[6] = ctrlid;
+	
+	// string
+	strLen = strlen(str)+1;
+	memcpy(&pbuf[7], str, strLen);
+	pbuf[strLen + 6]  = '\0';
+	// 帧尾
+	pbuf[strLen + 7]  = 0xff;
+	pbuf[strLen + 8]  = 0xfc;
+	pbuf[strLen + 9]  = 0xff;
+	pbuf[strLen + 10] = 0xff;
+	
+	// 发送数据 
+	//printf("uplen %d : %s \r\n", strLen, str);
+	//printf("build : ");
+	//printHex(g_retBuf, strLen + 11);  
+	Usart_SendByte(USART2, (char*)g_retBuf, strLen + 11); 
+}
+
+
+/***********************************************************************************************************
+ @ 功能：获取TFT文本数据 ,EE B1 11 00 02 00 09 FF FC FF FF
+ @ 备注：返回 EE B1 11 00 02 00 09 (11) [4E 61 6D 65 68 68 68 68] 00 FF FC FF FF
+ *********************************************************************************************************/
+void getTFTText(u8 *pbuf, u8 pagid, u8 ctrlid)
+{
+	int strLen = 0;
+	
+	// 帧头
+	pbuf[0] = 0xee;
+	
+	// 指令
+	pbuf[1] = 0xB1;
+	pbuf[2] = 0x11;
+	
+	// 页面id  
+	pbuf[3] = 0;
+	pbuf[4] = pagid;
+	
+	// 控件id
+	pbuf[5] = 0;
+	pbuf[6] = ctrlid;
+	 
+	// 帧尾
+	pbuf[strLen + 7]  = 0xff;
+	pbuf[strLen + 8]  = 0xfc;
+	pbuf[strLen + 9]  = 0xff;
+	pbuf[strLen + 10] = 0xff;
+	
+	// 发送数据  
+	printf("build : ");
+	printHex(g_retBuf, strLen + 11);  
+	Usart_SendByte(USART2, (char*)g_retBuf, strLen + 11); 
+}
+ 
+
+/***********************************************************************************************************
+ @ 功能：显示电能数据到TFT
+ @ 备注： 
+ *********************************************************************************************************/
+void dispElec2TFT(u8 *pbuf, NodeInfo *info)
+{
+	char str[240], i;
+  
+	for(i = 0; i < g_nodeTotalCount; i++)
+	{ 
+		buildAndSendStr2TFT(g_retBuf, TFT_DISP_SETNUM, i, (char*)nodeInfo[i].name);
+		if(nodeInfo[i].baddr.addr[0] == 0xdc)
+		{ 
+			sprintf(str, "DC: %.2f V,  CH1 %.2f A,  CH2 %.2f A", nodeInfo[i].eInfo.vTotal,  nodeInfo[i].eInfo.i1, nodeInfo[i].eInfo.i2);
+			buildAndSendStr2TFT(g_retBuf, TFT_DISP_SETNUM, 101+i, str);  
+		}
+		else if(nodeInfo[i].baddr.addr[0] == 0xac)
+		{ 
+			
+		}
+		 
+	}
+	  
+}

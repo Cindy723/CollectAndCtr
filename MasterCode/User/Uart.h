@@ -2,9 +2,6 @@
 #define _USERUART_H
 
 #include "init.h" 
- 
-// TFT 页面定义
-#define TFT_PAGE_SETNUM 2
 
 /* 定义串口数据包 */
 typedef struct 
@@ -68,8 +65,6 @@ void Usart_SendString(USART_TypeDef * pUSARTx, char *str);
 void str_copy_usart_buf(unsigned  char *des, unsigned char len ,unsigned  char *sourse);
 void str_copy_usart_buf2(unsigned  char *des, unsigned char len ,unsigned  char *sourse);
   
-void buildAndSendDataToTFT(u8 *pbuf, u8 pagid, u8 ctrlid, char* str);
-void getTFTText(u8 *pbuf, u8 pagid, u8 ctrlid);
 void buildAndSendDataToNode(u8 *pbuf, BoardAddr *addr, u8 cmd, u8 datalen, u8 *data);
 
 #endif

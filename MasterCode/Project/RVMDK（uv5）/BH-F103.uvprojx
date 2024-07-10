@@ -622,6 +622,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\User\Flash.c</FilePath>
             </File>
+            <File>
+              <FileName>TFTCommunic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\TFTCommunic.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

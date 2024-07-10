@@ -34,6 +34,7 @@
 
 extern unsigned int g_LEDBling_kCount;
 extern unsigned int g_RequestNodeCount;
+extern unsigned int g_DispElecNodeCount;
 
 void NMIException(void);
 void HardFaultException(void);

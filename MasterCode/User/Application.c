@@ -8,7 +8,6 @@
 u16 E_old_reg = 0; 
 u16 g_kCount = 0;  					  // AC电量脉冲 监测是否有更新 	
 
-u8 currentRquesNodeIndex = 0; // 当前请求节点索引
 
 /**********************************************************************************************************
  @ 功能: 解析请求的节点数据
@@ -30,7 +29,7 @@ void NodeDataAnalysis()
 				case POWERCONTRL:
 				{
 					printf("NodeData ret [%02x] POWERCONTRL \r\n", *uart3_485Pack.content);  
-					//buildAndSendDataToTFT(g_retBuf, 8, tempstr);
+					//buildAndSendStr2TFT(g_retBuf, 8, tempstr);
 			 	}
 				break;
 				case REQUESTADDR: // 搜索到的节点
@@ -45,34 +44,38 @@ void NodeDataAnalysis()
 					nodeInfo[g_nodeTotalCount].baddr.addr[2] = *uart3_485Pack.addr2;
 					nodeInfo[g_nodeTotalCount].baddr.type = &nodeInfo[g_nodeTotalCount].baddr.addr[0]; 
 					
-					buildAndSendDataToTFT(g_retBuf, TFT_PAGE_SETNUM, 8, tempstr);
+					buildAndSendStr2TFT(g_retBuf, TFT_PAGE_SETNUM, 8, tempstr);
 					nodeIDSimuOffset ++;
 				}
 				break;
 				case REQUESTELEC:
 				{
 					printf("NodeData Ret REQUESTELEC ");  printHex(uart3_485Pack.addr0, 3); 
-					memcpy(&nodeInfo[currentRquesNodeIndex].baddr, uart3_485Pack.addr0, 3);
+					memcpy(&nodeInfo[g_currentRquesNodeIndex].baddr, uart3_485Pack.addr0, 3);
 					if(*uart3_485Pack.addr0 == 0xac)
 					{
-						nodeInfo[currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 16) | (uart3_485Pack.content[1] << 8) | uart3_485Pack.content[2]) * 0.01);
-						printf("vTotal %f\r\n", nodeInfo[currentRquesNodeIndex].eInfo.vTotal); 
+						nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 16) | (uart3_485Pack.content[1] << 8) | uart3_485Pack.content[2]) * 0.01);
+						printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
 
-						nodeInfo[currentRquesNodeIndex].eInfo.i1 =	(float)(((uart3_485Pack.content[3] << 8) | uart3_485Pack.content[4]) * 0.01);
-						printf("i1 %f\r\n", nodeInfo[currentRquesNodeIndex].eInfo.i1); 
+						nodeInfo[g_currentRquesNodeIndex].eInfo.i1 =	(float)(((uart3_485Pack.content[3] << 8) | uart3_485Pack.content[4]) * 0.01);
+						printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
 					}
 					else if(*uart3_485Pack.addr0 == 0xdc)
 					{
-						nodeInfo[currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 8) | uart3_485Pack.content[1]) * 0.01);
-						printf("vTotal %f\r\n", nodeInfo[currentRquesNodeIndex].eInfo.vTotal); 
+						nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 8) | uart3_485Pack.content[1]) * 0.01);
+						printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
 
-						nodeInfo[currentRquesNodeIndex].eInfo.i1 = (float)(((uart3_485Pack.content[2] << 8) | uart3_485Pack.content[3]) * 0.01);
-						printf("i1 %f\r\n", nodeInfo[currentRquesNodeIndex].eInfo.i1); 
+						nodeInfo[g_currentRquesNodeIndex].eInfo.i1 = (float)(((uart3_485Pack.content[2] << 8) | uart3_485Pack.content[3]) * 0.01);
+						printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
 
-						nodeInfo[currentRquesNodeIndex].eInfo.i2 = (float)(((uart3_485Pack.content[4] << 8) | uart3_485Pack.content[5]) * 0.01);
-						printf("i2 %f\r\n", nodeInfo[currentRquesNodeIndex].eInfo.i2);
+						nodeInfo[g_currentRquesNodeIndex].eInfo.i2 = (float)(((uart3_485Pack.content[4] << 8) | uart3_485Pack.content[5]) * 0.01);
+						printf("i2 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i2);
  
-						//currentRquesNodeIndex ++; 
+						//g_currentRquesNodeIndex ++; 
+						if(g_currentRquesNodeIndex >= g_nodeTotalCount)
+						{
+							g_currentRquesNodeIndex = 0; // 从头请求
+						}
 						g_RequestNodeElecFlag = 1;
 					}
 				}
@@ -81,50 +84,6 @@ void NodeDataAnalysis()
 			}
 			memset(uart3_485Pack.dataBuf, 0, sizeof(uart3_485Pack.dataBuf));  
 		}
-}
-
-/**********************************************************************************************************
- @ 功能： 操作继电器
- @ 入口： 开关 通道，1 2
- *********************************************************************************************************/
-void relayOpreat(u8 sw, u8 ch)
-{
-	printf("relayOpreat sw %d ch %d \r\n", sw, ch);
-	if(ch == POWERCH1)
-	{
-		if(sw == POWER_ON)
-		{
-			printf("HC1 ON \r\n");
-			OLED_P6x8Str(0,1,(u8*)"CH1:ON ",0); 
-			RELAY1 = POWER_ON;  
-			LEDContrl(LED2PIN, LEDON);
-		}
-		else
-		{
-			printf("CH1 OFF\r\n");
-			OLED_P6x8Str(0,1,(u8*)"CH1:OFF",0); 
-			RELAY1 = POWER_OFF; 
-			LEDContrl(LED2PIN, LEDOFF);
-		}
-	}
-	else if(ch == POWERCH2)
-	{
-		if(sw == POWER_ON)
-		{
-			printf("CH2 ON \r\n");
-			OLED_P6x8Str(52,1,(u8*)"CH2:ON ",0); 
-			RELAY2 = POWER_ON; 
-			LEDContrl(LED3PIN, LEDON);
-		}
-		else 
-		{
-			printf("CH2 OFF\r\n");
-			OLED_P6x8Str(52,1,(u8*)"CH2:OFF",0); 
-			RELAY2 = POWER_OFF; 
-			LEDContrl(LED3PIN, LEDOFF);
-		}
-	}
-
 }
 
 
@@ -147,16 +106,21 @@ void IntervalProc()
 		}
 		
 		// 请求一个节点数据
-		if(g_RequestNodeCount >= 300)
+		if(g_RequestNodeCount >= 500)
 		{ 
-			if(g_RequestNodeElecFlag && strcmp((char*)nodeInfo[currentRquesNodeIndex].name, "") )
+			if(g_RequestNodeElecFlag && strcmp((char*)nodeInfo[g_currentRquesNodeIndex].name, "") ) // 允许请求电能并且当前节点已注册
 			{  
-				buildAndSendDataToNode(g_retBuf, &nodeInfo[currentRquesNodeIndex].baddr, REQUESTELEC, 0, sendNodeDatabuf); 
-				//g_RequestNodeElecFlag = 0;	 // 收到节点数据后才允许下次请求
+				buildAndSendDataToNode(g_retBuf, &nodeInfo[g_currentRquesNodeIndex].baddr, REQUESTELEC, 0, sendNodeDatabuf); 
 			}
 			g_RequestNodeCount = 0; 
 		}
 
+		// 显示所有节点数据
+		if(g_DispElecNodeCount >= 1000)
+		{ 
+			dispElec2TFT(g_retBuf, nodeInfo); 
+			g_DispElecNodeCount = 0;
+		}
 }
 
 
@@ -207,3 +171,49 @@ double EconAnalysis(u8 *pbuf)
  
 	return E_con;
 }
+
+
+/**********************************************************************************************************
+ @ 功能： 操作继电器
+ @ 入口： 开关 通道，1 2
+ *********************************************************************************************************/
+void relayOpreat(u8 sw, u8 ch)
+{
+	printf("relayOpreat sw %d ch %d \r\n", sw, ch);
+	if(ch == POWERCH1)
+	{
+		if(sw == POWER_ON)
+		{
+			printf("HC1 ON \r\n");
+			OLED_P6x8Str(0,1,(u8*)"CH1:ON ",0); 
+			RELAY1 = POWER_ON;  
+			LEDContrl(LED2PIN, LEDON);
+		}
+		else
+		{
+			printf("CH1 OFF\r\n");
+			OLED_P6x8Str(0,1,(u8*)"CH1:OFF",0); 
+			RELAY1 = POWER_OFF; 
+			LEDContrl(LED2PIN, LEDOFF);
+		}
+	}
+	else if(ch == POWERCH2)
+	{
+		if(sw == POWER_ON)
+		{
+			printf("CH2 ON \r\n");
+			OLED_P6x8Str(52,1,(u8*)"CH2:ON ",0); 
+			RELAY2 = POWER_ON; 
+			LEDContrl(LED3PIN, LEDON);
+		}
+		else 
+		{
+			printf("CH2 OFF\r\n");
+			OLED_P6x8Str(52,1,(u8*)"CH2:OFF",0); 
+			RELAY2 = POWER_OFF; 
+			LEDContrl(LED3PIN, LEDOFF);
+		}
+	}
+
+}
+
