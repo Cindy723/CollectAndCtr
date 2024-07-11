@@ -106,7 +106,7 @@ void IntervalProc()
 		}
 		
 		// 请求一个节点数据
-		if(g_RequestNodeCount >= 500)
+		if(g_RequestNodeCount >= 100)
 		{ 
 			if(g_RequestNodeElecFlag && strcmp((char*)nodeInfo[g_currentRquesNodeIndex].name, "") ) // 允许请求电能并且当前节点已注册
 			{  
