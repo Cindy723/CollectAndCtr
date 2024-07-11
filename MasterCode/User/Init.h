@@ -105,12 +105,13 @@ typedef struct
 typedef struct 
 {
 	BoardAddr baddr;
-	u8 name[64]; // 一个汉字占用两个字节  是GB2312或GBK
+	u8 name[64]; 				// 一个汉字占用两个字节  是GB2312或GBK
 	u8 page;
-	u8 index;		 // 页面第几个
+	u8 index;		 				// 页面第几个
 	u8 totalPage;
-	u8 totalNode;// 总节点数 nodeInfo[0].totalNode才有效 用于flash存储
+	u8 totalNode;				// 总节点数 nodeInfo[0].totalNode才有效 用于flash存储
 	NodeElecInfo eInfo;
+	u8 needDispElec; 		// 收到节点数据时置位 显示后复位 用于增量更新显示
 }NodeInfo;
  
  

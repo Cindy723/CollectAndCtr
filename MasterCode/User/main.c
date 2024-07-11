@@ -7,6 +7,7 @@ int main(void)
     HSI_SetSysClock(RCC_PLLMul_9);
     RCC_Configuration(); 
     USART_Configuration();
+		rebootTFT();
     NVIC_Configuration();
 		TIM_3_Configuration(); 
     OLED_Init(); 

@@ -56,6 +56,7 @@ void NodeDataAnalysis()
 					memcpy(&nodeInfo[g_currentRquesNodeIndex].baddr, uart3_485Pack.addr0, 3);
 					if(*uart3_485Pack.addr0 == 0xac)
 					{
+					  nodeInfo[g_currentRquesNodeIndex].needDispElec = 1;
 						nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 16) | (uart3_485Pack.content[1] << 8) | uart3_485Pack.content[2]) * 0.01);
 						//printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
 
@@ -64,6 +65,7 @@ void NodeDataAnalysis()
 					}
 					else if(*uart3_485Pack.addr0 == 0xdc)
 					{
+						nodeInfo[g_currentRquesNodeIndex].needDispElec = 1;
 						nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 8) | uart3_485Pack.content[1]) * 0.01);
 						//printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
 
@@ -108,8 +110,9 @@ void IntervalProc()
 		}
 		
 		// 请求一个节点数据
-		if(g_RequestNodeCount >= 1000)
+		if(g_RequestNodeCount >= 500)
 		{ 
+			//getListPagef1();
 			if(g_RequestNodeElecFlag && strcmp((char*)nodeInfo[g_currentRquesNodeIndex].name, "") ) // 允许请求电能并且当前节点已注册
 			{  
 				buildAndSendDataToNode(&nodeInfo[g_currentRquesNodeIndex].baddr, REQUESTELEC, 0, sendNodeDatabuf); 
@@ -118,7 +121,7 @@ void IntervalProc()
 		}
 
 		// 显示所有节点数据
-		if(g_DispElecNodeCount >= 1100)
+		if(g_DispElecNodeCount >= 1100 && g_currentPage == TFT_DISPNODE_NUM)
 		{ 
 			dispElec2TFT(nodeInfo); 
 			g_DispElecNodeCount = 0;
@@ -127,7 +130,7 @@ void IntervalProc()
 		// 发送TFT队列
 		if(g_SendTFTQueueCount >= 200)
 		{ 
-			sendQueueMSG(); 
+			sendQueueMSG();  
 			g_SendTFTQueueCount = 0;
 		}
 }

@@ -9,14 +9,22 @@ u8 g_nodeTotalCount; 				  // 当前存储的总节点个数
 u8 g_RequestNodeElecFlag = 1; // 是否需要请求节点数据并显示
 u8 sendNodeDatabuf[12]; 		  // 发给节点的有效载荷数据
 
-u8 g_currentPage = 1;   			// 当前页面
+u8 g_currentPage = TFT_DISPNODE_NUM; // 当前页面
 u8 g_currentNodeListPage = 1; // 设置界面下的分子
 u8 g_currentDispListPage = 1; // 显示界面下的分子
 
 u8 g_currentRquesNodeIndex = 0; // 当前请求节点索引
 
+// 显示页面id索引
+u8 dispNodeN[6] = {101, 102, 103, 104, 105, 106};
+u8 dispNodeP[6] = {5, 6, 7, 8, 9, 10};
+u8 CH1Button[6] = {111, 112, 113, 114, 115, 116};
+u8 CH2Button[6] = {121, 122, 123, 124, 125, 126};
+u8 StatusText[6] = {15, 16, 17, 19, 24, 26};
+
 int RegisterNode(UartTFTRecivePackUser *pack);
-void updateListPage(u8 page);
+void setListPagef2(u8 page);
+void disp_hindTFTDisPage(u8 isdisp); 
 
 /**********************************************************************************************************
 @ 功能: 在设置页面更新显示已注册的节点
@@ -57,34 +65,13 @@ void TFTButtonEvent()
 {
 	BoardAddr tempaddr;
 	u8 ButtonCH1Start = 111;
+	u8 ButtonCH2Start = 121;
 	u8 offset = (g_currentDispListPage - 1) * ONEPAGENODE;
 	
 	/* 第1页的按钮 */
 	if(*uart2TFTPack.Screen_id1 == 1)  
 	{
-//			switch(*uart2TFTPack.Control_id1) // 第一行CH1开关
-//			{			
-//				case 1 : /*  屏幕-》设置按钮*/  
-//				{		
-//					printf("set button unDisplay\r\n"); 
-//					g_RequestNodeElecFlag = 0;
-//					g_currentPage = TFT_PAGE_SETNUM;
-//				}break;
-//				case 111:
-//				{
-//					printf("contrl node ch1\r\n"); 
-//					sendNodeDatabuf[0] = (uart2TFTPack.Status[0] << 7) | POWERCH1;
-//					buildAndSendDataToNode(g_retBuf, &nodeInfo[0].baddr, POWERCONTRL, 1, sendNodeDatabuf); 
-//				}break;  
-//			 case 121: // 第一行CH2开关 
-//			 { 
-//				  printf("contrl node ch2\r\n"); 
-//				  //relayOpreat(uart2TFTPack.Status[0], POWERCH2);
-//			 }  break; 
-//			
-//			 default: printf("Notfun page1 button %x\r\n", *uart2TFTPack.Control_id1);  break;			
-//		 }
-
+  
 			if(*uart2TFTPack.Control_id1 == 1) // 设置按钮按下
 			{
 					printf("set button unDisplay\r\n"); 
@@ -100,6 +87,7 @@ void TFTButtonEvent()
 			}
 			else if((*uart2TFTPack.Control_id1 == 11) || (*uart2TFTPack.Control_id1 == 12))	// 切换了页面 显示对应页面电能参数 还没加开关状态
 			{  
+					disp_hindTFTDisPage(0);
 					dispElec2TFT(nodeInfo);  
 			} 
 			else if((*uart2TFTPack.Control_id1 > 110) &&  (*uart2TFTPack.Control_id1 < 117)) // 第一列开关按下
@@ -112,7 +100,7 @@ void TFTButtonEvent()
 			{ 
 				printf("power ch2 change\r\n"); 
 			  sendNodeDatabuf[0] = (uart2TFTPack.Status[0] << 7) | POWERCH2;
-			  buildAndSendDataToNode(&nodeInfo[offset + *uart2TFTPack.Control_id1 - ButtonCH1Start].baddr, POWERCONTRL, 1, sendNodeDatabuf); 
+			  buildAndSendDataToNode(&nodeInfo[offset + *uart2TFTPack.Control_id1 - ButtonCH2Start].baddr, POWERCONTRL, 1, sendNodeDatabuf); 
 			}
 
 	}
@@ -139,13 +127,14 @@ void TFTButtonEvent()
 				case 30 : /* 屏幕-》搜索节点 */
 				{	
 					printf("search node button\r\n");
+					buildAndSendStr2TFT(TFT_PAGE_SETNUM, 8, " ");				
 				  dispSetTips("搜索..");
 					tempaddr.addr[0] = 0xdc; tempaddr.addr[1] = 0xff; tempaddr.addr[2] = 0xff;
 					buildAndSendDataToNode(&tempaddr, REQUESTADDR, 0, sendNodeDatabuf); 
 				}break; 
 				case 32 : /* 屏幕-》注册节点 转CD USER_CMD_REGISTER*/
 				{		
-					printf("register node \r\n");   
+					printf("register node \r\n"); 	
 				  dispSetTips("注册节点..");
 				}break;
 				case 33 : /* 屏幕-》 从设置返回主页面 */
@@ -156,6 +145,7 @@ void TFTButtonEvent()
 					g_currentPage = TFT_DISPNODE_NUM;
 					g_currentRquesNodeIndex = 0;
 					g_RequestNodeElecFlag = 1;   
+					disp_hindTFTDisPage(0);
 				}break;
 				default: printf("Notfun page2 button %d\r\n", *uart2TFTPack.Control_id1); break;
 			}
@@ -272,8 +262,9 @@ int RegisterNode(UartTFTRecivePackUser *pack)
   dispSetTips("节点注册成功!");
 	if(g_nodeTotalCount > 6)
 	{
-	 updateListPage((g_nodeTotalCount/6) + 1);
-	}else  updateListPage(1);
+	 if(g_nodeTotalCount%ONEPAGENODE != 0)
+	 setListPagef2((g_nodeTotalCount/6) + 1);
+	}else  setListPagef2(1);
 	 
 	nodeInfo[0].totalNode = g_nodeTotalCount;
 	
@@ -385,9 +376,7 @@ void getTFTText(u8 pagid, u8 ctrlid)
  *********************************************************************************************************/
 void dispElec2TFT(NodeInfo *info)
 {
-	char str[240], i;
-	u8 dispNodeN[6] = {101, 102, 103, 104, 105, 106};
-	u8 dispNodeP[6] = {5, 6, 7, 8, 9, 10};
+	char str[240], i; 
 	u8 offset = (g_currentDispListPage - 1) * ONEPAGENODE;
 	u8 toDisplay = ONEPAGENODE;
 
@@ -398,34 +387,36 @@ void dispElec2TFT(NodeInfo *info)
 	else
 	{
 		u8 remaining = g_nodeTotalCount - offset;
-		if (remaining < ONEPAGENODE)	{
+		if (remaining < ONEPAGENODE){
 			toDisplay = remaining;
 		}
-	}
+	} 
 
-	// 清空显示区域
-	for(i = 0; i < 6; i++)
-	{ 
-		buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeN[i], " "); 
-		buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeP[i], " ");
-	}
-
-	printf("dispElec2TFT offset %d toDisplay %d \r\n", offset, toDisplay); 
-
+	// printf("dispElec2TFT offset %d toDisplay %d \r\n", offset, toDisplay);  
 	// 显示当前页的数据
 	for(i = 0; i < toDisplay; i++)
-	{  
-		if(nodeInfo[offset + i].baddr.addr[0] == 0xdc)
-		{ 
-			buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeP[i], (char*)nodeInfo[offset + i].name);
-			sprintf(str, "DC: %.2f V,  CH1 %.2f A,  CH2 %.2f A", nodeInfo[offset + i].eInfo.vTotal,  nodeInfo[offset + i].eInfo.i1, nodeInfo[offset + i].eInfo.i2);
-			buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeN[i], str);  
-		}
-		else if(nodeInfo[offset + i].baddr.addr[0] == 0xac)
+	{   
+		
+		if(nodeInfo[offset + i].needDispElec == 1)
 		{
-			buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeP[i], (char*)nodeInfo[offset + i].name);
-			sprintf(str, "AC: %.2f V, %.2f A", nodeInfo[offset + i].eInfo.vTotal,  nodeInfo[offset + i].eInfo.i1);
-			buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeN[i], str);  
+			disp_hindTFTContrl(TFT_DISPNODE_NUM, CH1Button[i], 1);
+			disp_hindTFTContrl(TFT_DISPNODE_NUM, CH2Button[i], 1);
+			buildAndSendStr2TFT(TFT_DISPNODE_NUM, StatusText[i], "正常");
+			
+			if(nodeInfo[offset + i].baddr.addr[0] == 0xdc)
+			{ 
+				buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeP[i], (char*)nodeInfo[offset + i].name);
+				sprintf(str, "DC: %.2f V,  CH1: %.2f A,  CH2: %.2f A", nodeInfo[offset + i].eInfo.vTotal,  nodeInfo[offset + i].eInfo.i1, nodeInfo[offset + i].eInfo.i2);
+				buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeN[i], str);  
+			}
+			else if(nodeInfo[offset + i].baddr.addr[0] == 0xac)
+			{
+				buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeP[i], (char*)nodeInfo[offset + i].name);
+				sprintf(str, "AC: %.2f V, %.2f A", nodeInfo[offset + i].eInfo.vTotal,  nodeInfo[offset + i].eInfo.i1);
+				buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeN[i], str);  
+			}
+			
+			nodeInfo[offset + i].needDispElec = 0;
 		}
 	}
 }
@@ -440,12 +431,13 @@ void dispSetTips(char* tip)
 {
   buildAndSendStr2TFT(2, 47, tip);
 }
- 
+
+
 /***********************************************************************************************************
- @ 功能：更新总页数
+ @ 功能：设置分母
  @ 备注： 
  *********************************************************************************************************/
-void updateListPage(u8 page)
+void setListPagef2(u8 page)
 {
 	char temp[6];
 	sprintf(temp, "%d", page); 
@@ -453,3 +445,74 @@ void updateListPage(u8 page)
   buildAndSendStr2TFT(1, 22, temp);
   buildAndSendStr2TFT(2, 22, temp);
 }
+
+/***********************************************************************************************************
+ @ 功能：获取分子
+ @ 备注：切换显示列表时候会自动更新 但在显示界面时 由于需要处理节点 
+					导致有时候数据被丢掉 所以定期主动请求显示界面的分子
+ *********************************************************************************************************/
+void getListPagef1()
+{
+	getTFTText(1, 2);
+	// getTFTText(2, 2);
+}
+ 
+/***********************************************************************************************************
+ @ 功能：复位TFT
+ @ 备注： 
+ *********************************************************************************************************/
+void rebootTFT()
+{
+	g_retBuf[0] = 0xEE;
+	g_retBuf[1] = 0x07;
+	g_retBuf[2] = 0x35;
+	g_retBuf[3] = 0x5a;
+	g_retBuf[4] = 0x53;
+	g_retBuf[5] = 0xa5;
+		 
+	g_retBuf[6]  = 0xff;
+	g_retBuf[7]  = 0xfc;
+	g_retBuf[8]  = 0xff;
+	g_retBuf[9]  = 0xff; 
+	Usart_SendByte(USART2, (char*)g_retBuf, 10); 
+}
+
+/***********************************************************************************************************
+ @ 功能：显示 隐藏控件
+ @ 备注： 
+ *********************************************************************************************************/
+void disp_hindTFTContrl(u8 pageid, u8 contrlid, u8 isdisplay)
+{
+	g_retBuf[0] = 0xEE;
+	g_retBuf[1] = 0xB1;
+	g_retBuf[2] = 0x03;
+	g_retBuf[3] = 0x00;
+	g_retBuf[4] = pageid;
+	g_retBuf[5] = 0;
+	g_retBuf[6] = contrlid;
+	g_retBuf[7] = isdisplay;
+		 
+	g_retBuf[8]  = 0xff;
+	g_retBuf[9]  = 0xfc;
+	g_retBuf[10]  = 0xff;
+	g_retBuf[11]  = 0xff; 
+	Usart_SendByte(USART2, (char*)g_retBuf, 12); 
+}
+
+/***********************************************************************************************************
+ @ 功能：显示 隐藏 显示页面的控件
+ @ 备注： 
+ *********************************************************************************************************/
+void disp_hindTFTDisPage(u8 isdisp)
+{
+	u8 i;  
+	for(i = 0; i < 6; i++)
+	{ 
+		buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeN[i], " "); 
+		buildAndSendStr2TFT(TFT_DISPNODE_NUM, dispNodeP[i], " ");
+		buildAndSendStr2TFT(TFT_DISPNODE_NUM, StatusText[i], " ");
+		disp_hindTFTContrl(TFT_DISPNODE_NUM, CH1Button[i], isdisp);
+		disp_hindTFTContrl(TFT_DISPNODE_NUM, CH2Button[i], isdisp);
+	} 
+}
+

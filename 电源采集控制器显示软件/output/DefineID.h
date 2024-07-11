@@ -133,6 +133,18 @@
 
 #define  _TXT_DIS__SCREEN1_TEXT_DISPLAY14                                     22
 
+#define  _TXT_DIS__SCREEN1_TEXT_DISPLAY15                                     15
+
+#define  _TXT_DIS__SCREEN1_TEXT_DISPLAY16                                     16
+
+#define  _TXT_DIS__SCREEN1_TEXT_DISPLAY17                                     17
+
+#define  _TXT_DIS__SCREEN1_TEXT_DISPLAY18                                     19
+
+#define  _TXT_DIS__SCREEN1_TEXT_DISPLAY19                                     24
+
+#define  _TXT_DIS__SCREEN1_TEXT_DISPLAY20                                     26
+
 //»­ÃæScreen2µÄ±³¾°Í¼Æ¬
 #define  _IMG_SCREEN2                                                          1
 

@@ -25,11 +25,12 @@ extern u8 g_currentPage;
 extern u8 g_currentNodeListPage;
 extern u8 sendNodeDatabuf[12];
  
-void TFTanalysis(void); 
 void buildAndSendStr2TFT(u8 pagid, u8 ctrlid, char* str);
 void getTFTText(u8 pagid, u8 ctrlid);
 void dispElec2TFT(NodeInfo *info);
 void dispSetTips(char* tip);
- 
- 
+void rebootTFT(void);
+void getListPagef1(void);
+void disp_hindTFTContrl(u8 pageid, u8 contrlid, u8 isdisplay);
+void TFTanalysis(void); 
 #endif
