@@ -35,7 +35,7 @@ typedef struct
 	const u8 *Control_id0;			// 控件id
 	const u8 *Control_id1;			// 控件id
 	const u8 *Control_type;	 
-	const u8 *Subtype;	  
+	const u8 *Subtype_or_Conten;	  
 	const u8 *Status ;	 
 	u8 receiveok;				 				// 接收完成标志 
 	u8 busy;						 				// 数据接收中 
@@ -65,6 +65,6 @@ void Usart_SendString(USART_TypeDef * pUSARTx, char *str);
 void str_copy_usart_buf(unsigned  char *des, unsigned char len ,unsigned  char *sourse);
 void str_copy_usart_buf2(unsigned  char *des, unsigned char len ,unsigned  char *sourse);
   
-void buildAndSendDataToNode(u8 *pbuf, BoardAddr *addr, u8 cmd, u8 datalen, u8 *data);
+void buildAndSendDataToNode(BoardAddr *addr, u8 cmd, u8 datalen, u8 *data);
 
 #endif

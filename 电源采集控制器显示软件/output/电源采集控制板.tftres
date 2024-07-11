@@ -5,21 +5,21 @@
         <page name="Screen2" id="2" />
     </pages>
     <images>
-        <image id="0" url="e:\dc\collectandctr\电源采集控制器显示软件\Images\开机动画.gif" effect_width="480" effect_height="854" />
-        <image id="1" url="e:\dc\collectandctr\电源采集控制器显示软件\images\1675672832127.jpg" effect_width="480" effect_height="854" />
-        <image id="2" url="e:\dc\collectandctr\电源采集控制器显示软件\Images\公司图标.png" effect_width="32" effect_height="154" />
-        <image id="3" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\设置.png" effect_width="41" effect_height="42" />
-        <image id="4" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\按钮按下.png" effect_width="41" effect_height="42" />
-        <image id="5" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\33上一页、前一页-copy.png" effect_width="40" effect_height="40" />
-        <image id="6" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\33上一页、前一页-copy-copy.png" effect_width="40" effect_height="40" />
-        <image id="7" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\开关关闭.png" effect_width="29" effect_height="48" />
-        <image id="8" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\开关_打开.png" effect_width="29" effect_height="48" />
-        <image id="9" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\按钮按下.png" effect_width="50" effect_height="111" />
-        <image id="10" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\33上一页、前一页-copy.png" effect_width="30" effect_height="30" />
-        <image id="11" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\33上一页、前一页-copy-copy.png" effect_width="30" effect_height="30" />
-        <image id="12" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\选中 (1).png" effect_width="28" effect_height="28" />
-        <image id="13" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\选中 (2).png" effect_width="28" effect_height="28" />
-        <image id="14" url="e:\dc\collectandctr\电源采集控制器显示软件\images\button\返回.png" effect_width="41" effect_height="42" />
+        <image id="0" url="e:\reynold\collectandctr\电源采集控制器显示软件\Images\开机动画.gif" effect_width="480" effect_height="854" />
+        <image id="1" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\1675672832127.jpg" effect_width="480" effect_height="854" />
+        <image id="2" url="e:\reynold\collectandctr\电源采集控制器显示软件\Images\公司图标.png" effect_width="32" effect_height="154" />
+        <image id="3" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\设置.png" effect_width="41" effect_height="42" />
+        <image id="4" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\按钮按下.png" effect_width="41" effect_height="42" />
+        <image id="5" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\33上一页、前一页-copy.png" effect_width="40" effect_height="40" />
+        <image id="6" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\33上一页、前一页-copy-copy.png" effect_width="40" effect_height="40" />
+        <image id="7" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\开关关闭.png" effect_width="29" effect_height="48" />
+        <image id="8" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\开关_打开.png" effect_width="29" effect_height="48" />
+        <image id="9" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\按钮按下.png" effect_width="50" effect_height="111" />
+        <image id="10" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\33上一页、前一页-copy.png" effect_width="30" effect_height="30" />
+        <image id="11" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\33上一页、前一页-copy-copy.png" effect_width="30" effect_height="30" />
+        <image id="12" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\选中 (1).png" effect_width="28" effect_height="28" />
+        <image id="13" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\选中 (2).png" effect_width="28" effect_height="28" />
+        <image id="14" url="e:\reynold\collectandctr\电源采集控制器显示软件\images\button\返回.png" effect_width="41" effect_height="42" />
     </images>
     <waves />
 </Resource>

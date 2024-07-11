@@ -97,36 +97,36 @@ void USART_data_Reset(USART_TypeDef * pUSARTx)
  @ 功能：生成节点帧数据并发送
  @ 入口： 
  *********************************************************************************************************/
-void buildAndSendDataToNode(u8 *pbuf, BoardAddr *addr, u8 cmd, u8 datalen, u8 *data)
+void buildAndSendDataToNode(BoardAddr *addr, u8 cmd, u8 datalen, u8 *data)
 { 
 	//0x5A, 0xA5, 0x0D, 0xFF, 0xFF, 0x00, 0x0A, 0x02, 0x00, 0x81, 97
 	
 	// 帧头
-	pbuf[0] = 0x5A; 
-	pbuf[1] = 0xA5;
+	g_retBuf[0] = 0x5A; 
+	g_retBuf[1] = 0xA5;
 	
 	// 节点类型
-	pbuf[2] = addr->addr[0];
+	g_retBuf[2] = addr->addr[0];
 	
 	// 数据指向地址
-	pbuf[3] = addr->addr[1];
-	pbuf[4] = addr->addr[2];
+	g_retBuf[3] = addr->addr[1];
+	g_retBuf[4] = addr->addr[2];
 	
 	// cmd 
-	pbuf[5] = 0;  // cmd 预留位
-	pbuf[6] = cmd;
+	g_retBuf[5] = 0;  // cmd 预留位
+	g_retBuf[6] = cmd;
 	
 	// 数据类型
-	pbuf[7] = 0;
+	g_retBuf[7] = 0;
 	
 	// 数据长度
-	pbuf[8] = datalen;  
+	g_retBuf[8] = datalen;  
 	
 	// 数据开始  
-	memcpy(&pbuf[9], data, datalen); 
+	memcpy(&g_retBuf[9], data, datalen); 
 	
 	// 校验和
-	pbuf[datalen+9] = CheckSum(pbuf, datalen+9);
+	g_retBuf[datalen+9] = CheckSum(g_retBuf, datalen+9);
 	
 	// 发送数据  
 	printf("build u3: ");

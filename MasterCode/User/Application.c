@@ -4,6 +4,7 @@
 #include "Uart.h"   
 #include "oled.h" 
 #include "TFTCommunic.h"
+#include "UartSendQueue.h"  
 
 u16 E_old_reg = 0; 
 u16 g_kCount = 0;  					  // AC电量脉冲 监测是否有更新 	
@@ -18,8 +19,8 @@ u16 g_kCount = 0;  					  // AC电量脉冲 监测是否有更新
 void NodeDataAnalysis()
 {
 		char tempstr[120];
-		//static u8 nodeIDSimuOffset = 0; // 模拟每次搜索到的不同设备
-		u8 nodeIDSimuOffset = 0; 
+		static u8 nodeIDSimuOffset = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!! 模拟每次搜索到的不同设备
+		//u8 nodeIDSimuOffset = 0; 
 	
 		if(uart3_485Pack.receiveok)
 		{
@@ -44,8 +45,9 @@ void NodeDataAnalysis()
 					nodeInfo[g_nodeTotalCount].baddr.addr[2] = *uart3_485Pack.addr2;
 					nodeInfo[g_nodeTotalCount].baddr.type = &nodeInfo[g_nodeTotalCount].baddr.addr[0]; 
 					
-					buildAndSendStr2TFT(g_retBuf, TFT_PAGE_SETNUM, 8, tempstr);
-					nodeIDSimuOffset ++;
+					buildAndSendStr2TFT(TFT_PAGE_SETNUM, 8, tempstr);
+					nodeIDSimuOffset ++; 
+				  dispSetTips("搜索结束");
 				}
 				break;
 				case REQUESTELEC:
@@ -55,21 +57,21 @@ void NodeDataAnalysis()
 					if(*uart3_485Pack.addr0 == 0xac)
 					{
 						nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 16) | (uart3_485Pack.content[1] << 8) | uart3_485Pack.content[2]) * 0.01);
-						printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
+						//printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
 
 						nodeInfo[g_currentRquesNodeIndex].eInfo.i1 =	(float)(((uart3_485Pack.content[3] << 8) | uart3_485Pack.content[4]) * 0.01);
-						printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
+						//printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
 					}
 					else if(*uart3_485Pack.addr0 == 0xdc)
 					{
 						nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 8) | uart3_485Pack.content[1]) * 0.01);
-						printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
+						//printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
 
 						nodeInfo[g_currentRquesNodeIndex].eInfo.i1 = (float)(((uart3_485Pack.content[2] << 8) | uart3_485Pack.content[3]) * 0.01);
-						printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
+						//printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
 
 						nodeInfo[g_currentRquesNodeIndex].eInfo.i2 = (float)(((uart3_485Pack.content[4] << 8) | uart3_485Pack.content[5]) * 0.01);
-						printf("i2 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i2);
+						//printf("i2 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i2);
  
 						//g_currentRquesNodeIndex ++; 
 						if(g_currentRquesNodeIndex >= g_nodeTotalCount)
@@ -106,20 +108,27 @@ void IntervalProc()
 		}
 		
 		// 请求一个节点数据
-		if(g_RequestNodeCount >= 100)
+		if(g_RequestNodeCount >= 1000)
 		{ 
 			if(g_RequestNodeElecFlag && strcmp((char*)nodeInfo[g_currentRquesNodeIndex].name, "") ) // 允许请求电能并且当前节点已注册
 			{  
-				buildAndSendDataToNode(g_retBuf, &nodeInfo[g_currentRquesNodeIndex].baddr, REQUESTELEC, 0, sendNodeDatabuf); 
+				buildAndSendDataToNode(&nodeInfo[g_currentRquesNodeIndex].baddr, REQUESTELEC, 0, sendNodeDatabuf); 
 			}
 			g_RequestNodeCount = 0; 
 		}
 
 		// 显示所有节点数据
-		if(g_DispElecNodeCount >= 1000)
+		if(g_DispElecNodeCount >= 1100)
 		{ 
-			dispElec2TFT(g_retBuf, nodeInfo); 
+			dispElec2TFT(nodeInfo); 
 			g_DispElecNodeCount = 0;
+		}		
+		
+		// 发送TFT队列
+		if(g_SendTFTQueueCount >= 200)
+		{ 
+			sendQueueMSG(); 
+			g_SendTFTQueueCount = 0;
 		}
 }
 

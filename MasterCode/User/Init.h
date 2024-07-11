@@ -83,7 +83,7 @@
 #define ACADJAP 1.149905189
  
 // 最大节点数量
-#define MAX_NODE 200
+#define MAX_NODE 255
   
 // 节点基本信息  
 typedef struct
@@ -109,8 +109,10 @@ typedef struct
 	u8 page;
 	u8 index;		 // 页面第几个
 	u8 totalPage;
+	u8 totalNode;// 总节点数 nodeInfo[0].totalNode才有效 用于flash存储
 	NodeElecInfo eInfo;
 }NodeInfo;
+ 
  
 extern NodeInfo nodeInfo[MAX_NODE];
  

@@ -17,15 +17,15 @@ int main(void)
 		// OLED_P6x8Str(0,0,(unsigned char*)"     Oled Monitor  -x ",1); 
 	
 		// 初始化接收 TFT 数据包结构体指针
-		uart2TFTPack.cmd0 				 = &uart2TFTPack.dataBuf[1];
-		uart2TFTPack.cmd1 				 = &uart2TFTPack.dataBuf[2];  
-		uart2TFTPack.Screen_id0 	 = &uart2TFTPack.dataBuf[3];
-		uart2TFTPack.Screen_id1 	 = &uart2TFTPack.dataBuf[4];
-		uart2TFTPack.Control_id0 	 = &uart2TFTPack.dataBuf[5];
-		uart2TFTPack.Control_id1 	 = &uart2TFTPack.dataBuf[6];  
-		uart2TFTPack.Control_type  = &uart2TFTPack.dataBuf[7];
-		uart2TFTPack.Subtype  		 = &uart2TFTPack.dataBuf[8]; 
-		uart2TFTPack.Status   		 = &uart2TFTPack.dataBuf[9];
+		uart2TFTPack.cmd0 				      = &uart2TFTPack.dataBuf[1];
+		uart2TFTPack.cmd1 				      = &uart2TFTPack.dataBuf[2];  
+		uart2TFTPack.Screen_id0 	      = &uart2TFTPack.dataBuf[3];
+		uart2TFTPack.Screen_id1 	      = &uart2TFTPack.dataBuf[4];
+		uart2TFTPack.Control_id0 	      = &uart2TFTPack.dataBuf[5];
+		uart2TFTPack.Control_id1 	      = &uart2TFTPack.dataBuf[6];  
+		uart2TFTPack.Control_type       = &uart2TFTPack.dataBuf[7];
+		uart2TFTPack.Subtype_or_Conten  = &uart2TFTPack.dataBuf[8]; 
+		uart2TFTPack.Status   		 			= &uart2TFTPack.dataBuf[9];
 		
 		// 初始化用户自定义 TFT 结构体指针
 		pTFTPackUser.cmd 			  	 = &uart2TFTPack.dataBuf[1]; 
@@ -44,6 +44,11 @@ int main(void)
 		
 		// 现在测试阶段 485 使用U3 TFT 使用U2 打印使用U1
 		// 项目实际为 485 使用u1, TFT 使用 u2
+		
+		getTFTText(1, 2);  // 获取显示页分子
+		getTFTText(2, 21); // 获取设置页分子
+		
+		//rFlashData();
 		while (1)
 		{
 			TFTanalysis();

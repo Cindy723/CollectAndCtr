@@ -27,6 +27,8 @@
 unsigned int g_LEDBling_kCount = 0;  
 unsigned int g_RequestNodeCount = 0;
 unsigned int g_DispElecNodeCount = 0;
+unsigned int g_SendTFTQueueCount = 0;
+
 extern void TimingDelay_Decrement(void);
 
 /* Private typedef -----------------------------------------------------------*/
@@ -213,6 +215,7 @@ void TIM3_IRQHandler(void)
 		  g_LEDBling_kCount += 10;
 		  g_RequestNodeCount += 10;
 			g_DispElecNodeCount += 10;
+			g_SendTFTQueueCount += 10;
 	} 
 	TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 }

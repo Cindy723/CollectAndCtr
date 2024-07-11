@@ -40,8 +40,8 @@ int main(void)
 	boardAddr.addr[0] = DCTYPE;
 	}
 	getChipIdStr(g_ChipIDS);  
-	boardAddr.addr[1] = g_ChipIDS[23];
-	boardAddr.addr[2] = g_ChipIDS[24];
+	boardAddr.addr[1] = g_ChipIDi[10];
+	boardAddr.addr[2] = g_ChipIDi[11];
 	boardAddr.type = &boardAddr.addr[0];
 	StrToHexByte(boardAddr.addrStr, boardAddr.addr); 
 	rwTypeAndAddr(1, &boardAddr); // 默认写ID后两位

@@ -12,7 +12,7 @@
 #define USER_CMD_DISPP_AGECHANGE 	 0XC4  // 显示界面页面切换 
 
 // TFT 页面定义
-#define TFT_DISP_SETNUM 1
+#define TFT_DISPNODE_NUM 1
 #define TFT_PAGE_SETNUM 2
 
 // 整页节点个数
@@ -26,9 +26,10 @@ extern u8 g_currentNodeListPage;
 extern u8 sendNodeDatabuf[12];
  
 void TFTanalysis(void); 
-void buildAndSendStr2TFT(u8 *pbuf, u8 pagid, u8 ctrlid, char* str);
-void getTFTText(u8 *pbuf, u8 pagid, u8 ctrlid);
-void dispElec2TFT(u8 *pbuf, NodeInfo *info);
+void buildAndSendStr2TFT(u8 pagid, u8 ctrlid, char* str);
+void getTFTText(u8 pagid, u8 ctrlid);
+void dispElec2TFT(NodeInfo *info);
+void dispSetTips(char* tip);
  
  
 #endif

@@ -35,6 +35,7 @@
 "..\..\output\application.o"
 "..\..\output\flash.o"
 "..\..\output\tftcommunic.o"
+"..\..\output\uartsendqueue.o"
 "..\..\output\codetab.o"
 "..\..\output\oled.o"
 --library_type=microlib --strict --scatter "..\..\Output\software.sct"

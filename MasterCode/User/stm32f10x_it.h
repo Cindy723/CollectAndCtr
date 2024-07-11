@@ -35,6 +35,7 @@
 extern unsigned int g_LEDBling_kCount;
 extern unsigned int g_RequestNodeCount;
 extern unsigned int g_DispElecNodeCount;
+extern unsigned int g_SendTFTQueueCount;
 
 void NMIException(void);
 void HardFaultException(void);

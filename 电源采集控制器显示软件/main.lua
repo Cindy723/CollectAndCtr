@@ -159,7 +159,9 @@ function on_control_notify_my(screen, control, value)
 			end
 		end		 		
 		if(control == 12)then 
-			f1int = f1int +1  --需要限制总页
+		    if(f1int <  tonumber(get_text(2, 22)))then
+				f1int = f1int +1  --需要限制总页
+			end
 		end	
 
 		set_text(1, 2, string.format("%d", f1int))
@@ -192,7 +194,9 @@ function on_control_notify_my(screen, control, value)
 			end
 		end		 		
 		if(control == 17)then 
-			f1int = f1int +1  --需要限制总页
+		    if(f1int <  tonumber(get_text(2, 22)))then
+				f1int = f1int +1  --需要限制总页
+			end
 		end	
 
 		set_text(2, 21, string.format("%d", f1int))

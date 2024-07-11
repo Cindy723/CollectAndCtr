@@ -76,7 +76,8 @@ void flash_erase(uint32_t size , uint32_t addr_base)
         flashPageSum = (size / FLASH_PAGE_SIZE) + 1;	//大于一页擦除n+1页
     }
     for(i = 0;i<flashPageSum;i++)
-    {
+    { 
+			printf("flash_erase_page i %d add %x\n", i, addr_base); 
 			flash_erase_page(i,addr_base);								//基址累加擦除flash
     }
 }
