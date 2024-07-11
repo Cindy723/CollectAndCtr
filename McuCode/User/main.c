@@ -11,7 +11,6 @@
 *********************************************************************************************************/
 int main(void)
 {  
-  uchar temp[120] = {0x1,2,3,4,45,5,6};
 	HSE_SetSysClock(RCC_PLLMul_9);
 	SysTick_Init();  
 	delay_ms(1000);  
@@ -29,19 +28,26 @@ int main(void)
 	// WDG_Init(3000); 
 	
 	NVIC_Configuration();
-	LEDContrl(LED4PIN, LEDON);
+	LEDContrl(LEDRUNPIN, LEDON);
 	delay_ms(500);
-	LEDContrl(LED4PIN, LEDOFF);
+	LEDContrl(LEDRUNPIN, LEDOFF);
 	
-  printf("manual set addr\n");
+	// 地址设置
+	if(PBin(LEDRUNPIN) == 1){
+	boardAddr.addr[0] = ACTYPE;
+	}
+	else{
 	boardAddr.addr[0] = DCTYPE;
-	boardAddr.addr[1] = 0xC3;
-	boardAddr.addr[2] = 0xD4;
+	}
+	getChipIdStr(g_ChipIDS);  
+	boardAddr.addr[1] = g_ChipIDS[23];
+	boardAddr.addr[2] = g_ChipIDS[24];
 	boardAddr.type = &boardAddr.addr[0];
-	
-	rwTypeAndAddr(1, &boardAddr); 
+	StrToHexByte(boardAddr.addrStr, boardAddr.addr); 
+	rwTypeAndAddr(1, &boardAddr); // 默认写ID后两位
 	rwTypeAndAddr(0, &boardAddr); 
 	  
+	
 	// 初始化主机数据包结构体指针
 	boardAddr.type 			 = &boardAddr.addr[0];
 	uart1Pack.cmd 			 = &uart1Pack.dataBuf[6]; // 5 保留
@@ -63,8 +69,6 @@ int main(void)
 
 	// 如果是 DC 板：
 	if(boardAddr.type){ADCx_Init();}
-//	relayOpreat(POWER_ON, POWERCH1);
-//	relayOpreat(POWER_ON, POWERCH2);
 	CTRL485RECE;
 	while (1)
 	{

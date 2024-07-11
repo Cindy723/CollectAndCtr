@@ -292,42 +292,6 @@ void USART2_IRQHandler(void)
 				}
 			}
 			
-//			if(uart2TFTPack.Counter >= 2)
-//			{ 
-//				switch(uart2TFTPack.dataOrig[1])
-//				{
-//					case BUTTON_CMD: // 按钮数据
-//					{ 
-//						if(uart2TFTPack.Counter == TFT_BUTTON_LEN) 
-//						{
-//							if((uart2TFTPack.dataOrig[TFT_BUTTON_LEN - 4] == 0xff) &&
-//								 (uart2TFTPack.dataOrig[TFT_BUTTON_LEN - 3] == 0xfc) &&
-//								 (uart2TFTPack.dataOrig[TFT_BUTTON_LEN - 2] == 0xff) &&
-//								 (uart2TFTPack.dataOrig[TFT_BUTTON_LEN - 1] == 0xff))
-//								{ 
-//									printf("ReciveTFT: ");
-//									printHex(uart2TFTPack.dataOrig, uart2TFTPack.Counter);
-//									str_copy_usart_buf2(uart2TFTPack.dataBuf,uart2TFTPack.Counter, uart2TFTPack.dataOrig); 
-//									uart2TFTPack.packLen = uart2TFTPack.Counter; 
-//									uart2TFTPack.receiveok = 1; 
-//								}
-//									
-//								USART_data_Reset(USART2);
-//								return;
-//						}
-//						
-//					}break;
-//					case 0xcd: // 收到用户自定义的数据
-//					{
-//						
-//					}
-//					break;
-//					case 0xb2:
-//						break;
-//					default: break;
-//				} 
-//			}
-			
 			if(uart2TFTPack.Counter >= 120)
 			{ 
 					printf("data overleng\r\n");

@@ -16,7 +16,5 @@ void printHex(const unsigned char* data, size_t length);
 void displayHex2oled(const unsigned char* data, u8 length, u8 x, u8 y);
 u8 hexCompaer(u8* desp, u8* srcp, u8 len);
 int StrToHexByte(unsigned char *str, unsigned char *hex);
-    
- 
    
 #endif

@@ -44,7 +44,8 @@ local g_value
 -- ee cd cx 自定义指令对应功能
 local g_registerButton = 0xc1 -- 注册按钮按下指令
 local g_pswEnter = 0xc2		   -- 密码输入结束
-local g_nodePageChange = 0xc3   -- 页面切换 
+local g_nodePageChange = 0xc3   -- 设置界面节点页面切换 
+local g_dispPageChange = 0xc4   -- 显示界面页面切换 
 
 -- 创建一个数组 数组是从1开始
 -- 0xcd表示自己定义的数据，0x01表示返回设置界面点击注册时，下发的别名和地址数据
@@ -146,7 +147,35 @@ function on_control_notify_my(screen, control, value)
 		local sendData = shift_left(sendArray)
 		uart_send_data(sendData) -- 随即之后如果操作节点 在单片机判定和预设密码是否一致 不一致时单片机变更提示文本 且不作处理
 	end	
+	if (screen == 1 and (control == 11)or(control == 12)) then-- 显示列表切换上下页
+		  --同 (control == 16)or(control == 17)
+		sendArray[3] = g_dispPageChange
+		datalen = 2
+		local f1int = tonumber(get_text(1, 2))  
+ 
+		if(control == 11)then
+			if(f1int > 1) then
+				f1int = f1int -1
+			end
+		end		 		
+		if(control == 12)then 
+			f1int = f1int +1  --需要限制总页
+		end	
 
+		set_text(1, 2, string.format("%d", f1int))
+		--set_text(1, 22, string.format("%d", f2int))
+
+  		local f1hex = string_to_hex(get_text(1, 2))
+  		local f2hex = string_to_hex(get_text(1, 22))
+
+		sendArray[4] = 2
+		sendArray[5]  =  f1hex[1]
+		sendArray[6]  =  f2hex[1]
+
+		add_end(datalen, sendArray)
+		local sendData = shift_left(sendArray)
+		uart_send_data(sendData)
+	end
 	if (screen == 2 and control == 31) then  -- 點擊配置
 		 --change_child_screen (3)
 

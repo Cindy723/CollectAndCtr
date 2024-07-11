@@ -129,6 +129,10 @@
 
 #define  _TXT_DIS__SCREEN1_TEXT_DISPLAY12                                    106
 
+#define  _TXT_DIS__SCREEN1_TEXT_DISPLAY13                                      2
+
+#define  _TXT_DIS__SCREEN1_TEXT_DISPLAY14                                     22
+
 //»­ÃæScreen2µÄ±³¾°Í¼Æ¬
 #define  _IMG_SCREEN2                                                          1
 

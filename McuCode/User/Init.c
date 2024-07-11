@@ -222,9 +222,14 @@ void LED_Configuration()
 { 
 	GPIO_InitTypeDef  GPIO_InitStructure;  
 // Ä¿±ê°å×Ó
-	GPIO_InitStructure.GPIO_Pin = LEDRUNPINCFG | LED2PINCFG | LED3PINCFG | LED4PINCFG; 
+	GPIO_InitStructure.GPIO_Pin = LEDRUNPINCFG | LED2PINCFG | LED3PINCFG; 
 	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOB,&GPIO_InitStructure); 
+ 
+	GPIO_InitStructure.GPIO_Pin = TYPEPINCFG; 
+	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOB,&GPIO_InitStructure); 
 	
 //  //log 
