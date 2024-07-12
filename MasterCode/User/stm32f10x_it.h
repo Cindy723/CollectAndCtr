@@ -24,6 +24,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
+#include "init.h"
 
 //#include "stm32f10x_nvic.h"
 //#include "stm32f10x_lib.h"
@@ -32,10 +33,16 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-extern unsigned int g_LEDBling_kCount;
-extern unsigned int g_RequestNodeCount;
-extern unsigned int g_DispElecNodeCount;
-extern unsigned int g_SendTFTQueueCount;
+typedef struct
+{
+	unsigned int LEDBling_kCount;
+	unsigned int RequestNodeCount;	// 请求节点间隔
+	unsigned int DispElecNodeCount; // 显示电量间隔
+	unsigned int SendTFTQueueCount;
+	unsigned int NodeTimeCount10ms[MAX_NODE]; // 最大时间十分钟
+}TimerVariate;
+
+extern TimerVariate timerVariate;
 
 void NMIException(void);
 void HardFaultException(void);

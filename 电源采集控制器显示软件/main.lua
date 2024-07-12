@@ -46,32 +46,14 @@ local g_registerButton = 0xc1 -- 注册按钮按下指令
 local g_pswEnter = 0xc2		   -- 密码输入结束
 local g_nodePageChange = 0xc3   -- 设置界面节点页面切换 
 local g_dispPageChange = 0xc4   -- 显示界面页面切换 
+local g_deleteNode = 0xc5 -- 删除节点
 
--- 创建一个数组 数组是从1开始
--- 0xcd表示自己定义的数据，0x01表示返回设置界面点击注册时，下发的别名和地址数据
--- 后面是长度位置 具体数据   
-function arrayIndex()
--- 创建一个包含一些元素的数组
-	local array = {10, 20, 30, 40, 50}
-	
-	-- 打印数组的第一个元素和第五个元素，索引从1开始
-	print("第一个元素: " .. array[1])  -- 输出: 第一个元素: 10
-	print("第二个元素: " .. array[2])  -- 输出: 第二个元素: 20
-	print("第三个元素: " .. array[3])  -- 输出: 第三个元素: 30
-	print("第四个元素: " .. array[4])  -- 输出: 第四个元素: 40
-	print("第五个元素: " .. array[5])  -- 输出: 第五个元素: 50
-	
-	-- 打印数组长度
-	print("数组长度: " .. #array)  -- 输出: 数组长度: 5
-	
-	-- 尝试访问第0个元素，会返回nil，因为Lua数组索引从1开始
-	print("第零个元素: " .. tostring(array[0]))  -- 输出: 第零个元素: nil
-end
-
-
-function on_init()   
-	arrayIndex()
+local sendArray = {0xee, 0xcd} -- 自定数据 帧头 用户数据 数据类型 数据长度 数据 
+  
+-- lua 数组从下标1开始
+function on_init()    
 	set_text(2, 7, "") 	
+	set_value(2, 41, 1)
 	--change_screen(2) -- 开机就切到画面2 
 end
 
@@ -106,6 +88,7 @@ end -- error attempt to get length of a nil value 不管
 -- 定时器id
 local timer_notify = 0
 local timer_send_searchid_text = 1 
+local timer_send_dispageChange = 12
 function on_timer(timer_id)
 	
 	if ( timer_id == timer_send_searchid_text)then
@@ -116,6 +99,12 @@ function on_timer(timer_id)
 		on_control_notify_my(g_screen, g_control, g_value)
 	end
 
+	if( timer_id == timer_send_dispageChange) then
+	    print("repeat")
+		 local sendData = shift_left(sendArray)	
+		 uart_send_data(sendData)
+	end
+
 end
 
 
@@ -123,30 +112,21 @@ end
 -- 点击按钮控件，修改文本控件、修改滑动条都会触发此事件 
 -- 控件必须要有串口数据才会触发回调
 function on_control_notify_my(screen, control, value)
-	local sendArray = {0xee, 0xcd} -- 自定数据 帧头 用户数据 数据类型 数据长度 数据 
 	local datalen = 0
 
 	print(string.format("on_control_notify %d", control))
+
+
 	if (screen == 1 and control == 1) then  -- 进入设置
 		set_text(2, 7, "") -- 清除上次输入的密码
 	end
 
+
  	if (screen == 2 and control == 7) then  -- 输入密码
-		local pswStr = get_text(screen, control)
-		local pswLen = # (pswStr) +1
-		sendArray[3] = g_pswEnter 
-		sendArray[4] = pswLen 
-
-		local pswByte = string_to_hex(pswStr)
-		table.insert(pswByte, '\0') 
-		for i = 1, pswLen do
-		    sendArray[4 + i] = pswByte[i]
-		end
-
- 		add_end(pswLen, sendArray)
-		local sendData = shift_left(sendArray)
-		uart_send_data(sendData) -- 随即之后如果操作节点 在单片机判定和预设密码是否一致 不一致时单片机变更提示文本 且不作处理
+	-- 随即之后如果操作节点 在单片机判定和预设密码是否一致 不一致时单片机变更提示文本 且不作处理
 	end	
+
+
 	if (screen == 1 and (control == 11)or(control == 12)) then-- 显示列表切换上下页
 		  --同 (control == 16)or(control == 17)
 		sendArray[3] = g_dispPageChange
@@ -159,7 +139,7 @@ function on_control_notify_my(screen, control, value)
 			end
 		end		 		
 		if(control == 12)then 
-		    if(f1int <  tonumber(get_text(2, 22)))then
+		    if(f1int <  tonumber(get_text(2, 22))) then
 				f1int = f1int +1  --需要限制总页
 			end
 		end	
@@ -176,12 +156,17 @@ function on_control_notify_my(screen, control, value)
 
 		add_end(datalen, sendArray)
 		local sendData = shift_left(sendArray)
-		uart_send_data(sendData)
+		uart_send_data(sendData) 		
+		start_timer(timer_send_dispageChange, 100, 0, 2) -- 再发2次变化后的数据 防止单片机漏掉
 	end
+
+
 	if (screen == 2 and control == 31) then  -- 點擊配置
 		 --change_child_screen (3)
 
 	end
+
+
 	if (screen == 2 and (control == 16)or(control == 17)) then  -- 节点列表切换上下页
 		 --页面 f1 / f2  切换页面 下发变化后分数 同时上报对应页的数据展示 
 		sendArray[3] = g_nodePageChange
@@ -194,7 +179,7 @@ function on_control_notify_my(screen, control, value)
 			end
 		end		 		
 		if(control == 17)then 
-		    if(f1int <  tonumber(get_text(2, 22)))then
+		    if(f1int <  tonumber(get_text(2, 22))) then
 				f1int = f1int +1  --需要限制总页
 			end
 		end	
@@ -213,6 +198,7 @@ function on_control_notify_my(screen, control, value)
 		local sendData = shift_left(sendArray)
 		uart_send_data(sendData)
 	end
+
 
 	if (screen == 2 and control == 32) then  -- 注册按钮按下 返回id+name  都是字符串表示的
 		print(string.format("method register"))
@@ -244,8 +230,41 @@ function on_control_notify_my(screen, control, value)
 		add_end(datalen, sendArray)
 		local sendData = shift_left(sendArray)
 		uart_send_data(sendData)
-		
-	 		--start_timer(timer_send_serchid_text, 100, 0, 1)
+	end
+
+	if (screen == 2 and control == 53) then  -- 删除节点 
+		print("deleteNode ") 	
+		sendArray[3] = g_deleteNode
+		-- 使用一个表来存储值
+		local values = {}
+		for i = 41, 46 do
+		    values[i] = get_value(2, i)
+		end
+		 
+		local j = 0  
+		for i = 41, 46 do
+		    if values[i] == 1 then
+		        j = i
+		        break
+		    end
+		end
+ 
+		local psw =  get_text(2, 7) 
+		local pswlen = # (psw) +1
+		local hexPsw = string_to_hex(psw)
+
+		datalen = pswlen + 2
+		sendArray[4] = datalen
+		sendArray[5]  =  j
+ 		sendArray[6]  = tonumber(get_text(2, 21))	
+
+		for i = 1, pswlen do
+			sendArray[6 + i] = hexPsw[i] 
+		end   	
+
+		add_end(datalen, sendArray)
+		local sendData = shift_left(sendArray)
+		uart_send_data(sendData)  
 	end
 end
 

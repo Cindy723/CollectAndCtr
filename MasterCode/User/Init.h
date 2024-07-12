@@ -85,6 +85,9 @@
 // 最大节点数量
 #define MAX_NODE 255
   
+// 已注册的节点离线判断时间 *10ms = s
+#define NODE_TIMEOUT10ms 1500
+	
 // 节点基本信息  
 typedef struct
 {
@@ -93,6 +96,7 @@ typedef struct
 	u8 *type;
 }BoardAddr; 
  
+
 // 对应id的电力信息
 typedef struct 
 { 
@@ -100,6 +104,7 @@ typedef struct
 	float i1;		
 	float i2;		
 }NodeElecInfo;
+
 
 // 节点信息和所在页面
 typedef struct 
@@ -110,7 +115,7 @@ typedef struct
 	u8 index;		 				// 页面第几个
 	u8 totalPage;
 	u8 totalNode;				// 总节点数 nodeInfo[0].totalNode才有效 用于flash存储
-	NodeElecInfo eInfo;
+	NodeElecInfo eInfo; 
 	u8 needDispElec; 		// 收到节点数据时置位 显示后复位 用于增量更新显示
 }NodeInfo;
  

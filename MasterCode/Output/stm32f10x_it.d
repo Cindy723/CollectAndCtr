@@ -29,7 +29,7 @@
 ..\..\output\stm32f10x_it.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
 ..\..\output\stm32f10x_it.o: ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h
 ..\..\output\stm32f10x_it.o: ..\..\Libraries\FWlib\inc\misc.h
-..\..\output\stm32f10x_it.o: ..\..\User\Init.h
+..\..\output\stm32f10x_it.o: ..\..\User\init.h
 ..\..\output\stm32f10x_it.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\..\output\stm32f10x_it.o: ..\..\User\main.h
 ..\..\output\stm32f10x_it.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -41,3 +41,4 @@
 ..\..\output\stm32f10x_it.o: ..\..\User\Tools.h
 ..\..\output\stm32f10x_it.o: ..\..\User\OLED\oled.h
 ..\..\output\stm32f10x_it.o: ..\..\User\OLED\codetab.h
+..\..\output\stm32f10x_it.o: ..\..\User\TFTCommunic.h

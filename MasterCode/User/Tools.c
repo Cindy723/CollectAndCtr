@@ -139,7 +139,7 @@ u8 hexCompaer(u8* desp, u8* srcp, u8 len)
 		}
 	}
 	
-	if(j == len-1)
+	if(j == len)
 	{
 		printf("hexCompaer ok\n");
 		return 0;

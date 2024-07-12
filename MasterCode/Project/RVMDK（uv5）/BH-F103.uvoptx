@@ -186,34 +186,34 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>50</LineNumber>
+          <LineNumber>62</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134227946</Address>
+          <Address>134232002</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>E:\DC\CollectAndCtr\MasterCode\Project\User\main.c</Filename>
+          <Filename>E:\Reynold\CollectAndCtr\MasterCode\Project\User\Application.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\software\../../User/Application.c\62</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>21</LineNumber>
+          <LineNumber>142</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134227820</Address>
+          <Address>134231312</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>E:\DC\CollectAndCtr\MasterCode\Project\User\main.c</Filename>
+          <Filename>E:\Reynold\CollectAndCtr\MasterCode\Project\User\Tools.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\software\../../User/main.c\21</Expression>
+          <Expression>\\software\../../User/Tools.c\142</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -227,6 +227,21 @@
           <WinNumber>1</WinNumber>
           <ItemText>g_nodeTotalCount</ItemText>
         </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>g_nodeTotalCount</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>g_retBuf</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>uart3_485Pack,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
@@ -236,7 +251,7 @@
         <periodic>0</periodic>
         <aLwin>1</aLwin>
         <aCover>0</aCover>
-        <aSer1>1</aSer1>
+        <aSer1>0</aSer1>
         <aSer2>0</aSer2>
         <aPa>0</aPa>
         <viewmode>1</viewmode>
@@ -246,9 +261,9 @@
         <AscS1>0</AscS1>
         <AscS2>0</AscS2>
         <AscS3>0</AscS3>
-        <aSer3>0</aSer3>
+        <aSer3>1</aSer3>
         <eProf>0</eProf>
-        <aLa>1</aLa>
+        <aLa>0</aLa>
         <aPa1>0</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
@@ -706,7 +721,7 @@
       <GroupNumber>4</GroupNumber>
       <FileNumber>32</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>

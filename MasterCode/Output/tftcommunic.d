@@ -41,3 +41,4 @@
 ..\..\output\tftcommunic.o: ..\..\User\Tools.h
 ..\..\output\tftcommunic.o: ..\..\User\UartSendQueue.h
 ..\..\output\tftcommunic.o: ..\..\User\flash.h
+..\..\output\tftcommunic.o: ..\..\User\stm32f10x_it.h

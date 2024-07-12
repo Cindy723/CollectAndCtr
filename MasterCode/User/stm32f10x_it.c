@@ -23,11 +23,10 @@
 #include "Uart.h"   
 #include "Tools.h"   
 #include "oled.h"   
+#include "TFTCommunic.h"
 
-unsigned int g_LEDBling_kCount = 0;  
-unsigned int g_RequestNodeCount = 0;
-unsigned int g_DispElecNodeCount = 0;
-unsigned int g_SendTFTQueueCount = 0;
+
+TimerVariate timerVariate;
 
 extern void TimingDelay_Decrement(void);
 
@@ -209,13 +208,19 @@ void RTCAlarm_IRQHandler(void)
  *********************************************************************************************************/
 void TIM3_IRQHandler(void)
 {    
+	u8 i;
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)  
 	{
     	TIM_ClearITPendingBit(TIM3, TIM_IT_Update); 
-		  g_LEDBling_kCount += 10;
-		  g_RequestNodeCount += 10;
-			g_DispElecNodeCount += 10;
-			g_SendTFTQueueCount += 10;
+		  timerVariate.LEDBling_kCount += 10;
+		  timerVariate.RequestNodeCount += 10;
+			timerVariate.DispElecNodeCount += 10;
+			timerVariate.SendTFTQueueCount += 10;
+		
+			// 更新每个节点的时间
+			for(i= 0; i < g_nodeTotalCount; i++){
+				timerVariate.NodeTimeCount10ms[i] ++;
+			}
 	} 
 	TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 }
@@ -319,7 +324,6 @@ void USART3_IRQHandler(void)
 			uart3_485Pack.dataOrig[uart3_485Pack.Counter] = USART_ReceiveData(USART3);     
 			if(uart3_485Pack.Counter == 0 && uart3_485Pack.dataOrig[0] != 0xA5) 
 			{
-				USART_data_Reset(USART3); 
 				return;   
 			}
 			else  uart3_485Pack.Counter++;

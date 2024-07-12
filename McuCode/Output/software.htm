@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\Output\software.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\software.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Thu Jul 11 08:44:02 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Fri Jul 12 12:50:28 2024
 <BR><P>
 <H3>Maximum Stack Usage =        408 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1467,16 +1467,14 @@ Global Symbols
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rwTypeAndAddr
 </UL>
 
-<P><STRONG><a name="[ae]"></a>hexCompaer</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, tools.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = hexCompaer &rArr; __2printf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<P><STRONG><a name="[ae]"></a>hexCompaer</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, tools.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = hexCompaer
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setBoardBaseInfo
 <LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 </UL>
 
-<P><STRONG><a name="[78]"></a>StrToHexByte</STRONG> (Thumb, 88 bytes, Stack size 32 bytes, tools.o(.text))
+<P><STRONG><a name="[78]"></a>StrToHexByte</STRONG> (Thumb, 86 bytes, Stack size 32 bytes, tools.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = StrToHexByte &rArr; strtol &rArr; _strtoul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
@@ -1996,7 +1994,6 @@ Global Symbols
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateElectInfoAC
 <LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateElectInfoDC
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;printHex
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hexCompaer
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_data_Reset
 <LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 <LI><a href="#[5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UsageFault_Handler

@@ -42,46 +42,53 @@ void NodeDataAnalysis()
 					 
 					nodeInfo[g_nodeTotalCount].baddr.addr[0] = *uart3_485Pack.addr0;
 					nodeInfo[g_nodeTotalCount].baddr.addr[1] = *uart3_485Pack.addr1;
-					nodeInfo[g_nodeTotalCount].baddr.addr[2] = *uart3_485Pack.addr2;
+					nodeInfo[g_nodeTotalCount].baddr.addr[2] = *uart3_485Pack.addr2 + nodeIDSimuOffset;
 					nodeInfo[g_nodeTotalCount].baddr.type = &nodeInfo[g_nodeTotalCount].baddr.addr[0]; 
 					
-					buildAndSendStr2TFT(TFT_PAGE_SETNUM, 8, tempstr);
+					buildAndSendStr2TFT(TFT_SET_PAGE, 8, tempstr);
 					nodeIDSimuOffset ++; 
 				  dispSetTips("搜索结束");
 				}
 				break;
 				case REQUESTELEC:
 				{
-					printf("NodeData Ret REQUESTELEC ");  printHex(uart3_485Pack.addr0, 3); 
-					memcpy(&nodeInfo[g_currentRquesNodeIndex].baddr, uart3_485Pack.addr0, 3);
+					u8 index = 0;
+					printf("NodeData Ret REQUESTELEC ");  printHex(uart3_485Pack.addr0, 3);  
+					// match data addr
+					for(index = 0; index < g_nodeTotalCount+1; index ++){
+						  if(0 == hexCompaer(nodeInfo[index].baddr.addr, (u8*)uart3_485Pack.addr0, 3)){ 
+								 break;
+							}
+					}  
+					if(index >= g_nodeTotalCount){
+							printf("unmatch addr!\r\n");
+							memset(uart3_485Pack.dataBuf, 0, sizeof(uart3_485Pack.dataBuf));  
+							return;
+					}
+					
 					if(*uart3_485Pack.addr0 == 0xac)
-					{
-					  nodeInfo[g_currentRquesNodeIndex].needDispElec = 1;
-						nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 16) | (uart3_485Pack.content[1] << 8) | uart3_485Pack.content[2]) * 0.01);
+					{ 
+						nodeInfo[index].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 16) | (uart3_485Pack.content[1] << 8) | uart3_485Pack.content[2]) * 0.01);
 						//printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
 
-						nodeInfo[g_currentRquesNodeIndex].eInfo.i1 =	(float)(((uart3_485Pack.content[3] << 8) | uart3_485Pack.content[4]) * 0.01);
+						nodeInfo[index].eInfo.i1 =	(float)(((uart3_485Pack.content[3] << 8) | uart3_485Pack.content[4]) * 0.01);
 						//printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
 					}
 					else if(*uart3_485Pack.addr0 == 0xdc)
-					{
-						nodeInfo[g_currentRquesNodeIndex].needDispElec = 1;
-						nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 8) | uart3_485Pack.content[1]) * 0.01);
+					{ 
+						nodeInfo[index].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 8) | uart3_485Pack.content[1]) * 0.01);
 						//printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
 
-						nodeInfo[g_currentRquesNodeIndex].eInfo.i1 = (float)(((uart3_485Pack.content[2] << 8) | uart3_485Pack.content[3]) * 0.01);
+						nodeInfo[index].eInfo.i1 = (float)(((uart3_485Pack.content[2] << 8) | uart3_485Pack.content[3]) * 0.01);
 						//printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
 
-						nodeInfo[g_currentRquesNodeIndex].eInfo.i2 = (float)(((uart3_485Pack.content[4] << 8) | uart3_485Pack.content[5]) * 0.01);
+						nodeInfo[index].eInfo.i2 = (float)(((uart3_485Pack.content[4] << 8) | uart3_485Pack.content[5]) * 0.01);
 						//printf("i2 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i2);
  
-						//g_currentRquesNodeIndex ++; 
-						if(g_currentRquesNodeIndex >= g_nodeTotalCount)
-						{
-							g_currentRquesNodeIndex = 0; // 从头请求
-						}
-						g_RequestNodeElecFlag = 1;
 					}
+
+					g_RequestNodeElecFlag = 1;
+					timerVariate.NodeTimeCount10ms[index] = 0; 
 				}
 			  break;
 				default: printf("uart3_485Pack.cmd unkown! %x\r\n", *uart3_485Pack.cmd); break; 
@@ -97,41 +104,44 @@ void NodeDataAnalysis()
  *********************************************************************************************************/
 void IntervalProc()
 { 
-		if(g_LEDBling_kCount > 1 && g_LEDBling_kCount < 800)
+		if(timerVariate.LEDBling_kCount > 1 && timerVariate.LEDBling_kCount < 800)
 		{
 			LEDContrl(LEDRUNPIN, LEDOFF);  
 			OLED_P6x8Str(120,6,(u8*)" ",0);
 		}
-		else if(g_LEDBling_kCount > 830)
+		else if(timerVariate.LEDBling_kCount > 830)
 		{
-			g_LEDBling_kCount = 0;
+			timerVariate.LEDBling_kCount = 0;
 			LEDContrl(LEDRUNPIN, LEDON);  
 			OLED_P6x8Str(120,6,(u8*)" ",1);  
 		}
 		
 		// 请求一个节点数据
-		if(g_RequestNodeCount >= 500)
+		if(timerVariate.RequestNodeCount >= 500)
 		{ 
 			//getListPagef1();
-			if(g_RequestNodeElecFlag && strcmp((char*)nodeInfo[g_currentRquesNodeIndex].name, "") ) // 允许请求电能并且当前节点已注册
-			{  
+			printf("RequestNode %d  %s \r\n",g_currentRquesNodeIndex, nodeInfo[g_currentRquesNodeIndex].baddr.addrStr);
+			if(g_RequestNodeElecFlag && strcmp((char*)nodeInfo[g_currentRquesNodeIndex].name, "")){ // 允许请求电能并且当前节点已注册
 				buildAndSendDataToNode(&nodeInfo[g_currentRquesNodeIndex].baddr, REQUESTELEC, 0, sendNodeDatabuf); 
 			}
-			g_RequestNodeCount = 0; 
+			
+			g_currentRquesNodeIndex ++; // 请求下一个 
+			if(g_currentRquesNodeIndex > g_nodeTotalCount-1){
+				g_currentRquesNodeIndex = 0; // 从头请求
+			}  
+			timerVariate.RequestNodeCount = 0;
 		}
 
 		// 显示所有节点数据
-		if(g_DispElecNodeCount >= 1100 && g_currentPage == TFT_DISPNODE_NUM)
-		{ 
-			dispElec2TFT(nodeInfo); 
-			g_DispElecNodeCount = 0;
+		if(timerVariate.DispElecNodeCount >= 1100 && currentTFTV.Page == TFT_DISP_PAGE){ 
+			dispElec2TFT(nodeInfo);  
+			timerVariate.DispElecNodeCount = 0;
 		}		
 		
 		// 发送TFT队列
-		if(g_SendTFTQueueCount >= 200)
-		{ 
+		if(timerVariate.SendTFTQueueCount >= 200){ 
 			sendQueueMSG();  
-			g_SendTFTQueueCount = 0;
+			timerVariate.SendTFTQueueCount = 0;
 		}
 }
 

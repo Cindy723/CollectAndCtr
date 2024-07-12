@@ -32,7 +32,7 @@
 ..\..\output\software.o: ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h
 ..\..\output\software.o: ..\..\Libraries\FWlib\inc\misc.h
 ..\..\output\software.o: ..\..\User\stm32f10x_it.h
-..\..\output\software.o: ..\..\User\Init.h
+..\..\output\software.o: ..\..\User\init.h
 ..\..\output\software.o: ..\..\User\main.h
 ..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\..\output\software.o: ..\..\User\Init.h
