@@ -34,18 +34,21 @@ int main(void)
 	
 	// 地址设置
 	if(PBin(LEDRUNPIN) == 1){
-	boardAddr.addr[0] = ACTYPE;
+		boardAddr.addr[0] = ACTYPE;
 	}
 	else{
-	boardAddr.addr[0] = DCTYPE;
+		boardAddr.addr[0] = DCTYPE;
 	}
+		
+	boardAddr.addr[0] = DCTYPE;// 虚拟仿真
+ 
 	getChipIdStr(g_ChipIDS);  
 	boardAddr.addr[1] = g_ChipIDi[10];
 	boardAddr.addr[2] = g_ChipIDi[11];
 	boardAddr.type = &boardAddr.addr[0];
-	StrToHexByte(boardAddr.addrStr, boardAddr.addr); 
+	//StrToHexByte(boardAddr.addrStr, boardAddr.addr); 
 	rwTypeAndAddr(1, &boardAddr); // 默认写ID后两位
-	rwTypeAndAddr(0, &boardAddr); 
+	//rwTypeAndAddr(0, &boardAddr); 
 	  
 	
 	// 初始化主机数据包结构体指针

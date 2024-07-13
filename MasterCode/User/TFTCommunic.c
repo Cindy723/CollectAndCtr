@@ -38,7 +38,7 @@ void TFTDisplayNodeList2SetPag()
 	u8 nameCtlNameId[7] = {0, 34, 35, 36, 37, 38, 39};// 界面节点名字ID索引
 	u8 i;
 	u8 offset = (currentTFTV.setPageNodeListF1 - 1) * ONEPAGENODE;
-	printf("TFTDisplayNodeList2SetPag offset %d", offset);
+	printf("TFTDisplayNodeList2SetPag offset %d\r\n", offset);
 	 
 	// 根据当前分子显示当前页面 ONEPAGENODE 条
 	for(i = 0; i < 6; i++){   
@@ -585,59 +585,53 @@ void disp_hindTFTDisPage(u8 isdisp)
 }
  
 /**********************************************************************************************************
- @ 功能: 删除指定下标的nodeInfo，并将后续元素前移
- @ 参数: 
+ @ 功能: 删除指定下标的nodeInfo，并将后续元素前移 
+ @ 参数: 0 -5，  = ONEPAGENODE -1 
  @ 返回: 
- @ 备注: 
+ @ 备注: 当最后一页显示不足一页时 选择了空的部分进行报错
  *********************************************************************************************************/
 void deleteNodeInfo(int index) 
 {
-	u8 i = 0, offset = 0; // i, 页位置
+	u8 i = 0, offset = 0;  
+	char temp[32];
 	
 	if (index < 0 || index > ONEPAGENODE) {
 			printf("deleteNodeInfo faild 1! \r\n");
 			dispSetTips("删错索引错误！");
 			return;
 	}
-	
-//	if(currentTFTV.setPageNodeListF1 == currentTFTV.setPageNodeListF2){
-//		printf("deleteNodeInfo last page node g_nodeTotalCount %d index %d mod %d\r\n",g_nodeTotalCount, index, (g_nodeTotalCount % ONEPAGENODE));
-//		
-//		if(g_nodeTotalCount > 6)
-//		if (index >= (g_nodeTotalCount % ONEPAGENODE)){
-//			printf("deleteNodeInfo failed 2! \r\n");
-//			dispSetTips("请正确选择条目"); 
-//			return;
-//		}
-//	}
-// 
-//	// 第一页偏移0
-//	offset = (currentTFTV.setPageNodeListF1 -1) * ONEPAGENODE;  
+	 
+  // 第一页偏移0
+	offset = (currentTFTV.setPageNodeListF1 -1) * ONEPAGENODE;  // offset + index 即为当前选择的 
 
-//	
-//	// 从指定索引开始，将后续元素前移
-//	if(g_nodeTotalCount < 7)
-//	{ 
-//		for (i = 0; i < g_nodeTotalCount; ++i) {
-//				nodeInfo[i] = nodeInfo[i + 1];
-//		}
-//	}
-//	else
-//	{
-//	
-//	}
-//	
-//	for (i = offset* ONEPAGENODE; i < g_nodeTotalCount; ++i) {
-//			nodeInfo[offset* ONEPAGENODE + i + index] = nodeInfo[offset* ONEPAGENODE + i + +index + 1];
-//	}
-//	
-////for(i = 0; i < g_nodeTotalCount; i++){	
-////	printf("000 Id index %d, ID [%s], Name [%s]\r\nhexID: ", i, nodeInfo[i].baddr.addrStr, nodeInfo[i].name); 
-////}
-//	
-//	g_nodeTotalCount --; 
-//	TFTDisplayNodeList2SetPag();
-//	updateRegisterCount();
-//	updateListPagef2();
+	// 在最后一页的情况
+	printf("deleteNodeInfo last page node offset %d g_nodeTotalCount %d index %d mod %d\r\n",offset, g_nodeTotalCount, index, (g_nodeTotalCount % ONEPAGENODE));
+	if(currentTFTV.setPageNodeListF1 == currentTFTV.setPageNodeListF2)
+	{ 
+			printf("frist page \r\n"); 
+			if(offset + index >= g_nodeTotalCount){
+				dispSetTips("请正确选择条目"); 
+				return;
+			}
 			
+			sprintf(temp, "已删除节点 %s", nodeInfo[offset + index].baddr.addrStr);
+		  dispSetTips(temp); 
+			for (i = offset; i < g_nodeTotalCount; ++i) {
+					nodeInfo[i + index] = nodeInfo[i + index + 1];
+			}
+			 
+	}
+	else// 不在最后一页 不存在索引超限
+	{
+		sprintf(temp, "已删除节点 %s", nodeInfo[offset + index].baddr.addrStr);
+		dispSetTips(temp); 
+		for (i = offset; i < g_nodeTotalCount; ++i) {
+				nodeInfo[i + index] = nodeInfo[i + index + 1];
+		}
+	}
+		
+		g_nodeTotalCount --; 
+		TFTDisplayNodeList2SetPag();
+		updateRegisterCount();
+		updateListPagef2(); 
 }

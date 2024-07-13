@@ -38,7 +38,7 @@ void flash_erase_page(uint8_t flashPage , uint32_t addr_base)
 	 
 	  FLASH_ClearFlag(FLASH_FLAG_EOP |   FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);  
 	  
-		while(i++ < 200)
+		while(i++ < 5)
 		{ 
 		    status = FLASH_ErasePage(f.PageAddress);
 				if(FLASH_COMPLETE != status) 		
@@ -51,7 +51,7 @@ void flash_erase_page(uint8_t flashPage , uint32_t addr_base)
 					break;
 				}
 		}
-	  if(i >=200)
+	  if(i >=5)
 		{
 		  printf("flash_erase_page Faild > 200 !!! lasterro: %d\n", (u8)status); 
 		}

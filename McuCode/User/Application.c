@@ -289,7 +289,7 @@ void updateElectInfoDC(u8 needSend)
  *********************************************************************************************************/
 void updateBaseInfo()
 {  
-	rwTypeAndAddr(0, &boardAddr); 
+	//rwTypeAndAddr(0, &boardAddr); 
 	buildAndSendDataTo485(g_retBuf, REQUESTADDR, 3, boardAddr.addr);
 }
 

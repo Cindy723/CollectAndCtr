@@ -3,7 +3,7 @@
 ..\..\output\uartsendqueue.o: ..\..\User\main.h
 ..\..\output\uartsendqueue.o: ..\..\Libraries\CMSIS\stm32f10x.h
 ..\..\output\uartsendqueue.o: ..\..\Libraries\CMSIS\core_cm3.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\include\stdint.h
 ..\..\output\uartsendqueue.o: ..\..\Libraries\CMSIS\system_stm32f10x.h
 ..\..\output\uartsendqueue.o: ..\..\User\stm32f10x_conf.h
 ..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_adc.h
@@ -30,11 +30,11 @@
 ..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
 ..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h
 ..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\misc.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\include\stdio.h
+..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\include\stdlib.h
 ..\..\output\uartsendqueue.o: ..\..\User\Init.h
 ..\..\output\uartsendqueue.o: ..\..\User\main.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\include\string.h
 ..\..\output\uartsendqueue.o: ..\..\User\delay.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\include\math.h
 ..\..\output\uartsendqueue.o: ..\..\User\UART.h

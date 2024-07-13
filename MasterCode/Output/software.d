@@ -1,10 +1,10 @@
 ..\..\output\software.o: ..\..\User\software.c
 ..\..\output\software.o: ..\..\User\software.h
-..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\include\stdio.h
 ..\..\output\software.o: ..\..\Libraries\FWlib\inc\stm32f10x_iwdg.h
 ..\..\output\software.o: ..\..\Libraries\CMSIS\stm32f10x.h
 ..\..\output\software.o: ..\..\Libraries\CMSIS\core_cm3.h
-..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\include\stdint.h
 ..\..\output\software.o: ..\..\Libraries\CMSIS\system_stm32f10x.h
 ..\..\output\software.o: ..\..\User\stm32f10x_conf.h
 ..\..\output\software.o: ..\..\Libraries\FWlib\inc\stm32f10x_adc.h
@@ -34,8 +34,8 @@
 ..\..\output\software.o: ..\..\User\stm32f10x_it.h
 ..\..\output\software.o: ..\..\User\init.h
 ..\..\output\software.o: ..\..\User\main.h
-..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\include\stdlib.h
 ..\..\output\software.o: ..\..\User\Init.h
-..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\include\string.h
 ..\..\output\software.o: ..\..\User\delay.h
-..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\..\output\software.o: D:\Keil_v5\ARM\ARMCC\include\math.h

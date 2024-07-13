@@ -86,7 +86,7 @@
 #define MAX_NODE 255
   
 // 已注册的节点离线判断时间 *10ms = s
-#define NODE_TIMEOUT10ms 1500
+#define NODE_TIMEOUT10ms 500
 	
 // 节点基本信息  
 typedef struct

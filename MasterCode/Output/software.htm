@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\Output\software.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\software.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Fri Jul 12 17:01:01 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Sat Jul 13 10:57:33 2024
 <BR><P>
 <H3>Maximum Stack Usage =        440 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -592,10 +592,10 @@ Global Symbols
 <P><STRONG><a name="[65]"></a>RCC_GetFlagStatus</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, stm32f10x_rcc.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = RCC_GetFlagStatus
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_Configuration
+<BR>[Called By]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_WaitForHSEStartUp
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_Configuration
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HSE_SetSysClock
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HSI_SetSysClock
-<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_WaitForHSEStartUp
 </UL>
 
 <P><STRONG><a name="[64]"></a>RCC_WaitForHSEStartUp</STRONG> (Thumb, 56 bytes, Stack size 16 bytes, stm32f10x_rcc.o(.text), UNUSED)
@@ -1190,11 +1190,11 @@ Global Symbols
 <P><STRONG><a name="[83]"></a>USART_Configuration</STRONG> (Thumb, 202 bytes, Stack size 56 bytes, init.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 124<LI>Call Chain = USART_Configuration &rArr; USART_Init &rArr; RCC_GetClocksFreq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_GPIO_Configuration
+<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Init
+<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_GPIO_Configuration
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ClearFlag
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Cmd
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1395,7 +1395,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disp_hindTFTContrl
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendQueueMSG
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendDataToNode
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rebootTFT
 </UL>
@@ -1434,7 +1434,7 @@ Global Symbols
 <P><STRONG><a name="[d0]"></a>uint32_Str</STRONG> (Thumb, 52 bytes, Stack size 24 bytes, tools.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getChipIdStr
+<BR>[Called By]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getChipIdStr
 </UL>
 
 <P><STRONG><a name="[d2]"></a>IO_TXD</STRONG> (Thumb, 84 bytes, Stack size 16 bytes, tools.o(.text), UNUSED)
@@ -1476,25 +1476,23 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 </UL>
 
-<P><STRONG><a name="[d5]"></a>hexCompaer</STRONG> (Thumb, 74 bytes, Stack size 24 bytes, tools.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = hexCompaer &rArr; __2printf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<P><STRONG><a name="[da]"></a>hexCompaer</STRONG> (Thumb, 62 bytes, Stack size 16 bytes, tools.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = hexCompaer
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NodeDataAnalysis
 </UL>
 
-<P><STRONG><a name="[d6]"></a>StrToHexByte</STRONG> (Thumb, 108 bytes, Stack size 32 bytes, tools.o(.text))
+<P><STRONG><a name="[d5]"></a>StrToHexByte</STRONG> (Thumb, 108 bytes, Stack size 32 bytes, tools.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = StrToHexByte &rArr; strtol &rArr; _strtoul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
-<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtol
+<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtol
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RegisterNode
 </UL>
 
-<P><STRONG><a name="[d8]"></a>getChipIdStr</STRONG> (Thumb, 126 bytes, Stack size 24 bytes, tools.o(.text), UNUSED)
+<P><STRONG><a name="[d7]"></a>getChipIdStr</STRONG> (Thumb, 126 bytes, Stack size 24 bytes, tools.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uint32_Str
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
@@ -1503,12 +1501,12 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = NodeDataAnalysis &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hexCompaer
+<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hexCompaer
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;printHex
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -1552,11 +1550,11 @@ Global Symbols
 <P><STRONG><a name="[eb]"></a>flash_erase_page</STRONG> (Thumb, 96 bytes, Stack size 40 bytes, flash.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = flash_erase_page &rArr; __2printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ClearFlag
+<BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ClearFlag
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ErasePage
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_Lock
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_Unlock
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_erase
 </UL>
@@ -1572,11 +1570,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[ef]"></a>writeFlash</STRONG> (Thumb, 128 bytes, Stack size 32 bytes, flash.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ClearFlag
+<BR><BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ClearFlag
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ProgramHalfWord
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_Lock
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_Unlock
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wFlashData
 </UL>
@@ -1605,7 +1603,7 @@ Global Symbols
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 
-<P><STRONG><a name="[d9]"></a>buildAndSendStr2TFT</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, tftcommunic.o(.text))
+<P><STRONG><a name="[d8]"></a>buildAndSendStr2TFT</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, tftcommunic.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = buildAndSendStr2TFT &rArr; Usart_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
@@ -1617,7 +1615,7 @@ Global Symbols
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFTButtonEvent
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disp_hindTFTDisPage
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFTDisplayNodeList2SetPag
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
+<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispElec2TFT
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NodeDataAnalysis
 </UL>
@@ -1625,7 +1623,7 @@ Global Symbols
 <P><STRONG><a name="[f3]"></a>TFTDisplayNodeList2SetPag</STRONG> (Thumb, 128 bytes, Stack size 32 bytes, tftcommunic.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = TFTDisplayNodeList2SetPag &rArr; buildAndSendStr2TFT &rArr; Usart_SendByte
 </UL>
-<BR>[Calls]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<BR>[Calls]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;deleteNodeInfo
@@ -1646,17 +1644,17 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = disp_hindTFTDisPage &rArr; buildAndSendStr2TFT &rArr; Usart_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disp_hindTFTContrl
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFTButtonEvent
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispElec2TFT
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFTanalysis
 </UL>
 
-<P><STRONG><a name="[da]"></a>dispSetTips</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, tftcommunic.o(.text))
+<P><STRONG><a name="[d9]"></a>dispSetTips</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, tftcommunic.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = dispSetTips &rArr; buildAndSendStr2TFT &rArr; Usart_SendByte
 </UL>
-<BR>[Calls]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<BR>[Calls]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RegisterNode
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;deleteNodeInfo
@@ -1664,27 +1662,27 @@ Global Symbols
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NodeDataAnalysis
 </UL>
 
-<P><STRONG><a name="[e0]"></a>dispElec2TFT</STRONG> (Thumb, 578 bytes, Stack size 304 bytes, tftcommunic.o(.text))
+<P><STRONG><a name="[e0]"></a>dispElec2TFT</STRONG> (Thumb, 576 bytes, Stack size 304 bytes, tftcommunic.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 368<LI>Call Chain = dispElec2TFT &rArr; disp_hindTFTDisPage &rArr; buildAndSendStr2TFT &rArr; Usart_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disp_hindTFTDisPage
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disp_hindTFTContrl
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFTButtonEvent
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IntervalProc
 </UL>
 
-<P><STRONG><a name="[f7]"></a>TFTButtonEvent</STRONG> (Thumb, 804 bytes, Stack size 32 bytes, tftcommunic.o(.text))
+<P><STRONG><a name="[f7]"></a>TFTButtonEvent</STRONG> (Thumb, 802 bytes, Stack size 32 bytes, tftcommunic.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 400<LI>Call Chain = TFTButtonEvent &rArr; dispElec2TFT &rArr; disp_hindTFTDisPage &rArr; buildAndSendStr2TFT &rArr; Usart_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disp_hindTFTDisPage
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFTDisplayNodeList2SetPag
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
+<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispElec2TFT
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendDataToNode
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
@@ -1694,7 +1692,7 @@ Global Symbols
 <P><STRONG><a name="[f8]"></a>setListPagef2</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, tftcommunic.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = setListPagef2 &rArr; buildAndSendStr2TFT &rArr; Usart_SendByte
 </UL>
-<BR>[Calls]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<BR>[Calls]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
@@ -1714,27 +1712,28 @@ Global Symbols
 <P><STRONG><a name="[fa]"></a>updateRegisterCount</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, tftcommunic.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = updateRegisterCount &rArr; buildAndSendStr2TFT &rArr; Usart_SendByte
 </UL>
-<BR>[Calls]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<BR>[Calls]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RegisterNode
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;deleteNodeInfo
 </UL>
 
-<P><STRONG><a name="[fb]"></a>deleteNodeInfo</STRONG> (Thumb, 232 bytes, Stack size 24 bytes, tftcommunic.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = deleteNodeInfo &rArr; TFTDisplayNodeList2SetPag &rArr; buildAndSendStr2TFT &rArr; Usart_SendByte
+<P><STRONG><a name="[fb]"></a>deleteNodeInfo</STRONG> (Thumb, 318 bytes, Stack size 56 bytes, tftcommunic.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = deleteNodeInfo &rArr; TFTDisplayNodeList2SetPag &rArr; buildAndSendStr2TFT &rArr; Usart_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateRegisterCount
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateListPagef2
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFTDisplayNodeList2SetPag
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
+<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
+<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFTanalysis
 </UL>
 
-<P><STRONG><a name="[fd]"></a>RegisterNode</STRONG> (Thumb, 970 bytes, Stack size 128 bytes, tftcommunic.o(.text))
+<P><STRONG><a name="[fd]"></a>RegisterNode</STRONG> (Thumb, 934 bytes, Stack size 128 bytes, tftcommunic.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = RegisterNode &rArr; StrToHexByte &rArr; strtol &rArr; _strtoul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcpy
@@ -1742,8 +1741,8 @@ Global Symbols
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateRegisterCount
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateListPagef2
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_erase
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StrToHexByte
+<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispSetTips
+<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StrToHexByte
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;printHex
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -2000,7 +1999,7 @@ Global Symbols
 <P><STRONG><a name="[cd]"></a>__aeabi_memcpy</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, memcpya.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wFlashData
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rFlashData
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendDataToNode
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTFTText
 </UL>
@@ -2042,8 +2041,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[cb]"></a>strlen</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, strlen.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StrToHexByte
+<BR><BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendStr2TFT
+<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StrToHexByte
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart_SendString
 </UL>
 
@@ -2059,14 +2058,14 @@ Global Symbols
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFTanalysis
 </UL>
 
-<P><STRONG><a name="[d7]"></a>strtol</STRONG> (Thumb, 112 bytes, Stack size 32 bytes, strtol.o(.text))
+<P><STRONG><a name="[d6]"></a>strtol</STRONG> (Thumb, 112 bytes, Stack size 32 bytes, strtol.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = strtol &rArr; _strtoul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_strtoul
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_ctype_table
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StrToHexByte
+<BR>[Called By]<UL><LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StrToHexByte
 </UL>
 
 <P><STRONG><a name="[dd]"></a>__aeabi_dmul</STRONG> (Thumb, 228 bytes, Stack size 48 bytes, dmul.o(.text))
@@ -2142,7 +2141,7 @@ Global Symbols
 <P><STRONG><a name="[1d9]"></a>_ll_ushift_r</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, llushr.o(.text), UNUSED)
 
 <P><STRONG><a name="[117]"></a>__rt_ctype_table</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, ctype_o.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtol
+<BR><BR>[Called By]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtol
 </UL>
 
 <P><STRONG><a name="[118]"></a>_strtoul</STRONG> (Thumb, 158 bytes, Stack size 40 bytes, _strtoul.o(.text))
@@ -2151,7 +2150,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_chval
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtol
+<BR>[Called By]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtol
 </UL>
 
 <P><STRONG><a name="[1da]"></a>__I$use$fp</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, iusefp.o(.text), UNUSED)
@@ -2267,9 +2266,8 @@ Global Symbols
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_erase
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;relayOpreat
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rwTypeAndAddr
-<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getChipIdStr
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StrToHexByte
-<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hexCompaer
+<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getChipIdStr
+<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StrToHexByte
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buildAndSendDataToNode
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart_SendString
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;printHex
@@ -2298,6 +2296,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2sprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RegisterNode
+<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;deleteNodeInfo
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateRegisterCount
 <LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setListPagef2
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispElec2TFT
@@ -2312,7 +2311,7 @@ Global Symbols
 
 <P><STRONG><a name="[119]"></a>__aeabi_errno_addr</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, errno.o(i.__aeabi_errno_addr))
 <BR><BR>[Called By]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_strtoul
-<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtol
+<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtol
 </UL>
 
 <P><STRONG><a name="[1e7]"></a>__rt_errno_addr</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, errno.o(i.__aeabi_errno_addr), UNUSED)
