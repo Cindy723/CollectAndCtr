@@ -81,49 +81,7 @@ void flash_erase(uint32_t size , uint32_t addr_base)
 			flash_erase_page(i,addr_base);								//基址累加擦除flash
     }
 }
- 
-
-void writeFlash(uint16_t * buf_to_save , uint16_t len , uint32_t wFlashAddr)
-{
-    uint16_t count = 0,i = 0;
-		FLASH_Status status;
-	
-    if(wFlashAddr >= 0x08010000)
-    {
-#ifdef DEBUG
-        printf("Waring:Flash Write Addr Error\r\n");
-#endif
-        //flashWriteOffset = SYS_APP_BAK_SAVE_ADDR_BASE;
-        return;
-    } 
-		
-	  FLASH_Unlock();     
-	  FLASH_ClearFlag(FLASH_FLAG_EOP |   FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);  
-		while(count < len)
-		{ 
-			  //FLASH_ClearFlag(FLASH_FLAG_EOP |   FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);   
-				status = FLASH_ProgramHalfWord((wFlashAddr + count*2),buf_to_save[count]);
-				while(FLASH_COMPLETE != status) 
-				{			
-					FLASH_ClearFlag(FLASH_FLAG_EOP |   FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);   
-					i++;
-					printf("FLASH_ProgramHalfWord ei %d, %d/%d \n", i, count, len);
-					if(i > 5) 
-					{ 
-						FLASH_ClearFlag(FLASH_FLAG_EOP |   FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);   
-						printf("FLASH_ProgramHalfWord Faild > 200 !!! lasterro: %d\n", (u8)status);
-						FLASH_Lock();
-						break;
-					}
-					continue;
-				}
-			  
-				count ++;     
-		}
-		
-		FLASH_Lock();
-}
-
+  
 void readFlash(uint16_t * buf_to_get,uint16_t len , uint32_t readFlashAddr)
 {
 	uint16_t count=0;
@@ -134,39 +92,48 @@ void readFlash(uint16_t * buf_to_get,uint16_t len , uint32_t readFlashAddr)
 	}
 }
 
-/*写Flash,控制写长度,Flash地址偏移*/
-void wFlashData(uint8_t * buf_to_save , uint16_t len , uint32_t wFlashAddr)
-{
-    uint8_t WriteFlashTempBuf[PIECE_MAX_LEN];//写Flash临时缓冲区
-    uint16_t WriteFlashTempLen = 0;//写Flash长度
-    memset(WriteFlashTempBuf,0,sizeof(WriteFlashTempBuf));//写Flash临时缓冲区首先全部填充0xEE
-    memcpy(WriteFlashTempBuf,buf_to_save,len);//临时缓冲区
-    WriteFlashTempLen = len;
-    if(len%2 != 0)
-        WriteFlashTempLen += 1;//因为Flash只能写半字
-		
-    writeFlash((uint16_t *)&WriteFlashTempBuf ,  WriteFlashTempLen/2 , wFlashAddr);
-}
 
-
+/**********************************************************************************************************
+@ 功能: 读取flash
+@ 参数: 
+@ 返回: 
+@ 备注: 
+*********************************************************************************************************/
 void rFlashData(uint8_t * buf_to_get , uint16_t len , uint32_t rFlashAddr)
 {
-    //uint8_t ReadFlashTempBuf[PIECE_MAX_LEN];//读Flash临时缓冲区
     uint16_t ReadFlashTempLen = 0;//读Flash长度
-    
     if(len%2 == 0)
     {
         ReadFlashTempLen = len;
         readFlash((uint16_t *)buf_to_get,ReadFlashTempLen/2 , rFlashAddr);
-        //memcpy(buf_to_get,buf_to_get,len);
     }
     else
     {
         ReadFlashTempLen = len + 1;//因为Flash只能读半字
         readFlash((uint16_t *)buf_to_get,ReadFlashTempLen/2 , rFlashAddr);
-        //memcpy(buf_to_get,ReadFlashTempBuf,len);
     }
 }
+
+/**********************************************************************************************************
+ @ 功能: 写入flash
+ @ 参数: 
+ @ 返回: 
+ @ 备注: 
+ *********************************************************************************************************/
+void wFlashData(uint32_t StartAddress, uint8_t* Data, uint32_t Length) 
+{
+    uint32_t address = StartAddress;
+    uint32_t i; 
+	 
+    FLASH_Unlock();    
+	 
+    for (i = 0; i < Length; i += 2) {
+        uint16_t halfword = Data[i] | (Data[i+1] << 8);
+        FLASH_ProgramHalfWord(address + i, halfword);
+    } 
+    FLASH_Lock();
+}
+  
 /****IAP*****/
 typedef  void (*iapfun)(void);				//??????`э???.
 iapfun jump2app; 

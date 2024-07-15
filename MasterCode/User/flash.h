@@ -21,7 +21,7 @@
 #define FLASH_PAGE_SIZE 0x800U
 
   
-void rFlashData(uint8_t * buf_to_get , uint16_t len , uint32_t rFlashAddr);
-void wFlashData(uint8_t * buf_to_save , uint16_t len , uint32_t wFlashAddr); 
+void rFlashData(uint8_t * buf_to_get , uint16_t len , uint32_t rFlashAddr); 
+void wFlashData(uint32_t StartAddress, uint8_t* Data, uint32_t Length);
 void flash_erase(uint32_t size , uint32_t addr_base);
 #endif

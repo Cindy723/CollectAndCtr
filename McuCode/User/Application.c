@@ -368,6 +368,6 @@ void rwTypeAndAddr(u8 rw, BroadAddr *baddr)
 		flash_erase(1024 , PARAM_SAVE_ADDR_BASE); 
 		printf("write board addr: \r\n");
 		printHex(baddr->addr, 3);
-		wFlashData(baddr->addr, 3, PARAM_SAVE_ADDR_BASE); 
+		wFlashData(PARAM_SAVE_ADDR_BASE, baddr->addr, 3); 
 	}
 }

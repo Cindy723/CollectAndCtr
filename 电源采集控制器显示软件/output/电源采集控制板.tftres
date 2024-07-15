@@ -3,6 +3,7 @@
         <page name="Screen0" id="0" />
         <page name="Screen1" id="1" />
         <page name="Screen2" id="2" />
+        <page name="Screen3" id="3" />
     </pages>
     <images>
         <image id="0" url="e:\reynold\collectandctr\电源采集控制器显示软件\Images\开机动画.gif" effect_width="480" effect_height="854" />

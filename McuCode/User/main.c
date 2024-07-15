@@ -49,7 +49,7 @@ int main(void)
 	boardAddr.type = &boardAddr.addr[0];
 	//StrToHexByte(boardAddr.addrStr, boardAddr.addr); 
 	rwTypeAndAddr(1, &boardAddr); // 默认写ID后两位
-	//rwTypeAndAddr(0, &boardAddr); 
+	rwTypeAndAddr(0, &boardAddr); 
 	  
 	
 	// 初始化主机数据包结构体指针

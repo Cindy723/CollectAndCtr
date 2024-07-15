@@ -42,8 +42,8 @@ local g_control
 local g_value
 
 -- ee cd cx 自定义指令对应功能
-local g_registerButton = 0xc1 -- 注册按钮按下指令
-local g_pswEnter = 0xc2		   -- 密码输入结束
+local g_registerButton = 0xc1 -- 注册按钮按下指令 
+local g_setNodeButton = 0xc2 -- 设置节点按钮按下指令 
 local g_nodePageChange = 0xc3   -- 设置界面节点页面切换 
 local g_dispPageChange = 0xc4   -- 显示界面页面切换 
 local g_deleteNode = 0xc5 -- 删除节点
@@ -115,7 +115,9 @@ function on_control_notify_my(screen, control, value)
 	local datalen = 0
 
 	print(string.format("on_control_notify %d", control))
-
+	for i = 4, # (sendArray) do
+		sendArray[i] = 0
+	end 
 
 	if (screen == 1 and control == 1) then  -- 进入设置
 		set_text(2, 7, "") -- 清除上次输入的密码
@@ -200,6 +202,32 @@ function on_control_notify_my(screen, control, value)
 	end
 
 
+	if (screen == 2 and control == 31) then  -- 配置按钮按下
+		print("setNode ") 	
+		sendArray[3] = g_setNodeButton
+
+		local values = {}
+		for i = 41, 46 do
+		    values[i] = get_value(2, i)
+		end
+		 
+		local j = 0  -- 选择
+		for i = 41, 46 do
+		    if values[i] == 1 then
+		        j = i
+		        break
+		    end
+		end 
+		datalen = 1
+		sendArray[4] = datalen
+		sendArray[5]  =  j
+ 
+		add_end(datalen, sendArray)
+		local sendData = shift_left(sendArray)
+		uart_send_data(sendData)  
+	end
+
+
 	if (screen == 2 and control == 32) then  -- 注册按钮按下 返回id+name  都是字符串表示的
 		print(string.format("method register"))
 		local searchId = get_text(screen, 8)  -- 表示hex 的string
@@ -235,13 +263,13 @@ function on_control_notify_my(screen, control, value)
 	if (screen == 2 and control == 53) then  -- 删除节点 
 		print("deleteNode ") 	
 		sendArray[3] = g_deleteNode
-		-- 使用一个表来存储值
+
 		local values = {}
 		for i = 41, 46 do
 		    values[i] = get_value(2, i)
 		end
 		 
-		local j = 0  
+		local j = 0  -- 选择
 		for i = 41, 46 do
 		    if values[i] == 1 then
 		        j = i

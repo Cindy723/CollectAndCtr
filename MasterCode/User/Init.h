@@ -84,6 +84,9 @@
  
 // 最大节点数量
 #define MAX_NODE 255
+
+// 配置节点和删除节点设置的密码
+#define SET_PSW "123456"
   
 // 已注册的节点离线判断时间 *10ms = s
 #define NODE_TIMEOUT10ms 500

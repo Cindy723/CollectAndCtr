@@ -171,29 +171,6 @@ void IntervalProc()
 			timerVariate.SendTFTQueueCount = 0;
 		}
 }
-
-
-/**********************************************************************************************************
- @ 功能： 读写节点类型和地址到flash
- @ 入口： 0读 1写
- *********************************************************************************************************/
-void rwTypeAndAddr(u8 rw, BoardAddr *baddr)
-{
-	if(rw == 0) // 读取
-	{
-		rFlashData(baddr->addr, 3, PARAM_SAVE_ADDR_BASE);
-		printf("read board addr: \r\n");
-		printHex(baddr->addr, 3);
-	}
-	else if(rw == 1)
-	{
-		flash_erase(1024 , PARAM_SAVE_ADDR_BASE); 
-		printf("write board addr: \r\n");
-		printHex(baddr->addr, 3);
-		wFlashData(baddr->addr, 3, PARAM_SAVE_ADDR_BASE); 
-	}
-}
- 
  
 // 异常节点靠前存储  如果多个异常 节点id小的在前
 // 在线测试通过 实际未测
