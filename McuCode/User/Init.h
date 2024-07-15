@@ -86,6 +86,7 @@
 #define REQUESTELEC  0X0B  // 主机请求电能数据
 #define REQUESTADDR  0X0C  // 主机请求节点地址
 #define SETBOARDADDR 0X0D  // 主机修改节点地址,当节点没有存入地址时使用0地址下发，当已经有地址时需要使用原先地址发送. 或者使用广播地址
+#define SETBOARDCFG  0X0E  // 主机设置从机通电参数
  
 // HMI的指令
 #define BUTTON_CMD 0XB1
@@ -96,7 +97,7 @@
 #define ACADJAP 1.149905189
 
  
-// 节点基本信息  
+// 节点类型地址  
 typedef struct
 {
 	u8 addr[3];	
@@ -109,8 +110,19 @@ enum type
   ACTYPE = 0xac,
   DCTYPE = 0xdc
 }; 
-extern BroadAddr boardAddr;
+extern BroadAddr broadAddr;
   
+
+
+// 节点配置
+typedef struct
+{ 
+	u8 initPowerSta;
+	u8 delays;
+}BroadCfg;
+extern BroadCfg broadCfg;
+
+
 // DC节点异常标志 最高位表示FLT 最低位表示PG
 typedef struct
 {

@@ -3,7 +3,8 @@
 #include "Tools.h"      
 #include "Application.h"  
 #include "ADC.h"   
-#include "Uart.h"  
+#include "Uart.h"   
+#include "flash.h"  
  
 
 /**********************************************************************************************************
@@ -35,25 +36,33 @@ int main(void)
 	
 	// 地址设置
 	if(PBin(LEDRUNPIN) == 1){
-		boardAddr.addr[0] = ACTYPE;
+		broadAddr.addr[0] = ACTYPE;
 	}
 	else{
-		boardAddr.addr[0] = DCTYPE;
+		broadAddr.addr[0] = DCTYPE;
 	}
 		
-	boardAddr.addr[0] = DCTYPE;// 虚拟仿真
+	broadAddr.addr[0] = DCTYPE;// 虚拟仿真
  
 	getChipIdStr(g_ChipIDS);  
-	boardAddr.addr[1] = g_ChipIDi[10];
-	boardAddr.addr[2] = g_ChipIDi[11];
-	boardAddr.type = &boardAddr.addr[0];
-	//StrToHexByte(boardAddr.addrStr, boardAddr.addr); 
-	rwTypeAndAddr(1, &boardAddr); // 默认写ID后两位
-	rwTypeAndAddr(0, &boardAddr); 
-	  
+	broadAddr.addr[1] = g_ChipIDi[10];
+	broadAddr.addr[2] = g_ChipIDi[11];
+	broadAddr.type = &broadAddr.addr[0];
+	
+	//StrToHexByte(broadAddr.addrStr, broadAddr.addr); 
+	//rwTypeAndAddr(1, &broadAddr); // 默认写ID后两位
+	//rwTypeAndAddr(0, &broadAddr); 
+	 
+	rFlashData((uint8_t*)&broadCfg, sizeof(BroadCfg), PARAM_SAVE_ADDR_BASE);
+	printf("read board initPowerSta: %u \r\n", broadCfg.initPowerSta);
+	printf("read board delays: %u \r\n", broadCfg.delays); 
+	if(broadCfg.initPowerSta == 1){
+	 needOpreat(POWER_ON, POWERCH1);
+	 needOpreat(POWER_ON, POWERCH2);
+	} 
 	
 	// 初始化主机数据包结构体指针
-	boardAddr.type 			 = &boardAddr.addr[0];
+	broadAddr.type 			 = &broadAddr.addr[0];
 	uart1Pack.cmd 			 = &uart1Pack.dataBuf[6]; // 5 保留
 	uart1Pack.contenType = &uart1Pack.dataBuf[7];
 	uart1Pack.dataLen		 = &uart1Pack.dataLen[8];
@@ -72,7 +81,7 @@ int main(void)
 	uart2HMIPack.Status   		= &uart2HMIPack.dataBuf[9];
 
 	// 如果是 DC 板：
-	if(boardAddr.type){ADCx_Init();}
+	if(broadAddr.type){ADCx_Init();}
 	CTRL485RECE;
 	while (1)
 	{

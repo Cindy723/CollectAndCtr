@@ -99,11 +99,11 @@ void buildAndSendDataTo485(u8 *pbuf, u8 cmd, u8 datalen, u8* data)
 	pbuf[1] = 0x5A;
 	
 	// ∞Â¿‡–Õ
-	pbuf[2] = *boardAddr.type;
+	pbuf[2] = *broadAddr.type;
 	
 	// ∞Âµÿ÷∑
-	pbuf[3] = boardAddr.addr[1];
-	pbuf[4] = boardAddr.addr[2];
+	pbuf[3] = broadAddr.addr[1];
+	pbuf[4] = broadAddr.addr[2];
 	
 	// √¸¡Ó
 	pbuf[5] = 0;

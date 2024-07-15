@@ -24,6 +24,17 @@
 //{ 
 //}
  
+void setBoardCfg(u8 sta, u8* delay);
+ 
+typedef struct
+{
+	u8 chx;
+	u8 changFlag;
+	u8 sw;
+}RelayCfg;
+
+RelayCfg relayCfg[3]; // index 0不使用
+
 /**********************************************************************************************************
  @ 功能：串口数据解析
 	 备注： 在拷贝前 就存入一个结构体中 表示一包数据 里面再嵌套一个板子地址信息
@@ -49,18 +60,18 @@ void MasterDataAnalysis()
 			case POWERCONTRL:
 			{
 				printf("CASE POWERCONTRL \r\n");
-				relayOpreat((uart1Pack.content[0] & 0x80) >> 7 , (uart1Pack.content[0] & 0x7f));
+				needOpreat((uart1Pack.content[0] & 0x80) >> 7 , (uart1Pack.content[0] & 0x7f));
 				buildAndSendDataTo485(g_retBuf, *uart1Pack.cmd, 1, data); 
 			}
 			break;
 			case REQUESTELEC:  
 			{
 				 printf("CASE REQUESTELEC \r\n");
-				if(*boardAddr.type == ACTYPE) 
+				if(*broadAddr.type == ACTYPE) 
 				{
 					updateElectInfoAC(1); 
 				}
-				else if(*boardAddr.type == DCTYPE) 
+				else if(*broadAddr.type == DCTYPE) 
 				{ 
 					updateElectInfoDC(1); 
 				}
@@ -83,6 +94,13 @@ void MasterDataAnalysis()
 				 buildAndSendDataTo485(g_retBuf, *uart1Pack.cmd, 1, data);
 			}
 			break;
+			case SETBOARDCFG:
+			{
+				 printf("CASE SETBOARDCFG \r\n");
+				 setBoardCfg(uart1Pack.content[0], (u8*)&uart1Pack.content[1]);  
+				 buildAndSendDataTo485(g_retBuf, *uart1Pack.cmd, 1, data);
+			}
+			break;
 			default: printf("uart1Pack.cmd unkown! \r\n"); break;
 		}  
 		memset(uart1Pack.dataBuf, 0, sizeof(uart1Pack.dataBuf));  
@@ -101,7 +119,7 @@ void MasterDataAnalysis()
 //				  if(*uart2HMIPack.Control_id1 == 0x6F) // 第一行CH1开关
 //					{
 //						//在这这里找出对应开关id对应的板子 再下达对应地址板子控制指令
-//						relayOpreat(uart2HMIPack.Status[0], POWERCH1);
+//						needOpreat(uart2HMIPack.Status[0], POWERCH1);
 //					}
 //				}
 //				break;
@@ -114,44 +132,86 @@ void MasterDataAnalysis()
 }
 
 /**********************************************************************************************************
- @ 功能： 操作继电器
+ @ 功能： 需要操作继电器
  @ 入口： 开关 通道，1 2
  *********************************************************************************************************/
-void relayOpreat(u8 sw, u8 ch)
+void needOpreat(u8 sw, u8 ch)
 {
-	printf("relayOpreat sw %d ch %d \r\n", sw, ch);
-	if(ch == POWERCH1)
-	{
-		if(sw == POWER_ON)
-		{
-			printf("HC1 ON\r\n");
-			RELAY1 = POWER_ON;  
-			LEDContrl(LED2PIN, LEDON);
-		}
-		else 
-		{
-			printf("CH1 OFF\r\n");
-			RELAY1 = POWER_OFF; 
-			LEDContrl(LED2PIN, LEDOFF);
-		}
-	}
-	else if(ch == POWERCH2)
-	{
-		if(sw == POWER_ON)
-		{
-			printf("CH2 ON\r\n");
-			RELAY2 = POWER_ON; 
-			LEDContrl(LED3PIN, LEDON);
-		}
-		else 
-		{
-			printf("CH2 OFF\r\n");
-			RELAY2 = POWER_OFF; 
-			LEDContrl(LED3PIN, LEDOFF);
-		}
-	}
-
+	printf("needOpreat sw %d ch %d \r\n", sw, ch);
+	relayCfg[ch].sw = sw; 
+	relayCfg[ch].chx = ch; 
+	relayCfg[ch].changFlag = 1; 
+	g_OpreatDelayCount = 0;
 }
+
+/**********************************************************************************************************
+ @ 功能: 操作继电器
+ @ 参数: 开关 通道，1 2
+ @ 返回: 
+ @ 备注: 
+ *********************************************************************************************************/
+void RelayOpreat(u8 sw, u8 ch)
+{
+	if(ch == POWERCH1)
+		{
+			if(sw == POWER_ON)
+			{
+				printf("HC1 ON\r\n");
+				RELAY1 = POWER_ON;  
+				LEDContrl(LED2PIN, LEDON);
+			}
+			else 
+			{
+				printf("CH1 OFF\r\n");
+				RELAY1 = POWER_OFF; 
+				LEDContrl(LED2PIN, LEDOFF);
+			}
+		}
+		else if(ch == POWERCH2)
+		{
+			if(sw == POWER_ON)
+			{
+				printf("CH2 ON\r\n");
+				RELAY2 = POWER_ON; 
+				LEDContrl(LED3PIN, LEDON);
+			}
+			else 
+			{
+				printf("CH2 OFF\r\n");
+				RELAY2 = POWER_OFF; 
+				LEDContrl(LED3PIN, LEDOFF);
+			}
+		} 
+}
+
+
+/**********************************************************************************************************
+ @ 功能： 检查是否有继电器需要操作 
+ *********************************************************************************************************/
+void CheckNeedOpreat()
+{
+	u8 i;
+	for(i = 1; i < 3; i++)
+	{
+		if(relayCfg[i].changFlag)
+		{
+			 if(relayCfg[i].sw == POWER_OFF)
+			 {
+				 RelayOpreat(relayCfg[i].sw, relayCfg[i].chx);
+			 }
+			else if(g_OpreatDelayCount > broadCfg.delays *100)
+			{
+				printf("到达延迟打开时间 %d \r\n", broadCfg.delays);
+				RelayOpreat(relayCfg[i].sw, relayCfg[i].chx);
+				g_OpreatDelayCount = 0;
+				relayCfg[i].changFlag = 0;
+			}
+		}
+	
+	}
+	
+}
+
 
 
 /**********************************************************************************************************
@@ -292,8 +352,8 @@ void updateElectInfoDC(u8 needSend)
  *********************************************************************************************************/
 void updateBaseInfo()
 {  
-	//rwTypeAndAddr(0, &boardAddr); 
-	buildAndSendDataTo485(g_retBuf, REQUESTADDR, 3, boardAddr.addr);
+	//rwTypeAndAddr(0, &broadAddr); 
+	buildAndSendDataTo485(g_retBuf, REQUESTADDR, 3, broadAddr.addr);
 }
 
 
@@ -318,7 +378,7 @@ u8 setBoardBaseInfo(const u8 *pconten)
  *********************************************************************************************************/
 void IntervalProc()
 {
-		if(*boardAddr.type == DCTYPE){
+		if(*broadAddr.type == DCTYPE){
 			dcPowerSta.CH1erro = (FLT1_STATUS << 7) | PG1_STATUS;
 			dcPowerSta.CH2erro = (FLT2_STATUS << 7) | PG2_STATUS;
 		}
@@ -339,7 +399,7 @@ void IntervalProc()
 			PCout(13) = LEDOFF;
 			#endif
 			
-			if(*boardAddr.type == DCTYPE){	// 打印DC状态 
+			if(*broadAddr.type == DCTYPE){	// 打印DC状态 
 				if(dcPowerSta.CH1erro != 1){
 					printf("CH1erro !!! %d \r\n", dcPowerSta.CH1erro);
 				}
@@ -348,6 +408,8 @@ void IntervalProc()
 				}
 			}
 		}
+		
+		CheckNeedOpreat();
 }
 
 
@@ -355,19 +417,48 @@ void IntervalProc()
  @ 功能： 读写节点类型和地址到flash
  @ 入口： 0读 1写
  *********************************************************************************************************/
-void rwTypeAndAddr(u8 rw, BroadAddr *baddr)
+void rwTypeAndAddr(u8 rw, BroadAddr *cfg)
 {
 	if(rw == 0) // 读取
 	{
-		rFlashData(baddr->addr, 3, PARAM_SAVE_ADDR_BASE);
-		printf("read board addr: \r\n");
-		printHex(baddr->addr, 3);
+		rFlashData((uint8_t*)cfg, sizeof(BroadAddr), PARAM_SAVE_ADDR_BASE);
+		printf("read board addr: ");
+		printHex(cfg->addr, 3);  
 	}
 	else if(rw == 1)
 	{
 		flash_erase(1024 , PARAM_SAVE_ADDR_BASE); 
-		printf("write board addr: \r\n");
-		printHex(baddr->addr, 3);
-		wFlashData(PARAM_SAVE_ADDR_BASE, baddr->addr, 3); 
+		printf("write board addr: ");
+		printHex(cfg->addr, 3);
+		wFlashData(PARAM_SAVE_ADDR_BASE, (uint8_t*)cfg, sizeof(BroadAddr)); 
 	}
 }
+
+
+/**********************************************************************************************************
+ @ 功能: 设置板子参数 上电状态 延迟时间
+ @ 参数: 
+ @ 返回: 
+ @ 备注: 
+ *********************************************************************************************************/
+void setBoardCfg(u8 sta, u8* delay)
+{
+	unsigned int de = atoi((char*)delay); 
+	BroadCfg tempcfg;
+	
+  broadCfg.initPowerSta = sta;
+	broadCfg.delays = de;   
+	 
+	flash_erase(1024, PARAM_SAVE_ADDR_BASE);  
+	wFlashData(PARAM_SAVE_ADDR_BASE, (uint8_t*)&broadCfg, sizeof(BroadCfg));
+	rFlashData((uint8_t*)&tempcfg, sizeof(BroadCfg), PARAM_SAVE_ADDR_BASE);
+	
+	if((broadCfg.delays != tempcfg.delays) || (broadCfg.initPowerSta != tempcfg.initPowerSta))
+	{
+			printf("setBoardCfg faild!\r\n");
+	}else{
+		printf("read board initPowerSta: %u \r\n", broadCfg.initPowerSta);
+		printf("read board delays: %u \r\n", broadCfg.delays); 
+	}
+}
+

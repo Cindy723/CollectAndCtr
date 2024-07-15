@@ -174,7 +174,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>CMSIS_AGDI</Key>
-          <Name>-X"CMSIS-DAP" -U07000000000b1c204836132e004e4d35 -O2766 -S8 -C0 -P00 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -FO31 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103CB$Flash\STM32F10x_128.FLM)</Name>
+          <Name>-X"CMSIS-DAP" -U07000000000b1c204836132e004e4d35 -O2766 -S8 -C0 -P00 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F103CB$Flash\STM32F10x_128.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -186,18 +186,34 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>257</LineNumber>
+          <LineNumber>57</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134228358</Address>
+          <Address>134226674</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>E:\Reynold\CollectAndCtr\McuCode\Project\User\stm32f10x_it.c</Filename>
+          <Filename>E:\Reynold\CollectAndCtr\McuCode\Project\User\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\software\../../User/stm32f10x_it.c\257</Expression>
+          <Expression>\\software\../../User/main.c\57</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>59</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134226692</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>E:\Reynold\CollectAndCtr\McuCode\Project\User\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\software\../../User/main.c\59</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -225,6 +241,11 @@
           <count>4</count>
           <WinNumber>1</WinNumber>
           <ItemText>g_ChipIDi</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>broadCfg,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

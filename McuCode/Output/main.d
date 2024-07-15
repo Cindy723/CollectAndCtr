@@ -41,3 +41,4 @@
 ..\..\output\main.o: ..\..\User\Application.h
 ..\..\output\main.o: ..\..\User\ADC.h
 ..\..\output\main.o: ..\..\User\Uart.h
+..\..\output\main.o: ..\..\User\flash.h

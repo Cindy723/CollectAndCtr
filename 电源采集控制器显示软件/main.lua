@@ -47,6 +47,7 @@ local g_setNodeButton = 0xc2 -- 设置节点按钮按下指令
 local g_nodePageChange = 0xc3   -- 设置界面节点页面切换 
 local g_dispPageChange = 0xc4   -- 显示界面页面切换 
 local g_deleteNode = 0xc5 -- 删除节点
+local g_cfgNodeButton = 0xc6 -- 配置节点，下达配置按钮
 
 local sendArray = {0xee, 0xcd} -- 自定数据 帧头 用户数据 数据类型 数据长度 数据 
   
@@ -294,16 +295,38 @@ function on_control_notify_my(screen, control, value)
 		local sendData = shift_left(sendArray)
 		uart_send_data(sendData)  
 	end
+
+	if (screen == 3 and control == 9) then  -- 下达配置参数 
+		print("cfg_node ") 	
+		sendArray[3] = g_cfgNodeButton
+ 		datalen	= 2
+		sendArray[5]  =  get_value(3, 4)
+		local textS  =  get_text(3, 8)
+		datalen = # (textS) + 1
+		sendArray[4] = datalen
+		local hexS = string_to_hex(textS)
+	    for i = 1, datalen do
+			sendArray[5 + i] = hexS[i] 
+		end  
+		add_end(datalen, sendArray)
+		local sendData = shift_left(sendArray)
+		uart_send_data(sendData)  
+	end
+
+
 end
 
 --  系统通知事件
 function on_control_notify(screen, control, value)
-
-		if((control ~= 8) and (control ~= 9) and (control ~= 30)) then -- 提前过滤不需要的事件 
-			g_screen = screen
-			g_control = control
-			g_value = value 
-			start_timer(timer_notify, 100, 0, 1)	  -- 再由定时器触发 因为按钮必须要有数据才触发通知 但是自己还要发送数据 数据间隔太短	
+		
+		if((screen == 2) and (control == 8) and (control == 9) and (control == 30)) then -- 提前过滤不需要的事件
+			print("throw")
+			return  
 		end
+
+		g_screen = screen
+		g_control = control
+		g_value = value 
+		start_timer(timer_notify, 100, 0, 1)	  -- 再由定时器触发 因为按钮必须要有数据才触发通知 但是自己还要发送数据 数据间隔太短		
  		
 end

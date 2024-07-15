@@ -41,11 +41,7 @@ void NodeDataAnalysis()
 					nodeInfo[g_nodeTotalCount].baddr.addr[1] = *uart3_485Pack.addr1;
 					nodeInfo[g_nodeTotalCount].baddr.addr[2] = *uart3_485Pack.addr2 + nodeIDSimuOffset;
 					nodeInfo[g_nodeTotalCount].baddr.type 	 = &nodeInfo[g_nodeTotalCount].baddr.addr[0]; 
-					
-					nodeInfo[g_nodeTotalCount].baddr.addrInt = (nodeInfo[g_nodeTotalCount].baddr.addr[0]  << 16) | 
-																									 	  (nodeInfo[g_nodeTotalCount].baddr.addr[1] << 8) | 
-																										   nodeInfo[g_nodeTotalCount].baddr.addr[2]; 
-					
+ 
 					// to tft
 					sprintf(tempstr, "%02x", *uart3_485Pack.addr0);
 					sprintf(&tempstr[2], "%02x", *uart3_485Pack.addr1);
@@ -118,6 +114,11 @@ void NodeDataAnalysis()
 					timerVariate.NodeTimeCount10ms[index] = 0; 
 				}
 			  break;
+				case SETBOARDCFG:
+				{
+					printf("NodeData Ret SETBOARDCFG ");
+					buildAndSendStr2TFT(3, 47, "ÉèÖÃ³É¹¦");
+				}break;
 				default: printf("uart3_485Pack.cmd unkown! %x\r\n", *uart3_485Pack.cmd); break; 
 			}
 			memset(uart3_485Pack.dataBuf, 0, sizeof(uart3_485Pack.dataBuf));  

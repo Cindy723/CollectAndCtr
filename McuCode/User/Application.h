@@ -7,7 +7,7 @@
 #include "stm32f10x_it.h"
 
 
-void relayOpreat(u8 sw, u8 ch);
+void needOpreat(u8 sw, u8 ch);
 void updateElectInfoAC(u8 needSend);
 void updateElectInfoDC(u8 needSend);
 void updateBaseInfo(void);

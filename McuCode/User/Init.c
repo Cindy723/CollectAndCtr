@@ -7,7 +7,8 @@
 #include "Tools.h"
 #include "ADC.h"
  
-BroadAddr boardAddr;
+BroadAddr broadAddr;
+BroadCfg broadCfg;
 DCPowerSta dcPowerSta;
  
 /*

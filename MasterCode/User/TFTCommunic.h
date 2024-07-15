@@ -12,6 +12,7 @@
 #define USER_CMD_NODE_PAGECHANGE 	 0XC3  // 设置界面节点列表切换
 #define USER_CMD_DISP_PAGECHANGE 	 0XC4  // 显示界面页面切换 
 #define USER_CMD_DELETE_NODE		 	 0XC5  // 设置界面删除指令 
+#define USER_CMD_CFG_NODE		 	 		 0XC6  // 配置节点参数
 
 // TFT 页面定义
 #define TFT_DISP_PAGE 1

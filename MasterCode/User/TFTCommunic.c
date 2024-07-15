@@ -171,6 +171,22 @@ void TFTButtonEvent()
 				default: printf("Notfun page2 button %d\r\n", *uart2TFTPack.Control_id1); break;
 			}
 	}
+	
+	/* 第3页的按钮 */
+  else if(*uart2TFTPack.Screen_id1 == TFT_SET_NODE_PAGE) 
+	{ 
+		switch(*uart2TFTPack.Control_id1) 
+		{  			 
+			case 7: /*  屏幕 -》 返回 */
+			{ 
+			  buildAndSendStr2TFT(3, 47, "");
+			} break;
+			case 9: /*  屏幕 -》 下达 */
+			{ 
+			  printf("下达配置\r\n");
+			} break;
+		} 
+	}
 	else printf("Notfun Screen %d\r\n", *uart2TFTPack.Screen_id1); 
 
 }
@@ -183,6 +199,7 @@ void TFTButtonEvent()
  *********************************************************************************************************/
 void TFTanalysis()
 {  
+	static u8 lastSlect = 0;
 		if(uart2TFTPack.receiveok)
 		{
 			uart2TFTPack.receiveok = 0;    
@@ -242,6 +259,12 @@ void TFTanalysis()
 						sprintf(temp, "ID: %s   Name: %s", (char*)nodeInfo[offset + index].baddr.addrStr, (char*)nodeInfo[offset + index].name);
 						buildAndSendStr2TFT(3, 1, temp); 
 						printf("USER_CMD -》 SET_NODE %s\n", temp);
+						lastSlect = offset + index;
+					}
+					else if(*pTFTPackUser.dataType == USER_CMD_CFG_NODE) // 页面3 配置节点参数。 是否开机自启、延迟时间字符串 
+					{ 
+						buildAndSendDataToNode(&nodeInfo[lastSlect].baddr, SETBOARDCFG, *pTFTPackUser.dataLen, (u8*)pTFTPackUser.data);
+						printf("USER_CMD -》 CFG_NODE\n");
 					}
 					
 				}
@@ -306,7 +329,10 @@ int RegisterNode(UartTFTRecivePackUser *pack)
 	strcpy((char*)nodeInfo[g_nodeTotalCount].baddr.addrStr, (char*)(nodeTemp.baddr.addrStr)); 
 	strcpy((char*)nodeInfo[g_nodeTotalCount].name, (char*)(nodeTemp.name));
 	StrToHexByte(nodeInfo[g_nodeTotalCount].baddr.addrStr, nodeInfo[g_nodeTotalCount].baddr.addr);
-	nodeInfo[g_nodeTotalCount].baddr.type = &nodeInfo[g_nodeTotalCount].baddr.addr[0];
+	nodeInfo[g_nodeTotalCount].baddr.type = &nodeInfo[g_nodeTotalCount].baddr.addr[0]; 
+	nodeInfo[g_nodeTotalCount].baddr.addrInt = (nodeInfo[g_nodeTotalCount].baddr.addr[0]  << 16) | 
+																							(nodeInfo[g_nodeTotalCount].baddr.addr[1] << 8) | 
+																							 nodeInfo[g_nodeTotalCount].baddr.addr[2]; 
  
 	g_nodeTotalCount ++;
 	printf("Node Count %d sizeof %d List: \r\n", g_nodeTotalCount, sizeof(nodeInfo));

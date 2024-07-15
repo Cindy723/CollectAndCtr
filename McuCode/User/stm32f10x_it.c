@@ -23,7 +23,8 @@
 #include "Tools.h"   
 #include "Uart.h"   
  
-unsigned int g_LEDBlinkCount = 0;  
+unsigned int g_LEDBlinkCount = 0; 
+unsigned int g_OpreatDelayCount = 0;
  
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -202,6 +203,7 @@ void TIM3_IRQHandler(void)
 	{
     	TIM_ClearITPendingBit(TIM3, TIM_IT_Update); 
 			++g_LEDBlinkCount;   
+			++g_OpreatDelayCount;
 	} 
 	TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 }
@@ -241,12 +243,12 @@ void USART1_IRQHandler(void)
 					 // 收到的是广播数据 这里不要用io打印 将影响后续数据
 						//printf("broadcast \r\n"); 
 					}
-					else if(0 != hexCompaer(&uart1Pack.dataOrig[2], boardAddr.addr , 3))// 不是我的数据
+					else if(0 != hexCompaer(&uart1Pack.dataOrig[2], broadAddr.addr , 3))// 不是我的数据
 					{
 						printf("This data does not belong to me. \r\ntarget: ");
 						printHex(&uart1Pack.dataOrig[2], 3); 
 						printf("myaddr: "); 
-						printHex(&boardAddr.addr[0], 3); 
+						printHex(&broadAddr.addr[0], 3); 
 						USART_data_Reset(USART1);
 						return;
 					}

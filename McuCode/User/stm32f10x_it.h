@@ -34,6 +34,7 @@
 /* Exported functions ------------------------------------------------------- */
  
 extern unsigned int g_LEDBlinkCount; 
+extern unsigned int g_OpreatDelayCount;
 
 void NMIException(void);
 void HardFaultException(void);

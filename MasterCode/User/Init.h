@@ -75,7 +75,7 @@
 #define REQUESTELEC  0X0B  // 主机请求电能数据 
 #define REQUESTADDR  0X0C  // 主机请求节点地址
 #define SETBOARDADDR 0X0D  // 主机修改节点地址,当节点没有存入地址时使用0地址下发，当已经有地址时需要使用原先地址发送. 或者使用广播地址
- 
+#define SETBOARDCFG  0X0E  // 主机设置从机通电参数
  
 // AC电压校正值
 #define ACADJVP 0.989803567
