@@ -8,6 +8,7 @@
 #include "ADC.h"
  
 BroadAddr boardAddr;
+DCPowerSta dcPowerSta;
  
 /*
  * 使用HSE时，设置系统时钟的步骤
@@ -289,7 +290,21 @@ void RE485Pin_Configuration()
 }
 
 /***********************************************************************************************************
- @ 功能： 串口GPI配置
+ @ 功能： TPS2492 GPIO配置
+ @ 入口： 
+ @ 出口： 
+ @ 备注：
+ *********************************************************************************************************/
+void TPS2492Pin_Configuration()
+{ 
+	GPIO_InitTypeDef  GPIO_InitStructure;  
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_3 | GPIO_Pin_6 | GPIO_Pin_5;
+	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOB,&GPIO_InitStructure);  
+}
+/***********************************************************************************************************
+ @ 功能： 串口GPIO配置
  @ 入口： 
  @ 出口： 
  @ 备注：

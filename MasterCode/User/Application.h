@@ -14,7 +14,6 @@ extern u16 g_kCount;
 void NodeDataAnalysis(void);
 void updateBaseInfo(void);
 u8 setBoardBaseInfo(const u8 *pconten);
-void IntervalProc(void);  
-double EconAnalysis(u8 *pbuf);
+void IntervalProc(void);   
  
 #endif

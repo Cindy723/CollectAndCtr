@@ -91,11 +91,17 @@
 // 已注册的节点离线判断时间 *10ms = s
 #define NODE_TIMEOUT10ms 500
 	
+// AC 异常阈值
+#define AC_MAX_V 260
+#define AC_MIN_V 180
+#define AC_MAX_A 12
+	
 // 节点基本信息  
 typedef struct
 {
 	u8 addr[3];
 	u8 addrStr[6]; // dc 11 33 -->> "dc1133"
+	uint32_t addrInt;
 	u8 *type;
 }BoardAddr; 
  
@@ -104,8 +110,9 @@ typedef struct
 typedef struct 
 { 
 	float vTotal;
-	float i1;		
+	float i1;		// AC 时i1有效
 	float i2;		
+	u8 erro[2]; // index0表示CH1故障位 index1表示CH2故障位 AC 时index0有效
 }NodeElecInfo;
 
 
@@ -113,12 +120,9 @@ typedef struct
 typedef struct 
 {
 	BoardAddr baddr;
-	u8 name[64]; 				// 一个汉字占用两个字节  是GB2312或GBK
-	u8 page;
-	u8 index;		 				// 页面第几个
-	u8 totalPage;
+	u8 name[64]; 				// 一个汉字占用两个字节  是GB2312或GBK 
 	u8 totalNode;				// 总节点数 nodeInfo[0].totalNode才有效 用于flash存储
-	NodeElecInfo eInfo; 
+	NodeElecInfo eInfo; // 当前节点电能数据
 	u8 needDispElec; 		// 收到节点数据时置位 显示后复位 用于增量更新显示
 }NodeInfo;
  

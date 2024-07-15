@@ -19,24 +19,24 @@ void initVariate()
 		uart2TFTPack.Status   		 			= &uart2TFTPack.dataBuf[9];
 		
 		// 初始化用户自定义 TFT 结构体指针
-		pTFTPackUser.cmd 			  	 = &uart2TFTPack.dataBuf[1]; 
-		pTFTPackUser.dataType 		 = &uart2TFTPack.dataBuf[2];  
-		pTFTPackUser.dataLen 	  	 = &uart2TFTPack.dataBuf[3];  
-		pTFTPackUser.data 				 = &uart2TFTPack.dataBuf[4];  
+		pTFTPackUser.cmd 			  	 			= &uart2TFTPack.dataBuf[1]; 
+		pTFTPackUser.dataType 		 			= &uart2TFTPack.dataBuf[2];  
+		pTFTPackUser.dataLen 	  	 			= &uart2TFTPack.dataBuf[3];  
+		pTFTPackUser.data 				 			= &uart2TFTPack.dataBuf[4];  
 		
 		// 初始化节点响应数据包结构体指针 
-		uart3_485Pack.addr0 			 = &uart3_485Pack.dataBuf[2];   
-		uart3_485Pack.addr1 			 = &uart3_485Pack.dataBuf[3];  
-		uart3_485Pack.addr2 			 = &uart3_485Pack.dataBuf[4];  
-		uart3_485Pack.cmd 			   = &uart3_485Pack.dataBuf[6]; // 5 保留
-		uart3_485Pack.contenType   = &uart3_485Pack.dataBuf[7];
-		uart3_485Pack.dataLen		   = &uart3_485Pack.dataLen[8];
-		uart3_485Pack.content 	   = &uart3_485Pack.dataBuf[9]; 
+		uart3_485Pack.addr0 			 			= &uart3_485Pack.dataBuf[2];   
+		uart3_485Pack.addr1 			 			= &uart3_485Pack.dataBuf[3];  
+		uart3_485Pack.addr2 			 			= &uart3_485Pack.dataBuf[4];  
+		uart3_485Pack.cmd 			   			= &uart3_485Pack.dataBuf[6]; /* 5保留 */
+		uart3_485Pack.contenType   			= &uart3_485Pack.dataBuf[7];
+		uart3_485Pack.dataLen		   			= &uart3_485Pack.dataLen[8];
+		uart3_485Pack.content 	   			= &uart3_485Pack.dataBuf[9]; 
  
 		// 页面值初始化
-		currentTFTV.Page = TFT_DISP_PAGE; 
+		currentTFTV.Page  = TFT_DISP_PAGE; 
 		currentTFTV.setPageNodeListF1 = 1; 
-		currentTFTV.DispListPage = 1; 
+		currentTFTV.DispListPage 			= 1; 
 		
 		// 定时器计数清零 
 		memset(&timerVariate, 0, sizeof(TimerVariate));

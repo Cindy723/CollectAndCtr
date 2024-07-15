@@ -458,20 +458,27 @@ void dispElec2TFT(NodeInfo *info)
 		{
 			disp_hindTFTContrl(TFT_DISP_PAGE, CH1Button[i], 1);
 			disp_hindTFTContrl(TFT_DISP_PAGE, CH2Button[i], 1);
-			buildAndSendStr2TFT(TFT_DISP_PAGE, StatusText[i], "正常");
 			
 			if(nodeInfo[offset + i].baddr.addr[0] == 0xdc)
 			{ 
 				buildAndSendStr2TFT(TFT_DISP_PAGE, dispNodeP[i], (char*)nodeInfo[offset + i].name);
 				sprintf(str, "DC: %.2f V,  CH1: %.2f A,  CH2: %.2f A", nodeInfo[offset + i].eInfo.vTotal,  nodeInfo[offset + i].eInfo.i1, nodeInfo[offset + i].eInfo.i2);
-				buildAndSendStr2TFT(TFT_DISP_PAGE, dispNodeN[i], str);  
+				buildAndSendStr2TFT(TFT_DISP_PAGE, dispNodeN[i], str); 
+
 			}
 			else if(nodeInfo[offset + i].baddr.addr[0] == 0xac)
 			{
 				buildAndSendStr2TFT(TFT_DISP_PAGE, dispNodeP[i], (char*)nodeInfo[offset + i].name);
 				sprintf(str, "AC: %.2f V, %.2f A", nodeInfo[offset + i].eInfo.vTotal,  nodeInfo[offset + i].eInfo.i1);
 				buildAndSendStr2TFT(TFT_DISP_PAGE, dispNodeN[i], str);  
-			}  
+			}				
+			
+			if(nodeInfo[offset + i].eInfo.erro[0] != 0 || nodeInfo[offset + i].eInfo.erro[1] != 0){
+				buildAndSendStr2TFT(TFT_DISP_PAGE, StatusText[i], "异常!");
+			}
+			else{ 
+				buildAndSendStr2TFT(TFT_DISP_PAGE, StatusText[i], "正常");
+			}
 		}
 		else // 该节点超过 NODE_TIMEOUT10ms 未更新
 		{
@@ -492,6 +499,7 @@ void dispElec2TFT(NodeInfo *info)
 				//buildAndSendStr2TFT(TFT_DISP_PAGE, dispNodeN[i], str);  
 			}
 		}
+
 	} 
 		
 }

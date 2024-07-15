@@ -303,7 +303,7 @@ function on_control_notify(screen, control, value)
 			g_screen = screen
 			g_control = control
 			g_value = value 
-			start_timer(timer_notify, 300, 0, 1)	  -- 再由定时器触发 因为按钮必须要有数据才触发通知 但是自己还要发送数据 数据间隔太短	
+			start_timer(timer_notify, 100, 0, 1)	  -- 再由定时器触发 因为按钮必须要有数据才触发通知 但是自己还要发送数据 数据间隔太短	
 		end
  		
 end
