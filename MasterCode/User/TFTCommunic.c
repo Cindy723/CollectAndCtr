@@ -20,11 +20,9 @@ u8 CH2Button[6] = {121, 122, 123, 124, 125, 126};
 u8 StatusText[6] = {15, 16, 17, 19, 24, 26};
 
 int RegisterNode(UartTFTRecivePackUser *pack);
-void setListPagef2(u8 page);
+void setListF2(u8 page);
 void disp_hindTFTDisPage(u8 isdisp); 
 void deleteNodeInfo(int index);
-void updateListPagef2(void);
-void updateRegisterCount(void);
 
 /**********************************************************************************************************
 @ 功能: 在设置页面更新显示已注册的节点
@@ -108,7 +106,7 @@ void TFTButtonEvent()
 	/* 第2页的按钮 */
 	else if(*uart2TFTPack.Screen_id1 == TFT_SET_PAGE) 
 	{ 
-		  currentTFTV.Page = TFT_SET_PAGE;  
+		  //x currentTFTV.Page = TFT_SET_PAGE;  
 	 		switch(*uart2TFTPack.Control_id1) 
 			{  			 
 				case 21: /*  屏幕 -》 返回的分子 */
@@ -119,15 +117,15 @@ void TFTButtonEvent()
 	      break;
 				case 16 : /*  屏幕 -》 设置界面节点上翻 */
 				{		  
-				 dispSetTips("上一页"); 
+				 dispSetTips("上一页"); currentTFTV.Page = TFT_SET_PAGE; 
 				}break; 
 				case 17 : /*  屏幕 -》 设置界面节点下翻 */
 				{			
-				 dispSetTips("下一页"); 
+				 dispSetTips("下一页"); currentTFTV.Page = TFT_SET_PAGE; 
 				}break;
 				case 30 : /* 屏幕-》搜索节点 */
 				{	
-					printf("search node button\r\n");
+					printf("search node button\r\n"); currentTFTV.Page = TFT_SET_PAGE; 
 					buildAndSendStr2TFT(TFT_SET_PAGE, 8, " ");				
 				  dispSetTips("搜索..");
 					tempaddr.addr[0] = 0xdc; tempaddr.addr[1] = 0xff; tempaddr.addr[2] = 0xff;
@@ -135,12 +133,12 @@ void TFTButtonEvent()
 				}break; 
 				case 32 : /* 屏幕-》注册节点 转CD USER_CMD_REGISTER*/
 				{		
-					printf("register node \r\n"); 	
-				  dispSetTips("注册节点.."); 
+					printf("register node \r\n"); currentTFTV.Page = TFT_SET_PAGE; 	
+				  dispSetTips("注册节点..");
 				}break;
 				case 33 : /* 屏幕-》 从设置返回主页面 */
 				{		
-					printf("back button Display\r\n");   
+					printf("back button Display\r\n");  
 				  dispSetTips("  "); 
 					currentTFTV.Page = TFT_DISP_PAGE;
 					g_currentRquesNodeIndex = 0;
@@ -149,7 +147,7 @@ void TFTButtonEvent()
 				}break;
 				case 53 : /* 屏幕-》 删除节点 */
 				{		
-					printf("delete node button\r\n");   
+					printf("delete node button\r\n");  currentTFTV.Page = TFT_SET_PAGE;  
 				}break;
 				default: printf("Notfun page2 button %d\r\n", *uart2TFTPack.Control_id1); break;
 			}
@@ -223,6 +221,23 @@ void TFTanalysis()
 		}
  
 }
+
+void Flash_WriteData(uint32_t StartAddress, uint8_t* Data, uint32_t Length) {
+    uint32_t address = StartAddress;
+    uint32_t i; 
+	
+    // 解锁 Flash
+    FLASH_Unlock();    
+	
+    // 写入数据
+    for (i = 0; i < Length; i += 2) {
+        uint16_t halfword = Data[i] | (Data[i+1] << 8);
+        FLASH_ProgramHalfWord(address + i, halfword);
+    }
+    
+    // 锁定 Flash
+    FLASH_Lock();
+}
  
 /**********************************************************************************************************
  @ 功能: TFT->> 注册节点
@@ -280,7 +295,7 @@ int RegisterNode(UartTFTRecivePackUser *pack)
 	nodeInfo[g_nodeTotalCount].baddr.type = &nodeInfo[g_nodeTotalCount].baddr.addr[0];
  
 	g_nodeTotalCount ++;
-	printf("Node Count %d List: \r\n", g_nodeTotalCount);
+	printf("Node Count %d sizeof %d List: \r\n", g_nodeTotalCount, sizeof(nodeInfo));
 	for(i = 0; i < g_nodeTotalCount; i++){	// 打印注册后的项 
 		printf("Id index %d, ID [%s], Name [%s]\r\nhexID: ", i, nodeInfo[i].baddr.addrStr, nodeInfo[i].name);
 		printHex(nodeInfo[i].baddr.addr, 3);
@@ -294,15 +309,18 @@ int RegisterNode(UartTFTRecivePackUser *pack)
 	
   flash_erase(PARAM_MAX_SIZE, PARAM_SAVE_ADDR_BASE);
 	
+  Flash_WriteData(PARAM_SAVE_ADDR_BASE, (uint8_t*)&nodeInfo, sizeof(nodeInfo));
+	printf("end1\r\n");
+
 	//wFlashData((uint8_t*)nodeInfo, sizeof(nodeInfo), PARAM_SAVE_ADDR_BASE);
-	//rFlashData((uint8_t*)nodeInfo, sizeof(nodeInfo), PARAM_SAVE_ADDR_BASE);
+	rFlashData((uint8_t*)&nodeInfo, sizeof(nodeInfo), PARAM_SAVE_ADDR_BASE);
 	
-		for(i = 0; i < g_nodeTotalCount; i++){	// 打印注册后的项 
+	for(i = 0; i < g_nodeTotalCount; i++){	// 打印注册后的项 
 		printf("--- Id index %d, ID [%s], Name [%s]\r\nhexID: ", i, nodeInfo[i].baddr.addrStr, nodeInfo[i].name);
 		printHex(nodeInfo[i].baddr.addr, 3);
 	} 
 	
-	
+	printf("end2\r\n");
 	return  g_nodeTotalCount;
 }
 
@@ -489,10 +507,10 @@ void dispSetTips(char* tip)
  @ 功能：设置分母
  @ 备注： 
  *********************************************************************************************************/
-void setListPagef2(u8 page)
+void setListF2(u8 page)
 {
 	char temp[6];
-	currentTFTV.setPageNodeListF2 = page;
+	currentTFTV.setListF2 = page;
 	sprintf(temp, "%d", page); 
 	printf("updateListPage f2 %s\r\n", temp);
   buildAndSendStr2TFT(1, 22, temp);
@@ -519,8 +537,8 @@ void updateListPagef2()
 	if(g_nodeTotalCount > ONEPAGENODE)
 	{
 	 if(g_nodeTotalCount%ONEPAGENODE != 0)
-	 setListPagef2((g_nodeTotalCount/ONEPAGENODE) + 1);
-	}else  setListPagef2(1);
+	 setListF2((g_nodeTotalCount/ONEPAGENODE) + 1);
+	}else  setListF2(1);
 }
  
 /***********************************************************************************************************
@@ -614,7 +632,7 @@ void deleteNodeInfo(int index)
 
 	// 在最后一页的情况
 	printf("deleteNodeInfo last page node offset %d g_nodeTotalCount %d index %d mod %d\r\n",offset, g_nodeTotalCount, index, (g_nodeTotalCount % ONEPAGENODE));
-	if(currentTFTV.setPageNodeListF1 == currentTFTV.setPageNodeListF2)
+	if(currentTFTV.setPageNodeListF1 == currentTFTV.setListF2)
 	{ 
 			printf("frist page \r\n"); 
 			if(offset + index >= g_nodeTotalCount){

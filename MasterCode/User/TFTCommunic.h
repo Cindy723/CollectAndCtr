@@ -25,8 +25,8 @@ typedef struct
 {
 	u8 Page; // 当前页面
 	u8 setPageNodeListF1; // 设置界面下的分子
-	u8 setPageNodeListF2; // 设置界面下的分母
-	u8 DispListPage;   // 显示界面下的分子 
+	u8 setListF2;				  // 设置和显示界面下的分母
+	u8 DispListPage;   		// 显示界面下的分子 
 }CurrentTFTVariate;
 
 extern CurrentTFTVariate currentTFTV;
@@ -45,4 +45,6 @@ void rebootTFT(void);
 void getListPagef1(void);
 void disp_hindTFTContrl(u8 pageid, u8 contrlid, u8 isdisplay);
 void TFTanalysis(void); 
+void updateRegisterCount(void);
+void updateListPagef2(void);
 #endif

@@ -151,20 +151,20 @@ void wFlashData(uint8_t * buf_to_save , uint16_t len , uint32_t wFlashAddr)
 
 void rFlashData(uint8_t * buf_to_get , uint16_t len , uint32_t rFlashAddr)
 {
-    uint8_t ReadFlashTempBuf[PIECE_MAX_LEN];//读Flash临时缓冲区
+    //uint8_t ReadFlashTempBuf[PIECE_MAX_LEN];//读Flash临时缓冲区
     uint16_t ReadFlashTempLen = 0;//读Flash长度
     
     if(len%2 == 0)
     {
         ReadFlashTempLen = len;
-        readFlash((uint16_t *)&ReadFlashTempBuf,ReadFlashTempLen/2 , rFlashAddr);
-        memcpy(buf_to_get,ReadFlashTempBuf,len);
+        readFlash((uint16_t *)buf_to_get,ReadFlashTempLen/2 , rFlashAddr);
+        //memcpy(buf_to_get,buf_to_get,len);
     }
     else
     {
         ReadFlashTempLen = len + 1;//因为Flash只能读半字
-        readFlash((uint16_t *)&ReadFlashTempBuf,ReadFlashTempLen/2 , rFlashAddr);
-        memcpy(buf_to_get,ReadFlashTempBuf,len);
+        readFlash((uint16_t *)buf_to_get,ReadFlashTempLen/2 , rFlashAddr);
+        //memcpy(buf_to_get,ReadFlashTempBuf,len);
     }
 }
 /****IAP*****/
