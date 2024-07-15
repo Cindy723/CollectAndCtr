@@ -68,7 +68,18 @@
 // LED 操作
 #define LEDContrl(n, sw) (PBout(n) = sw) 
 
+// TPS2492 FLT 出现异常 过流过压 短路 PG为触发芯片阈值 异常后拉低
+#define FLT1PINCFG GPIO_Pin_4
+#define PG1PINCFG  GPIO_Pin_3
 
+#define FLT2PINCFG GPIO_Pin_6
+#define PG2PINCFG  GPIO_Pin_5
+
+#define FLT1_STATUS  PBin(4)
+#define PG1_STATUS   PBin(3)
+  
+#define FLT2_STATUS  PBin(6)
+#define PG2_STATUS   PBin(5)
  
 // 串口命令功能定义
 #define POWERCONTRL  0X0A  // 操作电源通断
@@ -100,7 +111,14 @@ enum type
 }; 
 extern BroadAddr boardAddr;
   
- 
+// DC节点异常标志 最高位表示FLT 最低位表示PG
+typedef struct
+{
+	u8 CH1erro;
+	u8 CH2erro;	 
+}DCPowerSta; 
+extern DCPowerSta dcPowerSta;
+
 void HSE_SetSysClock(uint32_t pllmul);
 void HSI_SetSysClock(uint32_t pllmul);
 void RCC_Configuration(void);
@@ -111,6 +129,7 @@ void LED_Configuration(void);
 void Relay_Configuration(void); 
 void LogPin_Configuration(void);
 void RE485Pin_Configuration(void);
+void TPS2492Pin_Configuration(void);
 void USART_Configuration(void);  
 void TIM_3_Configuration(void);
 void WDG_Init(uint32_t timeout_ms);

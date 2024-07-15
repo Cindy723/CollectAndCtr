@@ -9,6 +9,7 @@
 u16 E_old_reg = 0; 
 u16 g_kCount = 0;  					  // AC电量脉冲 监测是否有更新 	
 
+void sortNodes(void);
 
 /**********************************************************************************************************
  @ 功能: 解析请求的节点数据
@@ -34,20 +35,26 @@ void NodeDataAnalysis()
 			 	}
 				break;
 				case REQUESTADDR: // 搜索到的节点
-				{
-					printf("NodeData ret ADDR\r\n"); 
-					sprintf(tempstr, "%02x", *uart3_485Pack.addr0);
-					sprintf(&tempstr[2], "%02x", *uart3_485Pack.addr1);
-					sprintf(&tempstr[4], "%02x", *uart3_485Pack.addr2 + nodeIDSimuOffset);
+				{ 
 					 
 					nodeInfo[g_nodeTotalCount].baddr.addr[0] = *uart3_485Pack.addr0;
 					nodeInfo[g_nodeTotalCount].baddr.addr[1] = *uart3_485Pack.addr1;
 					nodeInfo[g_nodeTotalCount].baddr.addr[2] = *uart3_485Pack.addr2 + nodeIDSimuOffset;
-					nodeInfo[g_nodeTotalCount].baddr.type = &nodeInfo[g_nodeTotalCount].baddr.addr[0]; 
+					nodeInfo[g_nodeTotalCount].baddr.type 	 = &nodeInfo[g_nodeTotalCount].baddr.addr[0]; 
 					
+					nodeInfo[g_nodeTotalCount].baddr.addrInt = (nodeInfo[g_nodeTotalCount].baddr.addr[0]  << 16) | 
+																									 	  (nodeInfo[g_nodeTotalCount].baddr.addr[1] << 8) | 
+																										   nodeInfo[g_nodeTotalCount].baddr.addr[2]; 
+					
+					// to tft
+					sprintf(tempstr, "%02x", *uart3_485Pack.addr0);
+					sprintf(&tempstr[2], "%02x", *uart3_485Pack.addr1);
+					sprintf(&tempstr[4], "%02x", *uart3_485Pack.addr2 + nodeIDSimuOffset);
 					buildAndSendStr2TFT(TFT_SET_PAGE, 8, tempstr);
+					printf("NodeData ret Addr %s %d \r\n", tempstr, nodeInfo[g_nodeTotalCount].baddr.addrInt); 
+					
 					nodeIDSimuOffset ++; 
-				  dispSetTips("搜索结束");
+				  dispSetTips("搜索完成");
 				}
 				break;
 				case REQUESTELEC:
@@ -69,22 +76,42 @@ void NodeDataAnalysis()
 					if(*uart3_485Pack.addr0 == 0xac)
 					{ 
 						nodeInfo[index].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 16) | (uart3_485Pack.content[1] << 8) | uart3_485Pack.content[2]) * 0.01);
-						//printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
-
-						nodeInfo[index].eInfo.i1 =	(float)(((uart3_485Pack.content[3] << 8) | uart3_485Pack.content[4]) * 0.01);
-						//printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
+						nodeInfo[index].eInfo.i1 		 = (float)(((uart3_485Pack.content[3] << 8)  | uart3_485Pack.content[4]) * 0.01);
+						nodeInfo[index].eInfo.i2 		 = nodeInfo[index].eInfo.i1;
+						
+						if((nodeInfo[index].eInfo.vTotal > AC_MAX_V) || (nodeInfo[index].eInfo.vTotal < AC_MIN_V) ||  
+							 (nodeInfo[index].eInfo.i1 > AC_MAX_A)){
+							nodeInfo[index].eInfo.erro[0] = 1;
+							printf("AC power Erro !! \r\n");	 
+								 
+							// 关闭两路电源
+							sendNodeDatabuf[0] = POWERCH1;
+							buildAndSendDataToNode(&nodeInfo[index].baddr, POWERCONTRL, 1, sendNodeDatabuf); 
+							delay_ms(100);	// ctodo !阻塞 未加队列
+							sendNodeDatabuf[0] = POWERCH2;
+							buildAndSendDataToNode(&nodeInfo[index].baddr, POWERCONTRL, 1, sendNodeDatabuf);
+						}
+						 
+						printf("vTotal %f ", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
+						printf("i1 %f ",  nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
+						printf("erro: %d \r\n",  nodeInfo[g_currentRquesNodeIndex].eInfo.erro[0]);
 					}
 					else if(*uart3_485Pack.addr0 == 0xdc)
 					{ 
-						nodeInfo[index].eInfo.vTotal = (float)(((uart3_485Pack.content[0] << 8) | uart3_485Pack.content[1]) * 0.01);
-						//printf("vTotal %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
-
-						nodeInfo[index].eInfo.i1 = (float)(((uart3_485Pack.content[2] << 8) | uart3_485Pack.content[3]) * 0.01);
-						//printf("i1 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
-
-						nodeInfo[index].eInfo.i2 = (float)(((uart3_485Pack.content[4] << 8) | uart3_485Pack.content[5]) * 0.01);
-						//printf("i2 %f\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.i2);
- 
+						nodeInfo[index].eInfo.vTotal	= (float)(((uart3_485Pack.content[0] << 8) | uart3_485Pack.content[1]) * 0.01); 
+						nodeInfo[index].eInfo.i1 			= (float)(((uart3_485Pack.content[2] << 8) | uart3_485Pack.content[3]) * 0.01); 
+						nodeInfo[index].eInfo.i2 			= (float)(((uart3_485Pack.content[4] << 8) | uart3_485Pack.content[5]) * 0.01); 
+						nodeInfo[index].eInfo.erro[0] = uart3_485Pack.content[6];
+						nodeInfo[index].eInfo.erro[1] = uart3_485Pack.content[7];
+						
+						// print
+						printf("vTotal %f ",	 		nodeInfo[g_currentRquesNodeIndex].eInfo.vTotal); 
+						printf("i1 %f ", 			 		nodeInfo[g_currentRquesNodeIndex].eInfo.i1); 
+						printf("i2 %f ", 			 		nodeInfo[g_currentRquesNodeIndex].eInfo.i2);
+						printf("Ch1erro: %d ", 		nodeInfo[g_currentRquesNodeIndex].eInfo.erro[0]);
+						printf("Ch2erro: %d\r\n", nodeInfo[g_currentRquesNodeIndex].eInfo.erro[1]);
+					
+						sortNodes(); // 异常靠前显示
 					}
 
 					g_RequestNodeElecFlag = 1;
@@ -166,76 +193,27 @@ void rwTypeAndAddr(u8 rw, BoardAddr *baddr)
 		wFlashData(baddr->addr, 3, PARAM_SAVE_ADDR_BASE); 
 	}
 }
-
-  
-/**********************************************************************************************************
- @ 功能：HLW8023电量计算 
- @ 返回：
- @ 备注：
- *********************************************************************************************************/
-double EconAnalysis(u8 *pbuf)
-{  
-	unsigned int PF_COUNT = 0, PF = 0, PP_REG = 0;
-	double E_con = 0;
-	
-	if((pbuf[20]&0x80)!=E_old_reg)//判断数据更新寄存器最高位有没有翻转
-	{
-		g_kCount++;
-		E_old_reg=pbuf[20]&0x80;
-	}
-	
-	PP_REG=pbuf[14]*65536+pbuf[15]*256+pbuf[16];	//计算功率参数寄存  
-	PF=(g_kCount*65536)+(pbuf[21]*256)+pbuf[22];		//计算已用电量脉冲数
-	PF_COUNT=((100000*3600)/(PP_REG*1.88))*10000;	//计算1度电对应的脉冲数量
-	E_con=((PF*10000)/PF_COUNT)/10000.0;//计算已用电量 
-	//printf("PF %d  PF_COUNT %d  已用电量：%0.4f°\r\n",PF,PF_COUNT,E_con); 
-	 
  
-	return E_con;
+ 
+// 异常节点靠前存储  如果多个异常 节点id小的在前
+// 在线测试通过 实际未测
+int hasError(NodeInfo *node) {
+	return node->eInfo.erro[0] != 0 || node->eInfo.erro[1] != 0;
 }
+void sortNodes() {
+	int i = 1, j;
+	for (; i < MAX_NODE; i++) {
+		NodeInfo key = nodeInfo[i];
+		j = i - 1;
 
-
-/**********************************************************************************************************
- @ 功能： 操作继电器
- @ 入口： 开关 通道，1 2
- *********************************************************************************************************/
-void relayOpreat(u8 sw, u8 ch)
-{
-	printf("relayOpreat sw %d ch %d \r\n", sw, ch);
-	if(ch == POWERCH1)
-	{
-		if(sw == POWER_ON)
+		while (j >= 0 && (hasError(&nodeInfo[j]) < hasError(&key) ||
+		                  (hasError(&nodeInfo[j]) == hasError(&key) && 
+											nodeInfo[j].baddr.addrInt > key.baddr.addrInt))) 
 		{
-			printf("HC1 ON \r\n");
-			OLED_P6x8Str(0,1,(u8*)"CH1:ON ",0); 
-			RELAY1 = POWER_ON;  
-			LEDContrl(LED2PIN, LEDON);
+			nodeInfo[j + 1] = nodeInfo[j];
+			j--;
 		}
-		else
-		{
-			printf("CH1 OFF\r\n");
-			OLED_P6x8Str(0,1,(u8*)"CH1:OFF",0); 
-			RELAY1 = POWER_OFF; 
-			LEDContrl(LED2PIN, LEDOFF);
-		}
+		nodeInfo[j + 1] = key;
 	}
-	else if(ch == POWERCH2)
-	{
-		if(sw == POWER_ON)
-		{
-			printf("CH2 ON \r\n");
-			OLED_P6x8Str(52,1,(u8*)"CH2:ON ",0); 
-			RELAY2 = POWER_ON; 
-			LEDContrl(LED3PIN, LEDON);
-		}
-		else 
-		{
-			printf("CH2 OFF\r\n");
-			OLED_P6x8Str(52,1,(u8*)"CH2:OFF",0); 
-			RELAY2 = POWER_OFF; 
-			LEDContrl(LED3PIN, LEDOFF);
-		}
-	}
-
 }
 

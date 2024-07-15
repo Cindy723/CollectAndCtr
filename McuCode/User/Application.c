@@ -209,18 +209,18 @@ void updateElectInfoAC(u8 needSend)
 //	tV = m_Voltage_adj * 100;
 //	tA = m_Cureent_adj * 100;
 	
-	//tW = m_Power * 100; 
-	//tT = (g_currentElectrCon+g_lastElectrCon) * 10000;
-	//tT = (g_currentElectrCon) * 10000;
+	// tW = m_Power * 100; 
+	// tT = (g_currentElectrCon+g_lastElectrCon) * 10000;
+	// tT = (g_currentElectrCon) * 10000;
 	  
-//	data[0] = (tV >> 16) & 0xFF;    
-//	data[1] = (tV >> 8) & 0xFF;    
-//	data[2] =  tV & 0xFF;   
-//		
-//	data[3] = (tA >> 8) & 0xFF;   
-//	data[4] =  tA & 0xFF;   
+	//	data[0] = (tV >> 16) & 0xFF;    
+	//	data[1] = (tV >> 8) & 0xFF;    
+	//	data[2] =  tV & 0xFF;   
+	//		
+	//	data[3] = (tA >> 8) & 0xFF;   
+	//	data[4] =  tA & 0xFF;   
 		
-	//retBuf[8] = m_Gy*100;   
+	// retBuf[8] = m_Gy*100;   
 		
 	// retBuf[9] = (tW >> 16) & 0xFF;   
 	// retBuf[10] = (tW >> 8) & 0xFF;   
@@ -245,7 +245,7 @@ void updateElectInfoAC(u8 needSend)
  *********************************************************************************************************/
 void updateElectInfoDC(u8 needSend)
 {
-	u8 data[6];  // 调整数组大小为6，因为只需要6个字节
+	u8 data[8] = { 0 };   
 	float ADC_ConvertedValueLocal[NOFCHANEL];   // ADC结果
 	float ADC_adj[NOFCHANEL];  
 	 
@@ -278,7 +278,10 @@ void updateElectInfoDC(u8 needSend)
 		data[4] = (i2 >> 8) & 0xff;
 		data[5] = i2 & 0xff;
 		
-		buildAndSendDataTo485(g_retBuf, REQUESTELEC, 6, data);
+		// 故障位
+		data[6] = dcPowerSta.CH1erro;
+		data[7] = dcPowerSta.CH2erro; 
+		buildAndSendDataTo485(g_retBuf, REQUESTELEC, 8, data);
 	}
 }
 
@@ -315,6 +318,11 @@ u8 setBoardBaseInfo(const u8 *pconten)
  *********************************************************************************************************/
 void IntervalProc()
 {
+		if(*boardAddr.type == DCTYPE){
+			dcPowerSta.CH1erro = (FLT1_STATUS << 7) | PG1_STATUS;
+			dcPowerSta.CH2erro = (FLT2_STATUS << 7) | PG2_STATUS;
+		}
+		
 		// 运行灯闪烁
 		if(g_LEDBlinkCount > 1 && g_LEDBlinkCount < 110)
 		{
@@ -326,12 +334,20 @@ void IntervalProc()
 		else if(g_LEDBlinkCount > 110)
 		{
 			g_LEDBlinkCount = 0;
-			LEDContrl(LEDRUNPIN, LEDON); 
+			LEDContrl(LEDRUNPIN, LEDON);
 			#ifdef MINIBOARD
-			PCout(13) = LEDOFF;  
+			PCout(13) = LEDOFF;
 			#endif
+			
+			if(*boardAddr.type == DCTYPE){	// 打印DC状态 
+				if(dcPowerSta.CH1erro != 1){
+					printf("CH1erro !!! %d \r\n", dcPowerSta.CH1erro);
+				}
+				if(dcPowerSta.CH2erro != 1){
+					printf("CH2erro !!! %d\r\n", dcPowerSta.CH2erro);
+				}
+			}
 		}
-
 }
 
 

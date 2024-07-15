@@ -3,7 +3,7 @@
 ..\..\output\tftcommunic.o: ..\..\User\main.h
 ..\..\output\tftcommunic.o: ..\..\Libraries\CMSIS\stm32f10x.h
 ..\..\output\tftcommunic.o: ..\..\Libraries\CMSIS\core_cm3.h
-..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\include\stdint.h
+..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\..\output\tftcommunic.o: ..\..\Libraries\CMSIS\system_stm32f10x.h
 ..\..\output\tftcommunic.o: ..\..\User\stm32f10x_conf.h
 ..\..\output\tftcommunic.o: ..\..\Libraries\FWlib\inc\stm32f10x_adc.h
@@ -30,13 +30,13 @@
 ..\..\output\tftcommunic.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
 ..\..\output\tftcommunic.o: ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h
 ..\..\output\tftcommunic.o: ..\..\Libraries\FWlib\inc\misc.h
-..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\include\stdio.h
-..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\include\stdlib.h
+..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\..\output\tftcommunic.o: ..\..\User\Init.h
 ..\..\output\tftcommunic.o: ..\..\User\main.h
-..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\include\string.h
+..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\..\output\tftcommunic.o: ..\..\User\delay.h
-..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\include\math.h
+..\..\output\tftcommunic.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\..\output\tftcommunic.o: ..\..\User\Uart.h
 ..\..\output\tftcommunic.o: ..\..\User\Tools.h
 ..\..\output\tftcommunic.o: ..\..\User\UartSendQueue.h

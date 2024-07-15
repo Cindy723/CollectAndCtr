@@ -18,6 +18,7 @@ int main(void)
 	LED_Configuration(); 
 	USART_Configuration();
 	RE485Pin_Configuration();
+	TPS2492Pin_Configuration();
 	// RTC_Configuration();
 	Relay_Configuration();
 #ifdef MINIBOARD
@@ -87,7 +88,7 @@ int main(void)
 	  // buildAndSendDataToHMI(g_retBuf, 101, temp);  
 		
 		// test
-		//delay_ms(100);
-		//buildAndSendDataTo485(g_retBuf, *uart1Pack.cmd, 4, temp);
+		// delay_ms(100);
+		// buildAndSendDataTo485(g_retBuf, *uart1Pack.cmd, 4, temp);
 	}
 }
