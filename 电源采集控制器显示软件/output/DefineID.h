@@ -7,6 +7,9 @@
 //创建画面Screen2的命令索引ID
 #define  _SCREEN_SCREEN2                                                       2
 
+//创建画面Screen3的命令索引ID
+#define  _SCREEN_SCREEN3                                                       3
+
 #define  _ANIMATION_SCREEN0_ANIMATION1                                         1
 
 #define  _BTN_SCREEN1_BUTTON1                                                  1
@@ -268,4 +271,42 @@
 #define  _BTN_SCREEN2_BUTTON3                                                 53
 
 #define  _TXT_DIS__SCREEN2_TEXT_DISPLAY19                                     54
+
+//画面Screen3的背景图片
+#define  _IMG_SCREEN3                                                          1
+
+//画面Screen3中图片Image1使用的图片
+#define  _IMG_SCREEN3_IMAGE1                                                   2
+
+//画面Screen3中按钮Button12弹起时的图片
+#define  _IMG_SCREEN3_BUTTON12_UP                                             14
+
+//画面Screen3中按钮Button12按下时的图片
+#define  _IMG_SCREEN3_BUTTON12_DOWN                                           14
+
+#define  _BTN_SCREEN3_BUTTON12                                                 7
+
+//画面Screen3中按钮Button4弹起时的图片
+#define  _IMG_SCREEN3_BUTTON4_UP                                               7
+
+//画面Screen3中按钮Button4按下时的图片
+#define  _IMG_SCREEN3_BUTTON4_DOWN                                             8
+
+#define  _BTN_SCREEN3_BUTTON4                                                  4
+
+#define  _TXT_DIS__SCREEN3_TEXT_DISPLAY1                                       8
+
+#define  _TXT_DIS__SCREEN3_TEXT_DISPLAY2                                       6
+
+#define  _TXT_DIS__SCREEN3_TEXT_DISPLAY18                                     47
+
+//画面Screen3中按钮Button13弹起时的图片
+#define  _IMG_SCREEN3_BUTTON13_UP                                              9
+
+//画面Screen3中按钮Button13按下时的图片
+#define  _IMG_SCREEN3_BUTTON13_DOWN                                            9
+
+#define  _BTN_SCREEN3_BUTTON13                                                 9
+
+#define  _TXT_DIS__SCREEN3_TEXT_DISPLAY3                                       1
 

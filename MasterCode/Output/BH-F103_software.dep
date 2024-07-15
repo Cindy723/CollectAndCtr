@@ -733,7 +733,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x668E67C5)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
-I (..\..\User\Init.h)(0x6691DE2C)
+I (..\..\User\Init.h)(0x6691F963)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (..\..\User\delay.h)(0x668E67C6)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
@@ -743,7 +743,7 @@ I (..\..\User\stm32f10x_it.h)(0x6691CB3A)
 I (..\..\User\UART.h)(0x6691CB3A)
 I (..\..\User\OLED\OLED.h)(0x668E67C6)
 I (..\..\User\OLED\codetab.h)(0x668E67C6)
-I (..\..\User\TFTCommunic.h)(0x6691CB3A)
+I (..\..\User\TFTCommunic.h)(0x669202E5)
 F (..\..\User\stm32f10x_conf.h)(0x668E67C6)()
 F (..\..\User\Init.c)(0x668E67C6)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\OLED-I E:\DC\CollectAndCtr\MasterCode\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\init.o --omf_browse ..\..\output\init.crf --depend ..\..\output\init.d)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
@@ -775,7 +775,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x668E67C5)
-I (..\..\User\Init.h)(0x6691DE2C)
+I (..\..\User\Init.h)(0x6691F963)
 I (..\..\User\main.h)(0x668E67C6)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
@@ -813,7 +813,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x668E67C5)
 I (..\..\User\stm32f10x_it.h)(0x6691CB3A)
-I (..\..\User\init.h)(0x6691DE2C)
+I (..\..\User\init.h)(0x6691F963)
 I (..\..\User\main.h)(0x668E67C6)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
@@ -849,7 +849,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x668E67C5)
-I (..\..\User\init.h)(0x6691DE2C)
+I (..\..\User\init.h)(0x6691F963)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (..\..\User\main.h)(0x668E67C6)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
@@ -860,7 +860,7 @@ I (..\..\User\Uart.h)(0x6691CB3A)
 I (..\..\User\Tools.h)(0x668E6DC1)
 I (..\..\User\OLED\oled.h)(0x668E67C6)
 I (..\..\User\OLED\codetab.h)(0x668E67C6)
-I (..\..\User\TFTCommunic.h)(0x6691CB3A)
+I (..\..\User\TFTCommunic.h)(0x669202E5)
 F (..\..\User\delay.c)(0x668E67C6)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\OLED-I E:\DC\CollectAndCtr\MasterCode\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\delay.o --omf_browse ..\..\output\delay.crf --depend ..\..\output\delay.d)
 I (..\..\User\delay.h)(0x668E67C6)
 I (..\..\Libraries\CMSIS\stm32f10x.h)(0x668E67C5)
@@ -893,7 +893,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x668E67C5)
 F (..\..\User\Uart.c)(0x6691CB3A)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\OLED-I E:\DC\CollectAndCtr\MasterCode\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\uart.o --omf_browse ..\..\output\uart.crf --depend ..\..\output\uart.d)
 I (..\..\User\Uart.h)(0x6691CB3A)
-I (..\..\User\init.h)(0x6691DE2C)
+I (..\..\User\init.h)(0x6691F963)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (..\..\Libraries\CMSIS\stm32f10x.h)(0x668E67C5)
 I (..\..\Libraries\CMSIS\core_cm3.h)(0x668E67C5)
@@ -962,7 +962,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x668E67C5)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
-I (..\..\User\Init.h)(0x6691DE2C)
+I (..\..\User\Init.h)(0x6691F963)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (..\..\User\delay.h)(0x668E67C6)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
@@ -1003,7 +1003,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x668E67C5)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
-I (..\..\User\Init.h)(0x6691DE2C)
+I (..\..\User\Init.h)(0x6691F963)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (..\..\User\delay.h)(0x668E67C6)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
@@ -1013,11 +1013,11 @@ I (..\..\User\UART.h)(0x6691CB3A)
 I (..\..\User\OLED\OLED.h)(0x668E67C6)
 I (..\..\User\OLED\codetab.h)(0x668E67C6)
 I (..\..\User\flash.h)(0x6691CB3A)
-I (..\..\User\TFTCommunic.h)(0x6691CB3A)
+I (..\..\User\TFTCommunic.h)(0x669202E5)
 I (..\..\User\UartSendQueue.h)(0x6691CB3A)
 F (..\..\User\Flash.c)(0x6691D8AB)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\OLED-I E:\DC\CollectAndCtr\MasterCode\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\flash.o --omf_browse ..\..\output\flash.crf --depend ..\..\output\flash.d)
 I (..\..\User\flash.h)(0x6691CB3A)
-I (..\..\User\init.h)(0x6691DE2C)
+I (..\..\User\init.h)(0x6691F963)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (..\..\Libraries\CMSIS\stm32f10x.h)(0x668E67C5)
 I (..\..\Libraries\CMSIS\core_cm3.h)(0x668E67C5)
@@ -1053,8 +1053,8 @@ I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (..\..\User\delay.h)(0x668E67C6)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\..\User\tools.h)(0x668E6DC1)
-F (..\..\User\TFTCommunic.c)(0x6691ED1C)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\OLED-I E:\DC\CollectAndCtr\MasterCode\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\tftcommunic.o --omf_browse ..\..\output\tftcommunic.crf --depend ..\..\output\tftcommunic.d)
-I (..\..\User\TFTCommunic.h)(0x6691CB3A)
+F (..\..\User\TFTCommunic.c)(0x6692061F)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\OLED-I E:\DC\CollectAndCtr\MasterCode\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\tftcommunic.o --omf_browse ..\..\output\tftcommunic.crf --depend ..\..\output\tftcommunic.d)
+I (..\..\User\TFTCommunic.h)(0x669202E5)
 I (..\..\User\main.h)(0x668E67C6)
 I (..\..\Libraries\CMSIS\stm32f10x.h)(0x668E67C5)
 I (..\..\Libraries\CMSIS\core_cm3.h)(0x668E67C5)
@@ -1086,7 +1086,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x668E67C5)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
-I (..\..\User\Init.h)(0x6691DE2C)
+I (..\..\User\Init.h)(0x6691F963)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (..\..\User\delay.h)(0x668E67C6)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
@@ -1128,7 +1128,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x668E67C5)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x668E67C5)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
-I (..\..\User\Init.h)(0x6691DE2C)
+I (..\..\User\Init.h)(0x6691F963)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (..\..\User\delay.h)(0x668E67C6)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
@@ -1138,7 +1138,7 @@ F (..\..\User\OLED\codetab.c)(0x668E67C6)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0
 I (..\..\User\OLED\codetab.h)(0x668E67C6)
 F (..\..\User\OLED\oled.c)(0x668E67C6)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\OLED-I E:\DC\CollectAndCtr\MasterCode\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\oled.o --omf_browse ..\..\output\oled.crf --depend ..\..\output\oled.d)
 I (..\..\User\OLED\oled.h)(0x668E67C6)
-I (..\..\User\init.h)(0x6691DE2C)
+I (..\..\User\init.h)(0x6691F963)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (..\..\Libraries\CMSIS\stm32f10x.h)(0x668E67C5)
 I (..\..\Libraries\CMSIS\core_cm3.h)(0x668E67C5)
