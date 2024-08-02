@@ -38,7 +38,7 @@ extern u8 g_currentRquesNodeIndex;
 extern u8 g_nodeTotalCount; 
 extern u8 g_currentsetPageNodeListF1;
 extern u8 sendNodeDatabuf[12];
- 
+
 void buildAndSendStr2TFT(u8 pagid, u8 ctrlid, char* str);
 void getTFTText(u8 pagid, u8 ctrlid);
 void dispElec2TFT(NodeInfo *info);

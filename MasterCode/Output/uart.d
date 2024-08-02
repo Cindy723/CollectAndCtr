@@ -1,40 +1,28 @@
-..\..\output\uart.o: ..\..\User\Uart.c
-..\..\output\uart.o: ..\..\User\Uart.h
-..\..\output\uart.o: ..\..\User\init.h
-..\..\output\uart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\..\output\uart.o: ..\..\Libraries\CMSIS\stm32f10x.h
-..\..\output\uart.o: ..\..\Libraries\CMSIS\core_cm3.h
-..\..\output\uart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\..\output\uart.o: ..\..\Libraries\CMSIS\system_stm32f10x.h
-..\..\output\uart.o: ..\..\User\stm32f10x_conf.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_adc.h
-..\..\output\uart.o: ..\..\Libraries\CMSIS\stm32f10x.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_bkp.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_can.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_cec.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_crc.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_dac.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_dbgmcu.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_dma.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_exti.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_flash.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_fsmc.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_gpio.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_i2c.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_iwdg.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_pwr.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_rcc.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_rtc.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_sdio.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_spi.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_tim.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h
-..\..\output\uart.o: ..\..\Libraries\FWlib\inc\misc.h
-..\..\output\uart.o: ..\..\User\main.h
-..\..\output\uart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\..\output\uart.o: ..\..\User\Init.h
-..\..\output\uart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\..\output\uart.o: ..\..\User\delay.h
-..\..\output\uart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-..\..\output\uart.o: ..\..\User\Tools.h
+../../output/uart.o: ..\..\User\Uart.c ..\..\User\Uart.h \
+  ..\..\User\init.h ..\..\Libraries\CMSIS\stm32f10x.h \
+  ..\..\Libraries\CMSIS\core_cm3.h \
+  ..\..\Libraries\CMSIS\system_stm32f10x.h ..\..\User\stm32f10x_conf.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_adc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_bkp.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_can.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_cec.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_crc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_dac.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_dbgmcu.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_dma.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_exti.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_flash.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_fsmc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_gpio.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_i2c.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_iwdg.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_pwr.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_rcc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_rtc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_sdio.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_spi.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_tim.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_usart.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h \
+  ..\..\Libraries\FWlib\inc\misc.h ..\..\User\main.h ..\..\User\delay.h \
+  ..\..\User\Tools.h

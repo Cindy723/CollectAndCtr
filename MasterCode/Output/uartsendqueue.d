@@ -1,40 +1,28 @@
-..\..\output\uartsendqueue.o: ..\..\User\UartSendQueue.c
-..\..\output\uartsendqueue.o: ..\..\User\UartSendQueue.h
-..\..\output\uartsendqueue.o: ..\..\User\main.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\CMSIS\stm32f10x.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\CMSIS\core_cm3.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\CMSIS\system_stm32f10x.h
-..\..\output\uartsendqueue.o: ..\..\User\stm32f10x_conf.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_adc.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\CMSIS\stm32f10x.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_bkp.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_can.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_cec.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_crc.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_dac.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_dbgmcu.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_dma.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_exti.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_flash.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_fsmc.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_gpio.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_i2c.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_iwdg.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_pwr.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_rcc.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_rtc.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_sdio.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_spi.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_tim.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h
-..\..\output\uartsendqueue.o: ..\..\Libraries\FWlib\inc\misc.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\..\output\uartsendqueue.o: ..\..\User\Init.h
-..\..\output\uartsendqueue.o: ..\..\User\main.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\..\output\uartsendqueue.o: ..\..\User\delay.h
-..\..\output\uartsendqueue.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-..\..\output\uartsendqueue.o: ..\..\User\UART.h
+../../output/uartsendqueue.o: ..\..\User\UartSendQueue.c \
+  ..\..\User\UartSendQueue.h ..\..\User\main.h \
+  ..\..\Libraries\CMSIS\stm32f10x.h ..\..\Libraries\CMSIS\core_cm3.h \
+  ..\..\Libraries\CMSIS\system_stm32f10x.h ..\..\User\stm32f10x_conf.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_adc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_bkp.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_can.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_cec.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_crc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_dac.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_dbgmcu.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_dma.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_exti.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_flash.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_fsmc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_gpio.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_i2c.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_iwdg.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_pwr.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_rcc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_rtc.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_sdio.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_spi.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_tim.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_usart.h \
+  ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h \
+  ..\..\Libraries\FWlib\inc\misc.h ..\..\User\Init.h ..\..\User\delay.h \
+  ..\..\User\UART.h

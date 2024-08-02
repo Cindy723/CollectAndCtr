@@ -1,2 +1,2 @@
-..\..\output\codetab.o: ..\..\User\OLED\codetab.c
-..\..\output\codetab.o: ..\..\User\OLED\codetab.h
+../../output/codetab.o: ..\..\User\OLED\codetab.c \
+  ..\..\User\OLED\codetab.h

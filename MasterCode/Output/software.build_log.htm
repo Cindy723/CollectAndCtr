@@ -3,41 +3,75 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: ¦ÌVision V5.15
-Copyright (C) 2015 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: A Administrator, A, LIC=4ZLZX-H5WC2-06VQU-S8I1W-FC8LL-J5JCF
+IDE-Version: ¦ÌVision V5.40.0.0
+Copyright (C) 2024 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 Administrator, 2, LIC=1WSKC-75C5H-YD4K5-GHBAK-YQS66-2J0QN
  
 Tool Versions:
-Toolchain:       MDK-ARM Professional  Version: 5.15.0
-Toolchain Path:  D:\Keil_v5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.05 update 2 (build 169)
-Assembler:       Armasm.exe V5.05 update 2 (build 169)
-Linker/Locator:  ArmLink.exe V5.05 update 2 (build 169)
-Library Manager: ArmAr.exe V5.05 update 2 (build 169)
-Hex Converter:   FromElf.exe V5.05 update 2 (build 169)
-CPU DLL:         SARMCM3.DLL V5.15.0
-Dialog DLL:      DARMSTM.DLL V1.65.0.0
-Target DLL:      CMSIS_AGDI.dll V1.21.12.0
-Dialog DLL:      TCM.DLL V1.14.5.0
+Toolchain:       MDK-ARM Professional  Version: 5.40.0.3
+Toolchain Path:  D:\Keil_v5.40\ARM\ARMCLANG\Bin
+C Compiler:      ArmClang.exe V6.22
+Assembler:       Armasm.exe V6.22
+Linker/Locator:  ArmLink.exe V6.22
+Library Manager: ArmAr.exe V6.22
+Hex Converter:   FromElf.exe V6.22
+CPU DLL:         SARMCM3.DLL V5.40.0.3
+Dialog DLL:      DARMSTM.DLL V1.69.1.0
+Target DLL:      CMSIS_AGDI.dll V1.33.18.0
+Dialog DLL:      TCM.DLL V1.56.4.0
  
 <h2>Project:</h2>
 E:\Reynold\CollectAndCtr\MasterCode\Project\RVMDK£¨uv5£©\BH-F103.uvprojx
-Project File Date:  07/15/2024
+Project File Date:  07/17/2024
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.05 update 2 (build 169)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
+*** Using Compiler 'V6.22', folder: 'D:\Keil_v5.40\ARM\ARMCLANG\Bin'
 Build target 'software'
-compiling TFTCommunic.c...
-linking...
-Program Size: Code=27572 RO-data=552 RW-data=3780 ZI-data=25052  
-FromELF: creating hex file...
-"..\..\Output\software.axf" - 0 Error(s), 0 Warning(s).
+../../User/Flash.c(1): warning: In file included from...
+../../User\flash.h(3): warning: non-portable path to file '"Init.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+    3 | #include "init.h"
+      |          ^~~~~~~~
+      |          "Init.h"
+../../User/Flash.c(2): warning: non-portable path to file '"Init.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+    2 | #include "init.h"
+      |          ^~~~~~~~
+      |          "Init.h"
+../../User/Flash.c(3): warning: non-portable path to file '"Tools.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+    3 | #include "tools.h"
+      |          ^~~~~~~~~
+      |          "Tools.h"
+../../User/Flash.c(3): warning: In file included from...
+../../User\tools.h(5): warning: non-portable path to file '"Init.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+    5 | #include "init.h"   
+      |          ^~~~~~~~
+      |          "Init.h"
+../../User/Flash.c(147): error: expected '(' after 'asm'
+  147 | __asm void MSR_MSP(u32 addr) 
+      |       ^
+../../User/Flash.c(147): error: expected ';' after top-level asm block
+  147 | __asm void MSR_MSP(u32 addr) 
+      |      ^
+      |      ;
+../../User/Flash.c(149): error: use of undeclared identifier 'MSR'
+  149 |     MSR MSP, r0                         //set Main Stack value
+      |     ^
+4 warnings and 3 errors generated.
+compiling Flash.c...
+"..\..\Output\software.axf" - 3 Error(s), 4 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F1xx_DFP.1.0.5.pack
+                Keil::STM32F1xx_DFP@1.0.5
+                STMicroelectronics STM32F1 Series Device Support, Drivers and Examples
 
 <h2>Collection of Component include folders:</h2>
-  E:\Reynold\CollectAndCtr\MasterCode\Project\RVMDK£¨uv5£©\RTE
-  D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include
+  D:/Keil_v5.40/Packs/Keil/STM32F1xx_DFP/1.0.5/Device/Include
 
 <h2>Collection of Component Files used:</h2>
+Target not created.
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
